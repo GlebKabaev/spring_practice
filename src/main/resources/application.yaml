@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: my_practice
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Library_DB
+    username: myuser
+    password: mypassword
