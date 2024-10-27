@@ -5,3 +5,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/Library_DB
     username: myuser
     password: mypassword
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate: 
+        "[format_sql]": true

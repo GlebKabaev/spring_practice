@@ -20,9 +20,9 @@ public class InMemoryBookDAO {
     }
 
     
-    public Book findByTitleBook(String title) {
+    public Book findByIDBook(int id) {
        return BOOKS.stream()
-               .filter(element -> element.getTitle().equalsIgnoreCase(title)).findFirst().orElse(null);
+               .filter(element -> element.getId()==id).findFirst().orElse(null);
     }
 
     
@@ -41,8 +41,8 @@ public class InMemoryBookDAO {
     }
 
     
-    public void deleteBook(String title) {
-       var book= findByTitleBook(title);
+    public void deleteBook(int id) {
+       var book= findByIDBook(id);
        if(book!=null){
            BOOKS.remove(book);
        }

@@ -7,10 +7,13 @@ import jakarta.persistence.*;
 import lombok.*;
 @Data
 @Builder
+@Entity
+@Table(name = "books")
+@AllArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "author", nullable = false)
@@ -19,9 +22,9 @@ public class Book {
     private String genere;
     @Column(name = "quantity", nullable = false)
     private int quantity;
-    @Column(name = "depositAmount", nullable = false)
+    @Column(name = "depositamount", nullable = false)
     private double depositAmount;
-    @Column(name = "rentalCost", nullable = false)
+    @Column(name = "rentalcost", nullable = false)
     private double rentalCost;
     @Override
     public String toString() {
@@ -34,5 +37,8 @@ public class Book {
                 ", depositAmount=" + depositAmount +
                 ", rentalCost=" + rentalCost +
                 '}';
+    }
+    Book(){
+
     }
 }
