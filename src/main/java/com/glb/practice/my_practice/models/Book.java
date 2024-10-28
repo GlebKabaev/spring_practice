@@ -38,7 +38,7 @@ public class Book {
                 ", rentalCost=" + rentalCost +
                 '}';
     }
-    Book(){
+    public Book(){
 
     }
 }

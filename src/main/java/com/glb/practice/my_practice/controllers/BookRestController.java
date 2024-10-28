@@ -13,30 +13,30 @@ import lombok.AllArgsConstructor;
 
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/api/books")
 @AllArgsConstructor
-public class BookController {
-    private final BookService bookSrevice;
+public class BookRestController {
+    private final BookService bookService;
     @GetMapping
     public List<Book> getBooks(){
         
-        return bookSrevice.getBooks();
+        return bookService.getBooks();
     }
     @PostMapping("/save_book")
     public Book saveBook(@RequestBody Book book){
-        return bookSrevice.saveBook(book);
+        return bookService.saveBook(book);
     }
     @GetMapping("/{id}")
     public Book findByIDBook(@PathVariable int id){
-        return bookSrevice.findByIDBook(id);
+        return bookService.findByIDBook(id);
     }
     @PutMapping("/update_book")
     public Book updateBook(@RequestBody Book book){
-        return bookSrevice.updateBook(book);
+        return bookService.updateBook(book);
     }
     @DeleteMapping("delete_book/{id}")
     public void deleteBook(@PathVariable int id){
-        bookSrevice.deleteBook(id);
+        bookService.deleteBook(id);
     }
     
 }
