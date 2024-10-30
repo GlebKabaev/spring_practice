@@ -30,7 +30,7 @@
                 <td th:text="${book.rentalCost}">Стоимость аренды</td>
                 <td>
                     <a th:href="@{/books/{id}(id=${book.id})}">Просмотр</a>
-                    <a th:href="@{/books/update/{id}(id=${book.id})}">Редактировать</a>
+                    <a th:href="@{/books/edit/{id}(id=${book.id})}">Редактировать</a>
                     <a th:href="@{/books/delete_book/{id}(id=${book.id})}">Удалить</a>
                 </td>
             </tr>

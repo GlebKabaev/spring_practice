@@ -11,6 +11,9 @@ import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.srevice.BookService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -22,7 +25,7 @@ public class BookViewController {
     @GetMapping
     public String showBooks(Model model) {
         model.addAttribute("books", bookService.getBooks());
-        model.addAttribute("title", "Список книг"); // добавляем заголовок
+        model.addAttribute("title", "Список книг");
     return "list";
     }
     @GetMapping("/{id}")
@@ -40,12 +43,32 @@ public class BookViewController {
     public String showCreateBookForm(Model model) {
         model.addAttribute("book", new Book()); // добавляем пустой объект Book для привязки формы
     return "add-edit"; 
-}
+    }
+    @GetMapping("/edit/{id}")
+    public String editBook(@PathVariable int id, Model model) {
+        model.addAttribute("book", bookService.findByIDBook(id));
+        return "add-edit";
+    }
     @PostMapping("/save_book")
     public String saveBook(@ModelAttribute("book") Book book) {
-        bookService.saveBook(book); // сохраняем книгу через сервис
-        return "redirect:/books"; // перенаправляем на список книг
+        bookService.saveBook(book); // создаем новую книгу
+
+        return "redirect:/books"; // перенаправляем на список книг // перенаправляем на список книг
     }
+    @PostMapping("/update_book")
+    public String updateBook(@ModelAttribute("book") Book book) {
+    // Проверяем, существует ли книга с таким ID
+    if (book.getId() != null && bookService.findByIDBook(book.getId()) != null) {
+        // Обновляем книгу
+        // Код для обновления книги в базе данных или списке
+        bookService.updateBook(book);
+    } else {
+        // Если ID отсутствует или книга не найдена, выбрасываем исключение или сохраняем новую книгу
+        throw new IllegalArgumentException("Книга с таким ID не найдена или ID не указан");
+    }
+        return "redirect:/books";
+    }
+
     
 
 }

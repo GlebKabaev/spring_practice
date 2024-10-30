@@ -1,31 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: content}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${book.id == null} ? 'Add Book' : 'Edit Book'"></title>
+    <title th:text="${book.id == null} ? 'Добавить книгу' : 'Изменить книгу'"></title>
+    
 </head>
 <body>
-    <h1>Создать новую книгу</h1>
-    <form th:action="@{/books/save_book}" th:object="${book}" method="post">
-        <label for="title">Название:</label>
-        <input type="text" id="title" th:field="*{title}" required />
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2 th:text="${book.id == null} ? 'Добавить книгу' : 'Изменить книгу'"></h2> 
+        <form th:action="${book.id == null} ? @{/books/save_book} : @{/books/update_book}" th:object="${book}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" name="_method" value="put" />
+            <label for="title">Название:</label>
+            <input type="text" id="title" th:field="*{title}" placeholder="Введите название книги" required />
 
-        <label for="author">Автор:</label>
-        <input type="text" id="author" th:field="*{author}" required />
+            <label for="author">Автор:</label>
+            <input type="text" id="author" th:field="*{author}" placeholder="Введите автора" required />
 
-        <label for="genere">Жанр:</label>
-        <input type="text" id="genere" th:field="*{genere}" required />
+            <label for="genere">Жанр:</label>
+            <input type="text" id="genere" th:field="*{genere}" placeholder="Введите жанр" required />
 
-        <label for="quantity">Количество:</label>
-        <input type="number" id="quantity" th:field="*{quantity}" required />
+            <label for="quantity">Количество:</label>
+            <input type="number" id="quantity" th:field="*{quantity}" placeholder="Введите количество" required />
 
-        <label for="depositAmount">Депозит:</label>
-        <input type="number" step="0.01" id="depositAmount" th:field="*{depositAmount}" required />
+            <label for="depositAmount">Депозит:</label>
+            <input type="number" step="0.01" id="depositAmount" th:field="*{depositAmount}" placeholder="Введите сумму депозита" required />
 
-        <label for="rentalCost">Стоимость аренды:</label>
-        <input type="number" step="0.01" id="rentalCost" th:field="*{rentalCost}" required />
+            <label for="rentalCost">Стоимость аренды:</label>
+            <input type="number" step="0.01" id="rentalCost" th:field="*{rentalCost}" placeholder="Введите стоимость аренды" required />
 
-        <button type="submit">Создать книгу</button>
-    </form>
-    <a th:href="@{/books}">Вернуться к списку книг</a>
+            <button type="submit" th:text="${book.id == null} ? 'Создать книгу' : 'Сохранить изменения'"></button>
+        </form>
+        <a class="back-link" th:href="@{/books}">Вернуться к списку книг</a>
+    </div>
 </body>
 </html>
