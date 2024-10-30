@@ -11,11 +11,6 @@ import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.srevice.BookService;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
 @Controller
 @RequestMapping("/books")
 @AllArgsConstructor
@@ -24,6 +19,7 @@ public class BookViewController {
 
     @GetMapping
     public String showBooks(Model model) {
+        //TODOO сортировка по id 
         model.addAttribute("books", bookService.getBooks());
         model.addAttribute("title", "Список книг");
     return "list";
