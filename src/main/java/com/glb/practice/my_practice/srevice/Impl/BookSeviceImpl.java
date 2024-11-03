@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.repository.BookRepository;
 import com.glb.practice.my_practice.srevice.BookService;
+import org.springframework.data.domain.Sort;
 
 import lombok.AllArgsConstructor;
 @Service
@@ -18,7 +19,7 @@ public class BookSeviceImpl implements BookService{
 
     @Override
     public List<Book> getBooks() {
-        return BOOK_REPOSITORIY.findAll();
+        return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Direction.DESC, "id"));
         
     }
 

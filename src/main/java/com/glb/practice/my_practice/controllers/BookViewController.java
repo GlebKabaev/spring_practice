@@ -19,7 +19,6 @@ public class BookViewController {
 
     @GetMapping
     public String showBooks(Model model) {
-        //TODOO сортировка по id 
         model.addAttribute("books", bookService.getBooks());
         model.addAttribute("title", "Список книг");
     return "list";
@@ -31,7 +30,6 @@ public class BookViewController {
     }
     @GetMapping("/delete_book/{id}")
     public String deleteBook(Model model,@PathVariable int id) {
-        //model.addAttribute("book", bookService.findByIDBook(id));
         bookService.deleteBook(id);
         return "redirect:/books";
     }

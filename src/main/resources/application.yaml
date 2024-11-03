@@ -2,7 +2,7 @@ spring:
   application:
     name: my_practice
   datasource:
-    url: jdbc:postgresql://localhost:5432/Library_DB
+    url: jdbc:postgresql://localhost:5432/ForSpring
     username: myuser
     password: mypassword
   jpa:

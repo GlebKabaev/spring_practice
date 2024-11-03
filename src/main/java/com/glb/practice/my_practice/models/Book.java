@@ -2,6 +2,8 @@ package com.glb.practice.my_practice.models;
 
 
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -26,6 +28,8 @@ public class Book {
     private double depositAmount;
     @Column(name = "rentalcost", nullable = false)
     private double rentalCost;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private Set<Rental> rentals;
     @Override
     public String toString() {
         return "Book{" +
