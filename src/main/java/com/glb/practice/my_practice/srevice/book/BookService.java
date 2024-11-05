@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice;
+package com.glb.practice.my_practice.srevice.book;
 
 import java.util.List;
 

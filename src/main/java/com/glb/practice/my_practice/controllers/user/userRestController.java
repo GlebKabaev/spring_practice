@@ -1,0 +1,41 @@
+package com.glb.practice.my_practice.controllers.user;
+import java.util.List;
+
+
+import org.springframework.web.bind.annotation.*;
+
+import com.glb.practice.my_practice.models.Book;
+import com.glb.practice.my_practice.models.User;
+import com.glb.practice.my_practice.srevice.user.UserService;
+
+import lombok.AllArgsConstructor;
+
+
+@RestController
+@RequestMapping("/api/users")
+@AllArgsConstructor
+public class userRestController {
+    private final UserService userService;
+    
+    @GetMapping
+    public List<User> getUsers() {
+        return userService.getUsers();
+    }
+    @PostMapping("/save_user")
+    public User saveUser(@RequestBody User user){
+        return userService.saveUser(user);
+    }
+    @GetMapping("/{id}")
+    public User findByIDUser(@PathVariable int id){
+        return userService.findByIDUser(id);
+    }
+    @PutMapping("/update_user")
+    public User updateUser(@RequestBody User user){
+        return userService.updateUser(user);
+    }
+    @DeleteMapping("delete_user/{id}")
+    public void deleteUser(@PathVariable int id){
+        userService.deleteUser(id);
+    }
+    
+}

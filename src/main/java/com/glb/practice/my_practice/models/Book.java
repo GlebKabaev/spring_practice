@@ -20,13 +20,13 @@ public class Book {
     private String title;
     @Column(name = "author", nullable = false)
     private String author;
-    @Column(name = "genere", nullable = false)
-    private String genere;
+    @Column(name = "genre", nullable = false)
+    private String genre;
     @Column(name = "quantity", nullable = false)
     private int quantity;
-    @Column(name = "depositamount", nullable = false)
+    @Column(name = "deposit_amount", nullable = false)
     private double depositAmount;
-    @Column(name = "rentalcost", nullable = false)
+    @Column(name = "rental_cost", nullable = false)
     private double rentalCost;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<Rental> rentals;
@@ -36,7 +36,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", genere='" + genere + '\'' +
+                ", genre='" + genre + '\'' +
                 ", quantity=" + quantity +
                 ", depositAmount=" + depositAmount +
                 ", rentalCost=" + rentalCost +

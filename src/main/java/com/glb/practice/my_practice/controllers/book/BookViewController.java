@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.controllers;
+package com.glb.practice.my_practice.controllers.book;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.Book;
-import com.glb.practice.my_practice.srevice.BookService;
+import com.glb.practice.my_practice.srevice.book.BookService;
 
 import lombok.AllArgsConstructor;
 @Controller

@@ -14,8 +14,8 @@ public class Access {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer accessid;
     @ManyToOne
-    @JoinColumn(name = "readerId")
-    private Reader reader;
+    @JoinColumn(name = "reader_Id")
+    private User reader;
     @Temporal(TemporalType.DATE)
     private Date accessDate;
     Access(){

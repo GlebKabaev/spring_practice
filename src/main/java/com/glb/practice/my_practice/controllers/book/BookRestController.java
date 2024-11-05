@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.controllers;
+package com.glb.practice.my_practice.controllers.book;
 
 
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import com.glb.practice.my_practice.models.Book;
-import com.glb.practice.my_practice.srevice.BookService;
+import com.glb.practice.my_practice.srevice.book.BookService;
 
 import lombok.AllArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.Impl;
+package com.glb.practice.my_practice.srevice.book.Impl;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.glb.practice.my_practice.models.Book;
-import com.glb.practice.my_practice.repository.InMemoryBookDAO;
-import com.glb.practice.my_practice.srevice.BookService;
+import com.glb.practice.my_practice.repository.book.InMemoryBookDAO;
+import com.glb.practice.my_practice.srevice.book.BookService;
 
 import lombok.AllArgsConstructor;
 @Service

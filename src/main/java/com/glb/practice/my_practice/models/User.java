@@ -10,15 +10,15 @@ import lombok.*;
 @Entity
 @Table(name = "readers")
 @AllArgsConstructor
-public class Reader {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "LastName", nullable = false)
+    @Column(name = "Last_Name", nullable = false)
     private String lastName ;
-    @Column(name="FirstName", nullable = false)
+    @Column(name="First_Name", nullable = false)
     private String firstName;
-    @Column(name = "MiddleName", nullable = false)
+    @Column(name = "Middle_Name", nullable = false)
     private String middleName;
     @Column(name = "Address", nullable = false)
     private String address;
@@ -38,7 +38,7 @@ public class Reader {
                 ", phone='" + phone + '\'' +
                 '}';
     }
-    Reader(){
+    User(){
        
     }
 }

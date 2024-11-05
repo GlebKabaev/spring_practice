@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.repository;
+package com.glb.practice.my_practice.repository.book;
 
 import java.util.ArrayList;
 import java.util.List;

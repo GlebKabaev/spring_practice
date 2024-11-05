@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.repository;
+package com.glb.practice.my_practice.repository.book;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

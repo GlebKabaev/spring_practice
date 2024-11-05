@@ -15,11 +15,11 @@ public class Rental {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "readerId")
-    private Reader reader;
+    @JoinColumn(name = "reader_Id")
+    private User reader;
 
     @ManyToOne
-    @JoinColumn(name = "bookId")
+    @JoinColumn(name = "book_Id")
     private Book book;
 
     @Temporal(TemporalType.DATE)
