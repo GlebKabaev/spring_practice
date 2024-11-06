@@ -20,8 +20,7 @@ public class BookViewController {
     @GetMapping
     public String showBooks(Model model) {
         model.addAttribute("books", bookService.getBooks());
-        model.addAttribute("title", "Список книг");
-    return "list";
+    return "book_list";
     }
     @GetMapping("/{id}")
     public String showBookData(Model model, @PathVariable int id) {
@@ -36,12 +35,12 @@ public class BookViewController {
     @GetMapping("/new")
     public String showCreateBookForm(Model model) {
         model.addAttribute("book", new Book()); // добавляем пустой объект Book для привязки формы
-    return "add-edit"; 
+    return "book_add-edit"; 
     }
     @GetMapping("/edit/{id}")
     public String editBook(@PathVariable int id, Model model) {
         model.addAttribute("book", bookService.findByIDBook(id));
-        return "add-edit";
+        return "book_add-edit";
     }
     @PostMapping("/save_book")
     public String saveBook(@ModelAttribute("book") Book book) {

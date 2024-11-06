@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.glb.practice.my_practice.models.Book;
+
 import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.srevice.user.UserService;
 
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/users")
 @AllArgsConstructor
-public class userRestController {
+public class UserRestController {
     private final UserService userService;
     
     @GetMapping

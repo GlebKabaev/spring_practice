@@ -38,7 +38,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 '}';
     }
-    User(){
+    public User(){
        
     }
 }
