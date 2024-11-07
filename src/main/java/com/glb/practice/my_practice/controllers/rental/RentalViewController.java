@@ -13,7 +13,6 @@ import com.glb.practice.my_practice.srevice.rental.RentalService;
 import com.glb.practice.my_practice.srevice.user.UserService;
 
 import lombok.AllArgsConstructor;
-import lombok.Delegate;
 @Controller
 @RequestMapping("/rentals")
 @AllArgsConstructor
