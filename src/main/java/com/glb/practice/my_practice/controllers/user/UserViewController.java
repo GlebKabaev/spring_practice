@@ -51,14 +51,13 @@ public class UserViewController {
     }
     @PostMapping("/update_user")
     public String updateUser(@ModelAttribute("user") User user) {
-    // Проверяем, существует ли книга с таким ID
+    
     if (user.getId() != null && userService.findByIDUser(user.getId()) != null) {
-        // Обновляем книгу
-        // Код для обновления книги в базе данных или списке
+        
         userService.updateUser(user);
     } else {
-        // Если ID отсутствует или книга не найдена, выбрасываем исключение или сохраняем новую книгу
-        throw new IllegalArgumentException("Книга с таким ID не найдена или ID не указан");
+        
+        throw new IllegalArgumentException("Пользователь с таким ID не найдена или ID не указан");
     }
         return "redirect:/users";
     }

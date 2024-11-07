@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.user.impl;
+package com.glb.practice.my_practice.srevice.user;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.repository.user.UserRepository;
-import com.glb.practice.my_practice.srevice.user.UserService;
 
 import org.springframework.data.domain.Sort;
 

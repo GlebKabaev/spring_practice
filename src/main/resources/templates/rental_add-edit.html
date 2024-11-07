@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2 th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></h2> 
+        <form th:action="${rental.id == null} ? @{/rentals/save_rental} : @{/rentals/update_rental}" th:object="${rental}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" name="_method" value="put" />
+
+            <label for="reader">Читатель:</label>
+            <select id="reader" th:field="*{reader.id}" required>
+                <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.lastName + ' ' + user.firstName}">
+                    Выберите читателя
+                </option>
+            </select>
+
+            <label for="book">Книга:</label>
+            <select id="book" th:field="*{book.id}" required>
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}">
+                    Выберите книгу
+                </option>
+            </select>
+
+            <label for="issueDate">Дата выдачи:</label>
+            <input type="date" id="issueDate" th:field="*{issueDate}" required />
+
+            <label for="expectedReturnDate">Предполагаемая дата возврата:</label>
+            <input type="date" id="expectedReturnDate" th:field="*{expectedReturnDate}" required />
+
+            <button type="submit" th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
+        </form>
+        <a class="back-link" th:href="@{/rentals}">Вернуться к списку аренд</a>
+    </div>
+</body>
+</html>
