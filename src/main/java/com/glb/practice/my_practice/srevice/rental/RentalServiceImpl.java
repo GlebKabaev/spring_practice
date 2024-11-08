@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.repository.rental.RentalRepository;
+import com.glb.practice.my_practice.srevice.book.BookService;
 
 import lombok.AllArgsConstructor;
 @Service
@@ -15,14 +17,22 @@ import lombok.AllArgsConstructor;
 @Primary
 public class RentalServiceImpl implements RentalService {
     RentalRepository rentalRepository;
-    
+    BookService bookService;
     public List<Rental> getRentals() {
         return rentalRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
     }
 
     @Override
     public Rental saveRental(Rental rental) {
-        return rentalRepository.save(rental);
+        Book book = bookService.findByIDBook(rental.getBook().getId());
+        if (book.getQuantity() > 0) {
+            book.setQuantity(book.getQuantity() - 1);  // Уменьшаем количество на 1
+            bookService.saveBook(book);  // Сохраняем обновленное количество книги
+            return rentalRepository.save(rental);   // Сохраняем запись аренды
+        }else{
+            throw new IllegalArgumentException("книги нет в наличии");
+        }
+        
     }
 
     @Override

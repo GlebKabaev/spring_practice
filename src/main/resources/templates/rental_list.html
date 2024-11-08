@@ -30,6 +30,9 @@
                     <a th:href="@{/rentals/delete/{id}(id=${rental.id})}">Удалить</a>
                 </td>
             </tr>
+            <td colspan="7">
+                <button th:onclick="|window.location.href='@{rentals/new}'|">Добавить</button>
+            </td>
         </tbody>
     </table>
 </body>

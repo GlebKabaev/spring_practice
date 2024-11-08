@@ -23,6 +23,11 @@ public class BookSeviceImpl implements BookService{
         return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Direction.DESC, "id"));
         
     }
+    @Override
+    public List<Book> getNotZeroBooks(){
+        return BOOK_REPOSITORIY.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, "id"));
+
+    }
 
     @Override
     public Book saveBook(Book book) {

@@ -20,51 +20,52 @@ public class RentalViewController {
     private final RentalService rentalService;
     private final UserService userService;
     private final BookService bookService;
-    @GetMapping
+    @GetMapping({"/",""})
     public String showRentals(Model model) {
         model.addAttribute("rentals", rentalService.getRentals());
     return "rental_list";
     }
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/{id}/"})
     public String showRentalData(Model model, @PathVariable int id) {
         model.addAttribute("rental", rentalService.findByIDRental(id));
         return "rental";
     }
-    @GetMapping("/new")
+    @GetMapping({"/new","/new/"})
     public String showCreateRentalForm(Model model) {
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("books", bookService.getBooks());
+        model.addAttribute("books", bookService.getNotZeroBooks());
         model.addAttribute("rental", new Rental()); 
     return "rental_add-edit"; 
     }
-    @PostMapping("/save_rental")
-    public String saveRental(@ModelAttribute("rental") Rental rental) {
-        rentalService.saveRental(rental); 
-
+    @PostMapping({"/save_rental", "/save_rental/"})
+    public String saveRental(@ModelAttribute("rental") Rental rental, Model model) {
+        try {
+        rentalService.saveRental(rental);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("users", userService.getUsers());
+            model.addAttribute("books", bookService.getNotZeroBooks());
+            model.addAttribute("rental", new Rental()); 
+            model.addAttribute("error", "Ошибка! Книги нет в наличии.");
+            return "rental_add-edit";
+        }
         return "redirect:/rentals"; 
     }
-    @GetMapping("/delete/{id}")
+    @GetMapping({"/delete/{id}","/delete/{id}/"})
     public String deleteRental(Model model,@PathVariable int id) {
         rentalService.deleteRental(id);
         return "redirect:/rentals";
     }
-    @GetMapping("/edit/{id}")
+    @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editRental(@PathVariable int id, Model model) {
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("books", bookService.getBooks());
+        model.addAttribute("books", bookService.getNotZeroBooks());
         model.addAttribute("rental", rentalService.findByIDRental(id));
         return "rental_add-edit";
     }
-    @PostMapping("/update_rental")
+    @PostMapping({"/update_rental","/update_rental/"})
     public String updateRental(@ModelAttribute("rental") Rental rental) {
-    
-    if (rental.getId() != null && rentalService.findByIDRental(rental.getId()) != null) {
-        
         rentalService.updateRental(rental);
-    } else {
-       
-        throw new IllegalArgumentException("Аренда с таким ID не найдена или ID не указан");
-    }
         return "redirect:/rentals";
     }
 

@@ -18,38 +18,38 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserViewController {
     private final UserService userService;
-    @GetMapping
+    @GetMapping({"/",""})
     public String showUsers(Model model) {
         model.addAttribute("users", userService.getUsers());
     return "user_list";
     }
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/{id}/"})
     public String showUserData(Model model, @PathVariable int id) {
         model.addAttribute("user", userService.findByIDUser(id));
         return "user";
     }
-    @GetMapping("/new")
+    @GetMapping({"/new","/new/"})
     public String showCreateUserForm(Model model) {
         model.addAttribute("user", new User()); 
     return "user_add-edit"; 
     }
-    @PostMapping("/save_user")
+    @PostMapping({"/save_user","/save_user/"})
     public String saveUser(@ModelAttribute("user") User user) {
         userService.saveUser(user); 
 
         return "redirect:/users"; 
     }
-    @GetMapping("/delete_user/{id}")
+    @GetMapping({"/delete_user/{id}","/delete_user/{id}/"})
     public String deleteUser(Model model,@PathVariable int id) {
         userService.deleteUser(id);
         return "redirect:/users";
     }
-    @GetMapping("/edit/{id}")
+    @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editUser(@PathVariable int id, Model model) {
         model.addAttribute("user", userService.findByIDUser(id));
         return "user_add-edit";
     }
-    @PostMapping("/update_user")
+    @PostMapping({"/update_user","/update_user/"})
     public String updateUser(@ModelAttribute("user") User user) {
     
     if (user.getId() != null && userService.findByIDUser(user.getId()) != null) {

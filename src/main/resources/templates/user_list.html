@@ -32,6 +32,9 @@
                     <a th:href="@{/users/delete_user/{id}(id=${user.id})}">Удалить</a>
                 </td>
             </tr>
+            <td colspan="7">
+                <button th:onclick="|window.location.href='@{users/new}'|">Добавить</button>
+            </td>
         </tbody>
     </table>
 </body>

@@ -19,6 +19,10 @@ public class InMemoryBookService implements BookService {
     public List<Book> getBooks() {
         return bookDAO.getBooks();
     }
+    @Override
+    public List<Book> getNotZeroBooks(){
+        return bookDAO.getBooks();
+    }
     
     @Override
     public Book saveBook(Book book) {

@@ -17,23 +17,23 @@ import lombok.AllArgsConstructor;
 public class UserRestController {
     private final UserService userService;
     
-    @GetMapping
+    @GetMapping({"/",""})
     public List<User> getUsers() {
         return userService.getUsers();
     }
-    @PostMapping("/save_user")
+    @PostMapping({"/save_user","/save_user/"})
     public User saveUser(@RequestBody User user){
         return userService.saveUser(user);
     }
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/{id}/"})
     public User findByIDUser(@PathVariable int id){
         return userService.findByIDUser(id);
     }
-    @PutMapping("/update_user")
+    @PutMapping({"/update_user", "/update_user/"})
     public User updateUser(@RequestBody User user){
         return userService.updateUser(user);
     }
-    @DeleteMapping("delete_user/{id}")
+    @DeleteMapping({"delete_user/{id}","delete_user/{id}/"})
     public void deleteUser(@PathVariable int id){
         userService.deleteUser(id);
     }

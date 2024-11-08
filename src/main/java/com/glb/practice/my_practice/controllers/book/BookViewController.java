@@ -17,38 +17,38 @@ import lombok.AllArgsConstructor;
 public class BookViewController {
     private final BookService bookService;
 
-    @GetMapping
+    @GetMapping({"/",""})
     public String showBooks(Model model) {
         model.addAttribute("books", bookService.getBooks());
     return "book_list";
     }
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/{id}/"})
     public String showBookData(Model model, @PathVariable int id) {
         model.addAttribute("book", bookService.findByIDBook(id));
         return "book";
     }
-    @GetMapping("/delete_book/{id}")
+    @GetMapping({"delete_book/{id}","delete_book/{id}/"})
     public String deleteBook(Model model,@PathVariable int id) {
         bookService.deleteBook(id);
         return "redirect:/books";
     }
-    @GetMapping("/new")
+    @GetMapping({"/new","/new/"})
     public String showCreateBookForm(Model model) {
         model.addAttribute("book", new Book()); // добавляем пустой объект Book для привязки формы
     return "book_add-edit"; 
     }
-    @GetMapping("/edit/{id}")
+    @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editBook(@PathVariable int id, Model model) {
         model.addAttribute("book", bookService.findByIDBook(id));
         return "book_add-edit";
     }
-    @PostMapping("/save_book")
+    @PostMapping({"/save_book", "/save_book/"})
     public String saveBook(@ModelAttribute("book") Book book) {
         bookService.saveBook(book); // создаем новую книгу
 
         return "redirect:/books"; // перенаправляем на список книг // перенаправляем на список книг
     }
-    @PostMapping("/update_book")
+    @PostMapping({"/update_book","/update_book/"})
     public String updateBook(@ModelAttribute("book") Book book) {
     // Проверяем, существует ли книга с таким ID
     if (book.getId() != null && bookService.findByIDBook(book.getId()) != null) {

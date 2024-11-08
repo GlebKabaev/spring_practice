@@ -14,23 +14,23 @@ import lombok.AllArgsConstructor;
 public class RentalRestController {
     private final RentalService rentalService;
 
-    @GetMapping
+    @GetMapping({"/",""})
     public List<Rental> getRentals() {
         return rentalService.getRentals();
     }
-    @PostMapping("/save_rental")
+    @PostMapping({"/save_rental","/save_rental/"})
     public Rental saveRental(@RequestBody Rental rental) {
         return rentalService.saveRental(rental);
     }
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/{id}/"})
     public Rental findByIDRental(@PathVariable int id) {
         return rentalService.findByIDRental(id);
     }
-    @PutMapping("/update_rental")
+    @PutMapping({"/update_rental", "/update_rental/"})
     public Rental updateRental(@RequestBody Rental rental) {
         return rentalService.updateRental(rental);
     }
-    @DeleteMapping("/delete_rental/{id}")
+    @DeleteMapping({"/delete_rental/{id}","/delete_rental/{id}/"})
     public void deleteRental(@PathVariable int id) {
         rentalService.deleteRental(id);
     }
