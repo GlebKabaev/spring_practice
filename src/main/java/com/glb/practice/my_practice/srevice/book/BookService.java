@@ -8,8 +8,8 @@ import com.glb.practice.my_practice.models.Book;
 
 
 public interface BookService {
-    public List<Book> getBooks();
-    public List<Book> getNotZeroBooks();
+    List<Book> getBooks(String field);
+    List<Book> getNotZeroBooks();
     Book saveBook(Book book);
     Book findByIDBook(int id);
     Book updateBook(Book book);

@@ -20,6 +20,7 @@ public class UserViewController {
     private final UserService userService;
     @GetMapping({"/",""})
     public String showUsers(Model model) {
+        //TODO добавить фильтры
         model.addAttribute("users", userService.getUsers());
     return "user_list";
     }
@@ -34,9 +35,15 @@ public class UserViewController {
     return "user_add-edit"; 
     }
     @PostMapping({"/save_user","/save_user/"})
-    public String saveUser(@ModelAttribute("user") User user) {
+    public String saveUser(@ModelAttribute("user") User user, Model model) {
+        try{
         userService.saveUser(user); 
-
+        }catch(Exception e){
+            e.printStackTrace();
+            model.addAttribute("user", user);
+            model.addAttribute("error", e.getMessage());
+            return "user_add-edit";
+        }
         return "redirect:/users"; 
     }
     @GetMapping({"/delete_user/{id}","/delete_user/{id}/"})
@@ -50,15 +57,16 @@ public class UserViewController {
         return "user_add-edit";
     }
     @PostMapping({"/update_user","/update_user/"})
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") User user, Model model) {
     
-    if (user.getId() != null && userService.findByIDUser(user.getId()) != null) {
-        
-        userService.updateUser(user);
-    } else {
-        
-        throw new IllegalArgumentException("Пользователь с таким ID не найдена или ID не указан");
-    }
-        return "redirect:/users";
-    }
+        try{
+            userService.updateUser(user); 
+            }catch(Exception e){
+                e.printStackTrace();
+                model.addAttribute("user", user);
+                model.addAttribute("error", e.getMessage());
+                return "user_add-edit";
+            }
+            return "redirect:/users"; 
+        }
 }

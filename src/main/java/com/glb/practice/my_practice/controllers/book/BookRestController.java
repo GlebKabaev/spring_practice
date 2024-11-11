@@ -20,7 +20,7 @@ public class BookRestController {
     @GetMapping({"/",""})
     public List<Book> getBooks(){
         
-        return bookService.getBooks();
+        return bookService.getBooks("id");
     }
     @PostMapping({"/save_book","/save_book/"})
     public Book saveBook(@RequestBody Book book){

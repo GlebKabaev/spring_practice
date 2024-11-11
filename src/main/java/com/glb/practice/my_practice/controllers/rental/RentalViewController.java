@@ -22,6 +22,7 @@ public class RentalViewController {
     private final BookService bookService;
     @GetMapping({"/",""})
     public String showRentals(Model model) {
+        //TODO добавить фильтры
         model.addAttribute("rentals", rentalService.getRentals());
     return "rental_list";
     }
@@ -46,7 +47,7 @@ public class RentalViewController {
             model.addAttribute("users", userService.getUsers());
             model.addAttribute("books", bookService.getNotZeroBooks());
             model.addAttribute("rental", new Rental()); 
-            model.addAttribute("error", "Ошибка! Книги нет в наличии.");
+            model.addAttribute("error", e.getMessage());
             return "rental_add-edit";
         }
         return "redirect:/rentals"; 
@@ -64,8 +65,17 @@ public class RentalViewController {
         return "rental_add-edit";
     }
     @PostMapping({"/update_rental","/update_rental/"})
-    public String updateRental(@ModelAttribute("rental") Rental rental) {
-        rentalService.updateRental(rental);
+    public String updateRental(@ModelAttribute("rental") Rental rental,Model model) {
+        try {
+            rentalService.updateRental(rental);
+        }catch(Exception e){
+            e.printStackTrace();
+            model.addAttribute("users", userService.getUsers());
+            model.addAttribute("books", bookService.getNotZeroBooks());
+            model.addAttribute("rental", rental);
+            model.addAttribute("error", e.getMessage());
+            return "rental_add-edit";
+        }
         return "redirect:/rentals";
     }
 

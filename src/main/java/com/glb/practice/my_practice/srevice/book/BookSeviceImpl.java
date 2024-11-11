@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.book.Impl;
+package com.glb.practice.my_practice.srevice.book;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.repository.book.BookRepository;
-import com.glb.practice.my_practice.srevice.book.BookService;
 
 import org.springframework.data.domain.Sort;
 
@@ -19,9 +18,9 @@ public class BookSeviceImpl implements BookService{
     private final BookRepository BOOK_REPOSITORIY;
 
     @Override
-    public List<Book> getBooks() {
-        return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        
+    public List<Book> getBooks(String field) {
+        //return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Direction.DESC, field));
+        return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Order.asc(field)));
     }
     @Override
     public List<Book> getNotZeroBooks(){
@@ -31,7 +30,12 @@ public class BookSeviceImpl implements BookService{
 
     @Override
     public Book saveBook(Book book) {
-        return BOOK_REPOSITORIY.save(book);
+        if(book.getQuantity()>=0 && book.getRentalCost()>=0 && book.getDepositAmount()>=0){
+            return BOOK_REPOSITORIY.save(book);
+
+        }else{
+            throw new IllegalArgumentException("поле не может быть отрицательным");
+        }
     }
 
     @Override
@@ -41,13 +45,20 @@ public class BookSeviceImpl implements BookService{
 
     @Override
     public Book updateBook(Book book) {
-        return BOOK_REPOSITORIY.save(book);
+        if(book.getQuantity()>=0 && book.getRentalCost()>=0 && book.getDepositAmount()>=0){
+            return BOOK_REPOSITORIY.save(book);
+
+        }else{
+            throw new IllegalArgumentException("поле не может быть отрицательным");
+        }
     }
 
     @Override
     public void deleteBook(int id) {
         BOOK_REPOSITORIY.deleteById(id);
     }
+    
+    
 
     
 }

@@ -25,6 +25,9 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public Rental saveRental(Rental rental) {
         Book book = bookService.findByIDBook(rental.getBook().getId());
+        if(rental.getIssueDate().after(rental.getExpectedReturnDate())){
+            throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
+        }
         if (book.getQuantity() > 0) {
             book.setQuantity(book.getQuantity() - 1);  // Уменьшаем количество на 1
             bookService.saveBook(book);  // Сохраняем обновленное количество книги
@@ -42,6 +45,9 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Rental updateRental(Rental rental) {
+        if(rental.getIssueDate().after(rental.getExpectedReturnDate())){
+            throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
+        }
         return rentalRepository.save(rental);
     }
 

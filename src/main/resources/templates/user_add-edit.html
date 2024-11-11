@@ -24,7 +24,7 @@
             <input type="text" id="address" th:field="*{address}" placeholder="Введите адрес" required />
 
             <label for="phone">Телефон:</label>
-            <input type="text" id="phone" th:field="*{phone}" placeholder="Введите телефон" required />
+            <input type="tel" id="phone" th:field="*{phone}" placeholder="Введите телефон" required />
 
             <button type="submit" th:text="${user.id == null} ? 'Создать пользователя' : 'Сохранить изменения'"></button>
         </form>
