@@ -1,4 +1,7 @@
 package com.glb.practice.my_practice.controllers.user;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,8 @@ import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.srevice.user.UserService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/users")
@@ -21,9 +26,20 @@ public class UserViewController {
     @GetMapping({"/",""})
     public String showUsers(Model model) {
         //TODO добавить фильтры
-        model.addAttribute("users", userService.getUsers());
+        List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
+        model.addAttribute("sortFields", sortFields);
+        model.addAttribute("users", userService.getUsers("id"));
     return "user_list";
     }
+    @GetMapping("/sort")
+    public String sortUsers(@RequestParam("field") String field, Model model) {
+        List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
+        model.addAttribute("sortFields", sortFields);
+        model.addAttribute("selectedField", field);
+        model.addAttribute("users", userService.getUsers(field));
+        return "user_list";
+    }
+    
     @GetMapping({"/{id}","/{id}/"})
     public String showUserData(Model model, @PathVariable int id) {
         model.addAttribute("user", userService.findByIDUser(id));

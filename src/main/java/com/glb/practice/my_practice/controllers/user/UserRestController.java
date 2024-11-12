@@ -19,7 +19,7 @@ public class UserRestController {
     
     @GetMapping({"/",""})
     public List<User> getUsers() {
-        return userService.getUsers();
+        return userService.getUsers("id");
     }
     @PostMapping({"/save_user","/save_user/"})
     public User saveUser(@RequestBody User user){

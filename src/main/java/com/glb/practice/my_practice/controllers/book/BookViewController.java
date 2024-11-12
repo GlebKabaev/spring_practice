@@ -23,17 +23,20 @@ public class BookViewController {
 
     @GetMapping({"/",""})
     public String showBooks(Model model) {
-        //TODO добавить фильтры
+        
         List<String> sortFields = Arrays.asList("id", "title", "author");
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("books", bookService.getBooks("id"));
     return "book_list";
     }
-    @GetMapping("/books/sort")
+    @GetMapping("/sort")
     public String sortBooks(@RequestParam("field") String field, Model model) {
+        List<String> sortFields = Arrays.asList("id", "title", "author");
+        model.addAttribute("sortFields", sortFields);
+        model.addAttribute("selectedField", field);
         model.addAttribute("books", bookService.getBooks(field));
         return "book_list";
-        //TODO Добить сортировку
+        
     }
     @GetMapping({"/{id}","/{id}/"})
     public String showBookData(Model model, @PathVariable int id) {

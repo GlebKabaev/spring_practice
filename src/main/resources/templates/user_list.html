@@ -3,10 +3,17 @@
 <head>
     <title>Список пользователей</title>
 </head>
-
-
     <div th:insert="~{layout :: content}"></div>
     <h2>Список пользователей</h2>
+    <form action="/users/sort" method="get">
+        <select name="field">
+            <option th:each="field : ${sortFields}" 
+                    th:value="${field}" 
+                    th:text="${field}"
+                    th:selected="${field} == ${selectedField}">Field</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
     <table>
         <thead>
             <tr>
@@ -34,7 +41,7 @@
                 </td>
             </tr>
             <td colspan="7">
-                <button th:onclick="|window.location.href='@{users/new}'|">Добавить</button>
+                <button th:onclick="|window.location.href='@{/users/new}'|">Добавить</button>
             </td>
         </tbody>
     </table>

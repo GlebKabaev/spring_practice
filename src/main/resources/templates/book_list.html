@@ -5,14 +5,19 @@
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
-    <h2>Список книг</h2>
+        <h2>Список книг</h2>
     <body>
         <form action="/books/sort" method="get">
-        <select name="field">
-            <option th:each="field : ${sortFields}" th:value="${field}" th:text="${field}">Field</option>
-        </select>
-        <button type="submit">Sort</button>
-    </form>
+            <select name="field">
+                <option th:each="field : ${sortFields}" 
+                        th:value="${field}" 
+                        th:text="${field}"
+                        th:selected="${field} == ${selectedField}">Field</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
+        
+        
     <table>
         <thead>
             <tr>
@@ -42,7 +47,7 @@
                 </td>
             </tr>
             <td colspan="7">
-                <button th:onclick="|window.location.href='@{books/new}'|">Добавить</button>
+                <button th:onclick="|window.location.href='@{/books/new}'|">Добавить</button>
             </td>
         </tbody>
     </table>
