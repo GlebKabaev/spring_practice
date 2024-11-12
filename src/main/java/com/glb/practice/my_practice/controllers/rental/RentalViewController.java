@@ -22,7 +22,7 @@ public class RentalViewController {
     private final BookService bookService;
     @GetMapping({"/",""})
     public String showRentals(Model model) {
-        //TODO добавить фильтры
+        
         model.addAttribute("rentals", rentalService.getRentals());
     return "rental_list";
     }

@@ -25,7 +25,7 @@ public class UserViewController {
     private final UserService userService;
     @GetMapping({"/",""})
     public String showUsers(Model model) {
-        //TODO добавить фильтры
+        
         List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("users", userService.getUsers("id"));
