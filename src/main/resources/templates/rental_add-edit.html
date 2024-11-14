@@ -13,7 +13,7 @@
 
             <label for="reader">Читатель:</label>
             <select id="reader" th:field="*{reader.id}" required>
-                <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.lastName + ' ' + user.firstName}">
+                <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.lastName + ' ' + reader.firstName}">
                     Выберите читателя
                 </option>
             </select>

@@ -27,7 +27,7 @@ public class BookViewController {
         List<String> sortFields = Arrays.asList("id", "title", "author");
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("books", bookService.getBooks("id"));
-    return "book_list";
+        return "book_list";
     }
     @GetMapping("/sort")
     public String sortBooks(@RequestParam("field") String field, Model model) {
@@ -52,7 +52,7 @@ public class BookViewController {
     @GetMapping({"/new","/new/"})
     public String showCreateBookForm(Model model) {
         model.addAttribute("book", new Book()); 
-    return "book_add-edit"; 
+        return "book_add-edit"; 
     }
     @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editBook(@PathVariable int id, Model model) {

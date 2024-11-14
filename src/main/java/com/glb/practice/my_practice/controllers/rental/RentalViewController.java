@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.srevice.book.BookService;
+import com.glb.practice.my_practice.srevice.reader.ReaderService;
 import com.glb.practice.my_practice.srevice.rental.RentalService;
-import com.glb.practice.my_practice.srevice.user.UserService;
 
 import lombok.AllArgsConstructor;
 @Controller
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RentalViewController {
     private final RentalService rentalService;
-    private final UserService userService;
+    private final ReaderService readerService;
     private final BookService bookService;
     @GetMapping({"/",""})
     public String showRentals(Model model) {
@@ -33,7 +33,7 @@ public class RentalViewController {
     }
     @GetMapping({"/new","/new/"})
     public String showCreateRentalForm(Model model) {
-        model.addAttribute("users", userService.getUsers("id"));
+        model.addAttribute("readers", readerService.getReaders("id"));
         model.addAttribute("books", bookService.getNotZeroBooks());
         model.addAttribute("rental", new Rental()); 
     return "rental_add-edit"; 
@@ -44,7 +44,7 @@ public class RentalViewController {
         rentalService.saveRental(rental);
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("users", userService.getUsers("id"));
+            model.addAttribute("readers", readerService.getReaders("id"));
             model.addAttribute("books", bookService.getNotZeroBooks());
             model.addAttribute("rental", new Rental()); 
             model.addAttribute("error", e.getMessage());
@@ -59,7 +59,7 @@ public class RentalViewController {
     }
     @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editRental(@PathVariable int id, Model model) {
-        model.addAttribute("users", userService.getUsers("id"));
+        model.addAttribute("readers", readerService.getReaders("id"));
         model.addAttribute("books", bookService.getNotZeroBooks());
         model.addAttribute("rental", rentalService.findByIDRental(id));
         return "rental_add-edit";
@@ -70,7 +70,7 @@ public class RentalViewController {
             rentalService.updateRental(rental);
         }catch(Exception e){
             e.printStackTrace();
-            model.addAttribute("users", userService.getUsers("id"));
+            model.addAttribute("readers", readerService.getReaders("id"));
             model.addAttribute("books", bookService.getNotZeroBooks());
             model.addAttribute("rental", rental);
             model.addAttribute("error", e.getMessage());

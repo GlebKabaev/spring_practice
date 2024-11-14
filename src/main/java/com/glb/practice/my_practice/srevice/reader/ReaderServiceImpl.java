@@ -1,12 +1,12 @@
-package com.glb.practice.my_practice.srevice.user;
+package com.glb.practice.my_practice.srevice.reader;
 
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import com.glb.practice.my_practice.models.User;
-import com.glb.practice.my_practice.repository.user.UserRepository;
+import com.glb.practice.my_practice.models.Reader;
+import com.glb.practice.my_practice.repository.reader.ReaderRepository;
 
 import org.springframework.data.domain.Sort;
 
@@ -15,35 +15,35 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Primary
-public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+public class ReaderServiceImpl implements ReaderService {
+    ReaderRepository readerRepository;
 
     @Override
-    public List<User> getUsers(String field) {
+    public List<Reader> getReaders(String field) {
         
-       return userRepository.findAll(Sort.by(Sort.Order.asc(field)));
+       return readerRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
     @Override
-    public User saveUser(User user) {
-        user.setPhone(validateAndFormatPhoneNumber(user.getPhone()));
-        return userRepository.save(user);
+    public Reader saveReader(Reader reader) {
+        reader.setPhone(validateAndFormatPhoneNumber(reader.getPhone()));
+        return readerRepository.save(reader);
     }
 
     @Override
-    public User findByIDUser(int id) {
-        return userRepository.findById(id).get();
+    public Reader findByIDReader(int id) {
+        return readerRepository.findById(id).get();
     }
 
     @Override
-    public User updateUser(User user) {
-        user.setPhone(validateAndFormatPhoneNumber(user.getPhone()));
-        return userRepository.save(user);
+    public Reader updateReader(Reader reader) {
+        reader.setPhone(validateAndFormatPhoneNumber(reader.getPhone()));
+        return readerRepository.save(reader);
     }
 
     @Override
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
+    public void deleteReader(int id) {
+        readerRepository.deleteById(id);
     }
     private String validateAndFormatPhoneNumber(String phone) {
         // Проверка на формат +7(999)999-99-99

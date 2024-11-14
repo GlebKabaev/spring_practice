@@ -18,7 +18,7 @@ public class Rental {
 
     @ManyToOne
     @JoinColumn(name = "reader_Id")
-    private User reader;
+    private Reader reader;
 
     @ManyToOne
     @JoinColumn(name = "book_Id")

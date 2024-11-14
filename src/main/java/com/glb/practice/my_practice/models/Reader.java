@@ -10,7 +10,7 @@ import lombok.*;
 @Entity
 @Table(name = "readers")
 @AllArgsConstructor
-public class User {
+public class Reader {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -38,7 +38,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 '}';
     }
-    public User(){
+    public Reader(){
        
     }
 }

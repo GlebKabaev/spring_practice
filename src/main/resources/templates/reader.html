@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список книг</title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <h2>Список пользователей</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Адрес</th>
+                <th>Телефон</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th="reader">
+                <td th:text="${reader.id}">ID</td>
+                <td th:text="${reader.lastName}">Фамилия</td>
+                <td th:text="${reader.firstName}">Имя</td>
+                <td th:text="${reader.middleName}">Отчество</td>
+                <td th:text="${reader.address}">Адрес</td>
+                <td th:text="${reader.phone}">Телефон</td>
+                <td>
+                    <a th:href="@{/readers/{id}(id=${reader.id})}">Просмотр</a>
+                    <a th:href="@{/readers/edit/{id}(id=${reader.id})}">Редактировать</a>
+                    <a th:href="@{/readers/delete_reader/{id}(id=${reader.id})}">Удалить</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

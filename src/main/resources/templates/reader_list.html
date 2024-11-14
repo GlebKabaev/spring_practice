@@ -5,7 +5,7 @@
 </head>
     <div th:insert="~{layout :: content}"></div>
     <h2>Список пользователей</h2>
-    <form action="/users/sort" method="get">
+    <form action="/readers/sort" method="get">
         <select name="field">
             <option th:each="field : ${sortFields}" 
                     th:value="${field}" 
@@ -27,21 +27,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.id}">ID</td>
-                <td th:text="${user.lastName}">Фамилия</td>
-                <td th:text="${user.firstName}">Имя</td>
-                <td th:text="${user.middleName}">Отчество</td>
-                <td th:text="${user.address}">Адрес</td>
-                <td th:text="${user.phone}">Телефон</td>
+            <tr th:each="reader : ${readers}">
+                <td th:text="${reader.id}">ID</td>
+                <td th:text="${reader.lastName}">Фамилия</td>
+                <td th:text="${reader.firstName}">Имя</td>
+                <td th:text="${reader.middleName}">Отчество</td>
+                <td th:text="${reader.address}">Адрес</td>
+                <td th:text="${reader.phone}">Телефон</td>
                 <td>
-                    <a th:href="@{/users/{id}(id=${user.id})}">Просмотр</a>
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}">Редактировать</a>
-                    <a th:href="@{/users/delete_user/{id}(id=${user.id})}">Удалить</a>
+                    <a th:href="@{/readers/{id}(id=${reader.id})}">Просмотр</a>
+                    <a th:href="@{/readers/edit/{id}(id=${reader.id})}">Редактировать</a>
+                    <a th:href="@{/readers/delete_reader/{id}(id=${reader.id})}">Удалить</a>
                 </td>
             </tr>
             <td colspan="7">
-                <button th:onclick="|window.location.href='@{/users/new}'|">Добавить</button>
+                <button th:onclick="|window.location.href='@{/readers/new}'|">Добавить</button>
             </td>
         </tbody>
     </table>

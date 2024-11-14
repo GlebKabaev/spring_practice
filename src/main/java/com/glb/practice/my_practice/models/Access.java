@@ -15,7 +15,7 @@ public class Access {
     private Integer accessid;
     @ManyToOne
     @JoinColumn(name = "reader_Id")
-    private User reader;
+    private Reader reader;
     @Temporal(TemporalType.DATE)
     private Date accessDate;
     Access(){
