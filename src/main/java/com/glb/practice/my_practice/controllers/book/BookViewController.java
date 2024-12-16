@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.srevice.book.BookService;
 
+import jakarta.el.ArrayELResolver;
 import lombok.AllArgsConstructor;
 @Controller
 @RequestMapping("/books")
@@ -23,15 +24,24 @@ public class BookViewController {
 
     @GetMapping({"/",""})
     public String showBooks(Model model) {
-        
-        List<String> sortFields = Arrays.asList("id", "title", "author");
+        List<String> sortFields=Arrays.asList("id","Название","Автор");
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("books", bookService.getBooks("id"));
         return "book_list";
     }
     @GetMapping("/sort")
-    public String sortBooks(@RequestParam("field") String field, Model model) {
-        List<String> sortFields = Arrays.asList("id", "title", "author");
+    public String sortBooks(@RequestParam("field") String field, Model model) { 
+        List<String> sortFields=Arrays.asList("id","Название","Автор");
+        switch (field) {
+            case "Название":
+                field= "title";
+                break;
+            case "Автор":
+                field= "author";
+                break;
+            default:
+                break;
+        }
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("selectedField", field);
         model.addAttribute("books", bookService.getBooks(field));
