@@ -26,14 +26,29 @@ public class ReaderViewController {
     @GetMapping({"/",""})
     public String showReaders(Model model) {
         
-        List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
+        //List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
+        List<String> sortFields = Arrays.asList("id","Фамилия","Имя","Отчество");
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("readers", readerService.getReaders("id"));
     return "reader_list";
     }
     @GetMapping("/sort")
     public String sortReaders(@RequestParam("field") String field, Model model) {
-        List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
+        //List<String> sortFields = Arrays.asList("id", "lastName", "firstName","middleName");
+        List<String> sortFields = Arrays.asList("id","Фамилия","Имя","Отчество");
+        switch (field) {
+            case "Фамилия":
+                field= "lastName";
+                break;
+            case "Имя":
+                field= "firstName";
+                break;
+            case "Отчество":
+                field= "middleName";
+                break;
+            default:
+                break;
+        }
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("selectedField", field);
         model.addAttribute("readers", readerService.getReaders(field));
@@ -57,8 +72,13 @@ public class ReaderViewController {
         readerService.saveReader(reader); 
         }catch(Exception e){
             e.printStackTrace();
+            
             model.addAttribute("reader", reader);
-            model.addAttribute("error", e.getMessage());
+            if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+                model.addAttribute("error", "Пользователь с таким номером телефона уже существует. Пожалуйста, укажите другой номер.");
+            } else {
+                model.addAttribute("error",e.getMessage());
+            }
             return "reader_add-edit";
         }
         return "redirect:/readers"; 
