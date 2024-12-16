@@ -22,7 +22,7 @@ public class Reader {
     private String middleName;
     @Column(name = "Address", nullable = false)
     private String address;
-    @Column(name = "Phone", nullable = false)
+    @Column(name = "Phone", nullable = false,unique = true)
     private String phone;
     @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
     private Set<Access> accessRecords;
