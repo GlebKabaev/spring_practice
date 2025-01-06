@@ -24,16 +24,9 @@ public class User {
     @JoinColumn(name = "reader_id")
     private Reader reader;  // Связь с Reader
 
-    @Column(name = "role", nullable = false)
-    private String role; // Роль пользователя (например, 'USER', 'ADMIN')
+    
 
-    public String toString(){
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
+  
 
     // Конструктор по умолчанию
     public User() {
