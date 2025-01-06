@@ -1,43 +1,26 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
+    <title>Логин</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-
-<h2>Вход</h2>
-
-<!-- Форма для входа -->
-<form action="/login" method="post">
-    <div>
-        <label for="username">Имя пользователя:</label>
-        <input type="text" id="username" name="username" required>
+    <div class="container">
+        <h2>Вход в систему</h2>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required />
+            </div>
+            <div>
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" placeholder="Введите пароль" required />
+            </div>
+            <div>
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+        <a th:href="@{/register}">Регистрация</a>
     </div>
-
-    <div>
-        <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-
-    <div>
-        <button type="submit">Войти</button>
-    </div>
-
-    <!-- Сообщение об ошибке, если логин не удался -->
-    <div th:if="${param.error}" style="color: red;">
-        <p>Неверное имя пользователя или пароль.</p>
-    </div>
-
-    <!-- Сообщение об отсутствии авторизации -->
-    <div th:if="${param.logout}" style="color: green;">
-        <p>Вы успешно вышли из системы.</p>
-    </div>
-</form>
-
-<p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
-
 </body>
 </html>
