@@ -24,10 +24,9 @@ public class User {
     @JoinColumn(name = "reader_id")
     private Reader reader;  // Связь с Reader
 
+    @Column(name="role")
+    private String role;
     
-
-  
-
     // Конструктор по умолчанию
     public User() {
     }
