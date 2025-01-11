@@ -40,7 +40,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/login", "/register","/register/new").permitAll()  // Страница логина и регистрации открыты
+                .requestMatchers("/login", "/register","/register/new").permitAll()// Страница логина и регистрации открыты
+                .requestMatchers("/books/**","/readers/**","/rentals/**").hasRole("ADMIN")
                 .anyRequest().authenticated()  // Все остальные страницы требуют аутентификацию
             )
             .formLogin(form -> form
