@@ -30,6 +30,7 @@ public class RegistrationController {
     public String registerUser(@ModelAttribute("user") User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));  // Шифруем пароль
         //TODO подтвердите пароль
+        user.setRole("ROLE_USER");
         userRepository.save(user);
         return "redirect:/login";  // Перенаправление на страницу логина
     }
