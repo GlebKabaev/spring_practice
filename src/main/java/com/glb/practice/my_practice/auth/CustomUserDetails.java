@@ -1,24 +1,24 @@
 package com.glb.practice.my_practice.auth;
 
 import com.glb.practice.my_practice.models.User;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
 
-    public CustomUserDetails(User user) {
-        this.user = user;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // добавить роли или разрешения, связанные с пользователем
-        return List.of(() -> "USER");  // Пример: роль "USER"
+        return List.of(() -> user.getRole());  // Пример: роль "USER"
     }
 
     @Override
