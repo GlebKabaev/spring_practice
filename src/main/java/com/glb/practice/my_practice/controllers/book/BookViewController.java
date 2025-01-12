@@ -15,8 +15,9 @@ import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.srevice.book.BookService;
 
 import lombok.AllArgsConstructor;
+
 @Controller
-@RequestMapping("/books")
+@RequestMapping("/admin/books")//TODO добавить префикс /admin/ каждому админ контроллеру 
 @AllArgsConstructor
 public class BookViewController {
     private final BookService bookService;
@@ -56,7 +57,7 @@ public class BookViewController {
     @GetMapping({"delete_book/{id}","delete_book/{id}/"})
     public String deleteBook(Model model,@PathVariable int id) {
         bookService.deleteBook(id);
-        return "redirect:/books";
+        return "redirect:/admin/books";
     }
     @GetMapping({"/new","/new/"})
     public String showCreateBookForm(Model model) {
@@ -78,7 +79,7 @@ public class BookViewController {
             model.addAttribute("error", e.getMessage());
             return "book_add-edit"; 
         }
-        return "redirect:/books"; 
+        return "redirect:/admin/books"; 
     }
     @PostMapping({"/update_book","/update_book/"})
     public String updateBook(@ModelAttribute("book") Book book, Model model) {
@@ -90,7 +91,7 @@ public class BookViewController {
             model.addAttribute("error", e.getMessage());
             return "book_add-edit"; 
         }
-        return "redirect:/books";
+        return "redirect:/admin/books";
     }
 
     
