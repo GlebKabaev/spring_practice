@@ -14,7 +14,7 @@ import com.glb.practice.my_practice.srevice.rental.RentalService;
 
 import lombok.AllArgsConstructor;
 @Controller
-@RequestMapping("/rentals")
+@RequestMapping("/admin/rentals")
 @AllArgsConstructor
 public class RentalViewController {
     private final RentalService rentalService;
@@ -50,12 +50,12 @@ public class RentalViewController {
             model.addAttribute("error", e.getMessage());
             return "rental_add-edit";
         }
-        return "redirect:/rentals"; 
+        return "redirect:/admin/rentals"; 
     }
     @GetMapping({"/delete/{id}","/delete/{id}/"})
     public String deleteRental(Model model,@PathVariable int id) {
         rentalService.deleteRental(id);
-        return "redirect:/rentals";
+        return "redirect:/admin/rentals";
     }
     @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editRental(@PathVariable int id, Model model) {
@@ -76,7 +76,7 @@ public class RentalViewController {
             model.addAttribute("error", e.getMessage());
             return "rental_add-edit";
         }
-        return "redirect:/rentals";
+        return "redirect:/admin/rentals";
     }
 
 }

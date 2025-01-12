@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/readers")
+@RequestMapping("/admin/readers")
 @AllArgsConstructor
 public class ReaderViewController {
     private final ReaderService readerService;
@@ -81,12 +81,12 @@ public class ReaderViewController {
             }
             return "reader_add-edit";
         }
-        return "redirect:/readers"; 
+        return "redirect:/admin/readers"; 
     }
     @GetMapping({"/delete_reader/{id}","/delete_reader/{id}/"})
     public String deleteReader(Model model,@PathVariable int id) {
         readerService.deleteReader(id);
-        return "redirect:/readers";
+        return "redirect:/admin/readers";
     }
     @GetMapping({"/edit/{id}","/edit/{id}/"})
     public String editReader(@PathVariable int id, Model model) {
@@ -104,6 +104,6 @@ public class ReaderViewController {
                 model.addAttribute("error", e.getMessage());
                 return "reader_add-edit";
             }
-            return "redirect:/readers"; 
-        }
+            return "redirect:/admin/readers"; 
+    }
 }
