@@ -1,0 +1,132 @@
+@startuml
+!theme hacker
+participant User
+
+group <b>1. Получение книг из БД </b>
+User -> WebPage:Click get rentals button
+activate WebPage
+WebPage-> RentalWebController: GET /rentals 
+activate RentalWebController
+RentalWebController-> RentalServiceImpl: getRentals()
+activate RentalServiceImpl
+RentalServiceImpl->RentalRepository: getRentals()
+database "База данных" as db
+RentalRepository->db: query
+db-->RentalRepository: ResultSet
+RentalRepository-->RentalServiceImpl: List<Rental>
+RentalServiceImpl--> RentalWebController: List<Rental>
+deactivate RentalServiceImpl
+RentalWebController--> WebPage: "rentals :Rental[]" 200 OK
+deactivate RentalWebController
+deactivate WebPage
+end
+
+group <b>2. Получение книги из БД </b>
+User -> WebPage:Click get rentals button
+activate WebPage
+WebPage-> RentalWebController: GET /rentals 
+activate RentalWebController
+RentalWebController-> RentalServiceImpl: getRentals()
+activate RentalServiceImpl
+RentalServiceImpl->RentalRepository: getRentals()
+database "База данных" as db
+RentalRepository->db: query
+db-->RentalRepository: ResultSet
+RentalRepository-->RentalServiceImpl: Rental
+RentalServiceImpl--> RentalWebController: Rental
+deactivate RentalServiceImpl
+RentalWebController--> WebPage: "Rental" 200 OK
+deactivate RentalWebController
+deactivate WebPage
+end
+
+group <b>3.добавление книги в БД </b>
+User -> WebPage:Click add Rentalbutton
+WebPage->RentalWebController:Get rentals /save_rental
+RentalWebController-->WebPage:form for new Rental
+User->WebPage:Click save Rentalbutton
+WebPage->RentalWebController:POST rentals /new "Rental"
+activate RentalWebController
+RentalWebController->RentalServiceImpl:addRental()
+activate RentalServiceImpl
+RentalServiceImpl->RentalRepository:addRental()
+RentalRepository->db: query
+RentalWebController->RentalWebController:redirect:/rentals 
+RentalWebController-> RentalServiceImpl: getRentals()
+RentalServiceImpl->RentalRepository: getRentals()
+database "База данных" as db
+RentalRepository->db: query
+db-->RentalRepository: ResultSet
+RentalRepository-->RentalServiceImpl: List<Rental>
+RentalServiceImpl--> RentalWebController: List<Rental>
+deactivate RentalServiceImpl
+
+RentalWebController--> WebPage: "rentals :Rental[]" 200 OK
+deactivate RentalWebController
+deactivate WebPage
+end
+
+group <b>4. изменение книги в БД </b>
+User -> WebPage:Click update Rentalbutton
+WebPage->RentalWebController:GET rentals /edit/id
+activate RentalWebController
+RentalWebController-> RentalServiceImpl: getRentalById()
+activate RentalServiceImpl
+RentalServiceImpl->RentalRepository: getRentalById()
+database "База данных" as db
+RentalRepository->db: query
+db-->RentalRepository: ResultSet
+RentalRepository-->RentalServiceImpl: Rental
+RentalServiceImpl--> RentalWebController: Rental
+deactivate RentalServiceImpl
+
+RentalWebController--> WebPage: form for edit Rental
+User->WebPage:Click save Rentalbutton
+WebPage->RentalWebController:POST rentals /update/id "Rental" 
+RentalWebController->RentalServiceImpl:updateRentalById()
+activate RentalServiceImpl
+RentalServiceImpl->RentalRepository:updateRentalById()
+RentalRepository->db: query
+
+RentalWebController->RentalWebController:redirect:/rentals 
+RentalWebController-> RentalServiceImpl: getRentals()
+RentalServiceImpl->RentalRepository: getRentals()
+database "База данных" as db
+RentalRepository->db: query
+db-->RentalRepository: ResultSet
+RentalRepository-->RentalServiceImpl: List<Rental>
+RentalServiceImpl--> RentalWebController: List<Rental>
+deactivate RentalServiceImpl
+
+RentalWebController--> WebPage: "rentals :Rental[]" 200 OK
+deactivate RentalWebController
+deactivate WebPage
+end
+
+
+group <b>5. Удаление книги в БД </b>
+User -> WebPage: Click Delete button
+activate WebPage
+WebPage->RentalWebController:DELETE rentals /delete/id
+activate RentalWebController
+RentalWebController->RentalServiceImpl:deleteRentalById()
+activate RentalServiceImpl
+RentalServiceImpl->RentalRepository:deleteRental()
+RentalRepository->db: query
+RentalWebController->RentalWebController:redirect:/rentals 
+
+
+
+RentalWebController-> RentalServiceImpl: getRentals()
+RentalServiceImpl->RentalRepository: getRentals()
+database "База данных" as db
+RentalRepository->db: query
+db-->RentalRepository: ResultSet
+RentalRepository-->RentalServiceImpl: List<Rental>
+RentalServiceImpl--> RentalWebController: List<Rental>
+deactivate RentalServiceImpl
+RentalWebController--> WebPage: List<Rental>
+deactivate RentalWebController
+deactivate WebPage
+end
+@enduml

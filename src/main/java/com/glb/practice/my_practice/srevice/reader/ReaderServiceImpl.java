@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @Primary
 public class ReaderServiceImpl implements ReaderService {
     ReaderRepository readerRepository;
-
+    //TODO сделать нормальное имя для всех методов всех сервисов
     @Override
     public List<Reader> getReaders(String field) {
         
@@ -72,6 +72,7 @@ public class ReaderServiceImpl implements ReaderService {
         } else {
             throw new IllegalArgumentException("Неверный формат номера телефона");
         }
+        //TODO проверка на +79999999999
     }
     
     
