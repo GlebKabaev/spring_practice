@@ -25,13 +25,13 @@
                 <td th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
                 <td th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Предполагаемая дата возврата</td>
                 <td>
-                    <a th:href="@{/rentals/{id}(id=${rental.id})}">Просмотр</a>
-                    <a th:href="@{/rentals/edit/{id}(id=${rental.id})}">Редактировать</a>
-                    <a th:href="@{/rentals/delete/{id}(id=${rental.id})}">Удалить</a>
+                    <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a>
+                    <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a>
+                    <a th:href="@{/admin/rentals/delete/{id}(id=${rental.id})}">Удалить</a>
                 </td>
             </tr>
             <td colspan="7">
-                <button th:onclick="|window.location.href='@{rentals/new}'|">Добавить</button>
+                <button th:onclick="|window.location.href='@{/admin/rentals/new}'|">Добавить</button>
             </td>
         </tbody>
     </table>

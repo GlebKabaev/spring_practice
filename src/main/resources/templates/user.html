@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Пользователь</title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <h2>Пользователь</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя пользователя</th>
+                <th>Пароль</th>
+                <th>Роль</th>
+                <th>Читатель</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${user.id}">ID</td>
+                <td th:text="${user.username}">Имя пользователя</td>
+                <td th:text="${user.password}">Пароль</td>
+                <td th:text="${user.role}">Роль</td>
+                <td th:text="${user.reader != null ? user.reader.firstName + ' ' + user.reader.lastName : 'Нет'}">Читатель</td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <a th:href="@{/admin/users}">Вернуться к списку пользователей</a>
+                    <a th:href="@{/admin/users/new}">Создать нового пользователя</a>
+                    <a th:href="@{/admin/users/delete_user/{id}(id=${user.id})}">Удалить пользователя</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

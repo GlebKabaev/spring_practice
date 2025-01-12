@@ -7,7 +7,7 @@
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
         <h2 th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></h2> 
-        <form th:action="${rental.id == null} ? @{/rentals/save_rental} : @{/rentals/update_rental}" th:object="${rental}" method="post">
+        <form th:action="${rental.id == null} ? @{/admin/rentals/save_rental} : @{/admin/rentals/update_rental}" th:object="${rental}" method="post">
             <input type="hidden" th:field="*{id}" />
             <input type="hidden" name="_method" value="put" />
 
@@ -33,7 +33,7 @@
 
             <button type="submit" th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
         </form>
-        <a class="back-link" th:href="@{/rentals}">Вернуться к списку аренд</a>
+        <a class="back-link" th:href="@{/admin/rentals}">Вернуться к списку аренд</a>
     </div>
 </body>
 </html>

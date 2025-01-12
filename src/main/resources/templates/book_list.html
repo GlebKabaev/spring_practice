@@ -7,7 +7,7 @@
     <div th:insert="~{layout :: content}"></div>
         <h2>Список книг</h2>
     <body>
-        <form action="/books/sort" method="get">
+        <form action="/admin/books/sort" method="get">
             <select name="field">
                 <option th:each="field : ${sortFields}" 
                         th:value="${field}" 
@@ -41,13 +41,13 @@
                 <td th:text="${book.depositAmount}">Депозит</td>
                 <td th:text="${book.rentalCost}">Стоимость аренды</td>
                 <td>
-                    <a th:href="@{/books/{id}(id=${book.id})}">Просмотр</a>
-                    <a th:href="@{/books/edit/{id}(id=${book.id})}">Редактировать</a>
-                    <a th:href="@{/books/delete_book/{id}(id=${book.id})}">Удалить</a>
+                    <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
+                    <a th:href="@{/admin/books/edit/{id}(id=${book.id})}">Редактировать</a>
+                    <a th:href="@{/admin/books/delete_book/{id}(id=${book.id})}">Удалить</a>
                 </td>
             </tr>
             <td colspan="7">
-                <button th:onclick="|window.location.href='@{/books/new}'|">Добавить</button>
+                <button th:onclick="|window.location.href='@{/admin/books/new}'|">Добавить</button>
             </td>
         </tbody>
     </table>

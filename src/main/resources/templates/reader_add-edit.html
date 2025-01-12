@@ -7,7 +7,7 @@
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
         <h2 th:text="${reader.id == null} ? 'Добавить пользователя' : 'Изменить пользователя'"></h2>
-        <form th:action="${reader.id == null} ? @{/readers/save_reader} : @{/readers/update_reader}" th:object="${reader}" method="post">
+        <form th:action="${reader.id == null} ? @{/admin/readers/save_reader} : @{/admin/readers/update_reader}" th:object="${reader}" method="post">
             <input type="hidden" th:field="*{id}" />
             <input type="hidden" name="_method" value="put" />
             
@@ -28,7 +28,7 @@
 
             <button type="submit" th:text="${reader.id == null} ? 'Создать пользователя' : 'Сохранить изменения'"></button>
         </form>
-        <a class="back-link" th:href="@{/readers}">Вернуться к списку пользователей</a>
+        <a class="back-link" th:href="@{/admin/readers}">Вернуться к списку пользователей</a>
     </div>
 </body>
 </html>

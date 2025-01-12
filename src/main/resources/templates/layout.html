@@ -188,9 +188,10 @@
         <div class="container">
             <h1>Крутая библиотека</h1>
             <div class="navigation">
-                <button th:onclick="|window.location.href='@{/books}'|">Книги</button>
-                <button th:onclick="|window.location.href='@{/readers}'|">Пользователи</button>
-                <button th:onclick="|window.location.href='@{/rentals}'|">Аренды</button>
+                <button th:onclick="|window.location.href='@{/admin/books}'|">Книги</button>
+                <button th:onclick="|window.location.href='@{/admin/readers}'|">Пользователи</button>
+                <button th:onclick="|window.location.href='@{/admin/rentals}'|">Аренды</button>
+                <button th:onclick="|window.location.href='@{/admin/users}'|">Пользователи</button>
             </div>
             <div th:if="${error}" class="error-message">
                 <p th:text="${error}"></p>
