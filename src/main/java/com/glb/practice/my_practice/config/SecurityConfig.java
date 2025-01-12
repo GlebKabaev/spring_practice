@@ -1,6 +1,6 @@
 package com.glb.practice.my_practice.config;
 
-import com.glb.practice.my_practice.srevice.user.CustomUserDetailsService;
+import com.glb.practice.my_practice.srevice.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,9 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserService customUserDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public SecurityConfig(UserService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -41,7 +41,8 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/login", "/register","/register/new").permitAll()// Страница логина и регистрации открыты
-                .requestMatchers("/books/**","/readers/**","/rentals/**").hasRole("ADMIN")
+                //.requestMatchers("/books/**","/readers/**","/rentals/**","/users/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()  // Все остальные страницы требуют аутентификацию
             )
             .formLogin(form -> form
