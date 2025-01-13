@@ -41,13 +41,23 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/login", "/register","/register/new").permitAll()// Страница логина и регистрации открыты
-                //.requestMatchers("/books/**","/readers/**","/rentals/**","/users/**").hasRole("ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()  // Все остальные страницы требуют аутентификацию
             )
             .formLogin(form -> form
                 .loginPage("/login")  // Страница логина
-                .defaultSuccessUrl("/", true)
+                .successHandler((request, response, authentication) -> {
+                    // Получаем роль пользователя
+                    boolean isAdmin = authentication.getAuthorities().stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                    
+                    // Перенаправляем в зависимости от роли
+                    if (isAdmin) {
+                        response.sendRedirect("/admin/users"); // Админ-страница
+                    } else {
+                        response.sendRedirect("/"); // Страница пользователя
+                    }
+                })
                 .permitAll()
             )
             .logout(logout -> logout
