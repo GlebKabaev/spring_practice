@@ -4,16 +4,44 @@
     <title>Регистрация пользователя</title>
 </head>
 <body>
-    
     <div class="container">
         <h2>Регистрация пользователя</h2>
-        <form th:action="@{/register/new}" th:object="${user}" method="post">
-            
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" th:field="*{username}" placeholder="Введите имя пользователя" required />
+        <form th:action="@{/register/new}" method="post">
+            <!-- Данные пользователя -->
+            <fieldset>
+                <legend>Данные пользователя</legend>
 
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" th:field="*{password}" placeholder="Введите пароль" required />
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" th:field="*{user.username}" placeholder="Введите имя пользователя" required />
+
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" th:field="*{user.password}" placeholder="Введите пароль" required />
+            </fieldset>
+
+            <!-- Данные читателя -->
+            <fieldset>
+                <legend>Данные читателя</legend>
+
+                <label for="lastName">Фамилия:</label>
+                <input type="text" id="lastName" th:field="*{reader.lastName}" placeholder="Введите фамилию" required />
+
+                <label for="firstName">Имя:</label>
+                <input type="text" id="firstName" th:field="*{reader.firstName}" placeholder="Введите имя" required />
+
+                <label for="middleName">Отчество:</label>
+                <input type="text" id="middleName" th:field="*{reader.middleName}" placeholder="Введите отчество" required />
+
+                <label for="address">Адрес:</label>
+                <input type="text" id="address" th:field="*{reader.address}" placeholder="Введите адрес" required />
+
+                <label for="phone">Телефон:</label>
+                <input type="text" id="phone" th:field="*{reader.phone}" placeholder="Введите номер телефона" required />
+            </fieldset>
+
+            <!-- Сообщения об ошибках -->
+            <div th:if="${error}" class="error-message">
+                <p th:text="${error}"></p>
+            </div>
 
             <button type="submit">Зарегистрироваться</button>
         </form>
