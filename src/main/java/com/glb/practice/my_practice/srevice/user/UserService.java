@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.srevice.user;
 
+import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.repository.user.UserRepository;
 
@@ -43,6 +44,10 @@ public class UserService implements UserDetailsService {
     }
     public User updateUser(User user){
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+    public User addReaderForUser(User user,Reader reader){
+        user.setReader(reader);
         return userRepository.save(user);
     }
     public void deleteUser(int id){
