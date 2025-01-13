@@ -17,7 +17,7 @@ import com.glb.practice.my_practice.srevice.book.BookService;
 import lombok.AllArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/books")//TODO добавить префикс /admin/ каждому админ контроллеру 
+@RequestMapping("/admin/books")
 @AllArgsConstructor
 public class BookViewController {
     private final BookService bookService;
