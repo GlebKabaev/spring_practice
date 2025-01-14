@@ -53,4 +53,7 @@ public class UserService implements UserDetailsService {
     public void deleteUser(int id){
         userRepository.deleteById(id);
     }
+    public User findByUserName(String userName){
+        return userRepository.findByUsername(userName);
+    }
 }
