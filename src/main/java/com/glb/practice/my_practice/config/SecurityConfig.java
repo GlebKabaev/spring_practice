@@ -55,7 +55,7 @@ public class SecurityConfig {
                     if (isAdmin) {
                         response.sendRedirect("/admin/users"); // Админ-страница
                     } else {
-                        response.sendRedirect("/"); // Страница пользователя
+                        response.sendRedirect("/home"); // Страница пользователя
                     }
                 })
                 .permitAll()
