@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать профиль</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        .back-link:hover {
+            color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Редактировать профиль</h2>
+        <form th:action="@{/profile/update_reader}" th:object="${reader}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
+            <label for="lastName">Фамилия:</label>
+            <input type="text" id="lastName" th:field="*{lastName}" required />
+
+            <label for="firstName">Имя:</label>
+            <input type="text" id="firstName" th:field="*{firstName}" required />
+
+            <label for="middleName">Отчество:</label>
+            <input type="text" id="middleName" th:field="*{middleName}" required />
+
+            <label for="address">Адрес:</label>
+            <input type="text" id="address" th:field="*{address}" required />
+
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" th:field="*{phone}" required />
+
+            <button type="submit">Сохранить изменения</button>
+        </form>
+        <a class="back-link" th:href="@{/profile}">Вернуться к профилю</a>
+    </div>
+</body>
+</html>
