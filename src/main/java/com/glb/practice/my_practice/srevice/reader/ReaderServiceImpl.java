@@ -59,7 +59,7 @@ public class ReaderServiceImpl implements ReaderService {
             }
             return phone; // Номер уже в валидном формате
         }
-        
+    
         // Проверка на формат 89999999999
         else if (phone.startsWith("8") && phone.length() == 11) {
             for (int i = 1; i < phone.length(); i++) {
@@ -69,11 +69,22 @@ public class ReaderServiceImpl implements ReaderService {
             }
             // Конвертируем формат 89999999999 в +7(999)999-99-99
             return "+7(" + phone.substring(1, 4) + ")" + phone.substring(4, 7) + "-" + phone.substring(7, 9) + "-" + phone.substring(9, 11);
+        }
+    
+        // Проверка на формат +79999999999
+        else if (phone.startsWith("+7") && phone.length() == 12) {
+            for (int i = 2; i < phone.length(); i++) {
+                if (!Character.isDigit(phone.charAt(i))) {
+                    throw new IllegalArgumentException("Неверный формат номера телефона");
+                }
+            }
+            // Конвертируем формат +79999999999 в +7(999)999-99-99
+            return "+7(" + phone.substring(2, 5) + ")" + phone.substring(5, 8) + "-" + phone.substring(8, 10) + "-" + phone.substring(10, 12);
         } else {
             throw new IllegalArgumentException("Неверный формат номера телефона");
         }
-        //TODO проверка на +79999999999
     }
+    
     
     
 }
