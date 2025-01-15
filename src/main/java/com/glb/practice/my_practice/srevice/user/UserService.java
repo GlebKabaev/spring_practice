@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,10 @@ public class UserService implements UserDetailsService {
     }
     public User findByUserName(String userName){
         return userRepository.findByUsername(userName);
+    }
+    public User thisUser(){
+        UserDetails userDetails =(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = findByUserName(userDetails.getUsername());
+        return user;
     }
 }
