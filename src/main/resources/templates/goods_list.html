@@ -13,10 +13,29 @@
             background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
+            position: relative;
             text-align: center;
         }
         header h1 {
             margin: 0;
+        }
+        .profile-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 8px 15px;
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .profile-button:hover {
+            background-color: #45a049;
+            color: white;
         }
         .main-content {
             padding: 20px;
@@ -76,6 +95,7 @@
 
     <header>
         <h1>Добро пожаловать, <span th:text="${username}">Пользователь</span></h1>
+        <a href="/profile" class="profile-button">Профиль</a>
     </header>
 
     <div class="main-content">
@@ -100,8 +120,6 @@
                 <p><strong>Депозит:</strong> <span th:text="${book.depositAmount}">Депозит</span></p>
                 <p><strong>Стоимость аренды:</strong> <span th:text="${book.rentalCost}">Стоимость аренды</span></p>
                 <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
-                <a th:href="@{/admin/books/edit/{id}(id=${book.id})}">Редактировать</a>
-                <a th:href="@{/admin/books/delete_book/{id}(id=${book.id})}">Удалить</a>
             </div>
         </div>
     </div>
