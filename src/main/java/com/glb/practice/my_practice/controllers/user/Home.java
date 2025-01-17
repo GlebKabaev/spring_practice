@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 @Controller
 @RequestMapping({"/",""})
 @AllArgsConstructor
-public class home {
+public class Home {
     BookService bookService;
     UserService userService;
     @GetMapping("")

@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Controller
 @RequestMapping({"/profile/","/profile"})
 @AllArgsConstructor
-public class profile {
+public class Profile {
     UserService userService;
     ReaderService readerService;
     @GetMapping({"","/"})
