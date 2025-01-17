@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${cart.id == null} ? 'Добавить корзину' : 'Изменить корзину'"></title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2 th:text="${cart.id == null} ? 'Добавить корзину' : 'Изменить корзину'"></h2>
+        <form th:action="${cart.id == null} ? @{/admin/carts/save_cart} : @{/admin/carts/update_cart}" th:object="${cart}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" name="_method" value="put" />
+
+            <label for="reader">Читатель:</label>
+            <select id="reader" th:field="*{reader.id}" required>
+                <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.lastName + ' ' + reader.firstName}">
+                    Выберите читателя
+                </option>
+            </select>
+
+            <label for="book">Книга:</label>
+            <select id="book" th:field="*{book.id}" required>
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}">
+                    Выберите книгу
+                </option>
+            </select>
+
+            <button type="submit" th:text="${cart.id == null} ? 'Создать корзину' : 'Сохранить изменения'"></button>
+        </form>
+        <a class="back-link" th:href="@{/admin/carts}">Вернуться к списку корзин</a>
+    </div>
+</body>
+</html>
