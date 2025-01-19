@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.repository.reader.ReaderRepository;
+import com.glb.practice.my_practice.repository.user.UserRepository;
+import com.glb.practice.my_practice.srevice.user.UserService;
 
 import org.springframework.data.domain.Sort;
 
@@ -17,11 +19,13 @@ import lombok.AllArgsConstructor;
 @Primary
 public class ReaderServiceImpl implements ReaderService {
     ReaderRepository readerRepository;
-    //TODO сделать нормальное имя для всех методов всех сервисов
+    UserRepository userRepository;
+
+    // TODO сделать нормальное имя для всех методов всех сервисов
     @Override
     public List<Reader> getReaders(String field) {
-        
-       return readerRepository.findAll(Sort.by(Sort.Order.asc(field)));
+
+        return readerRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
     @Override
@@ -45,11 +49,12 @@ public class ReaderServiceImpl implements ReaderService {
     public void deleteReader(int id) {
         readerRepository.deleteById(id);
     }
+
     private String validateAndFormatPhoneNumber(String phone) {
         // Проверка на формат +7(999)999-99-99
         if (phone.startsWith("+7(") && phone.length() == 16 &&
-            phone.charAt(6) == ')' && phone.charAt(10) == '-' && phone.charAt(13) == '-') {
-    
+                phone.charAt(6) == ')' && phone.charAt(10) == '-' && phone.charAt(13) == '-') {
+
             for (int i = 0; i < phone.length(); i++) {
                 if (i != 0 && i != 2 && i != 3 && i != 6 && i != 10 && i != 13) {
                     if (!Character.isDigit(phone.charAt(i))) {
@@ -59,7 +64,7 @@ public class ReaderServiceImpl implements ReaderService {
             }
             return phone; // Номер уже в валидном формате
         }
-    
+
         // Проверка на формат 89999999999
         else if (phone.startsWith("8") && phone.length() == 11) {
             for (int i = 1; i < phone.length(); i++) {
@@ -68,9 +73,10 @@ public class ReaderServiceImpl implements ReaderService {
                 }
             }
             // Конвертируем формат 89999999999 в +7(999)999-99-99
-            return "+7(" + phone.substring(1, 4) + ")" + phone.substring(4, 7) + "-" + phone.substring(7, 9) + "-" + phone.substring(9, 11);
+            return "+7(" + phone.substring(1, 4) + ")" + phone.substring(4, 7) + "-" + phone.substring(7, 9) + "-"
+                    + phone.substring(9, 11);
         }
-    
+
         // Проверка на формат +79999999999
         else if (phone.startsWith("+7") && phone.length() == 12) {
             for (int i = 2; i < phone.length(); i++) {
@@ -79,12 +85,17 @@ public class ReaderServiceImpl implements ReaderService {
                 }
             }
             // Конвертируем формат +79999999999 в +7(999)999-99-99
-            return "+7(" + phone.substring(2, 5) + ")" + phone.substring(5, 8) + "-" + phone.substring(8, 10) + "-" + phone.substring(10, 12);
+            return "+7(" + phone.substring(2, 5) + ")" + phone.substring(5, 8) + "-" + phone.substring(8, 10) + "-"
+                    + phone.substring(10, 12);
         } else {
             throw new IllegalArgumentException("Неверный формат номера телефона");
         }
     }
-    
-    
-    
+
+    @Override
+    public Reader thisReader() {
+        UserService userService = new UserService(userRepository);
+        return userService.thisUser().getReader();
+    }
+
 }

@@ -9,5 +9,6 @@ public interface ReaderService {
     Reader saveReader(Reader reader);
     Reader findByIDReader(int id);
     Reader updateReader(Reader reader);
-    void deleteReader(int id);  
+    void deleteReader(int id); 
+    Reader thisReader();
 } 
