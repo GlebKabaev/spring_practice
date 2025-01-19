@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
-import com.glb.practice.my_practice.models.User;
 
 import com.glb.practice.my_practice.srevice.cart.CartElementServiceImpl;
-import com.glb.practice.my_practice.srevice.user.UserService;
+import com.glb.practice.my_practice.srevice.reader.ReaderService;
 
 import lombok.AllArgsConstructor;
 
@@ -23,20 +22,18 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CartController {
     CartElementServiceImpl cartElementService;
-    UserService userService;
+    ReaderService readerService;
     @GetMapping({"","/"})
     public String getMethodName(Model model) {
-        User user = userService.thisUser();
-        Reader reader = user.getReader(); 
-        List<CartElement> ce=cartElementService.getCartElementsByReaderId(reader.getId());
-        model.addAttribute("cart_elements",ce);
+        Reader reader = readerService.thisReader();
+        List<CartElement> cartElements=cartElementService.getCartElementsByReaderId(reader.getId());
+        model.addAttribute("cart_elements",cartElements);
         return "reader_cart";
     }
     @GetMapping({"/delete_element/{id}","/delete_element/{id}/"})
     public String deleteBook(Model model,@PathVariable int id) {
         CartElement cartElement=cartElementService.findByIDCartElement(id);
-        User user = userService.thisUser();
-        Reader reader = user.getReader();
+        Reader reader = readerService.thisReader();
         if (reader.getId().equals(cartElement.getReader().getId())){
         cartElementService.deleteCartElement(id);
         }
