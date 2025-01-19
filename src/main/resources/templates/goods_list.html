@@ -19,10 +19,9 @@
         header h1 {
             margin: 0;
         }
-        .profile-button {
+        .profile-button, .cart-button {
             position: absolute;
             top: 10px;
-            right: 20px;
             padding: 8px 15px;
             background-color: white;
             color: #4CAF50;
@@ -32,10 +31,17 @@
             font-size: 0.9em;
             font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .profile-button:hover {
+        .profile-button:hover, .cart-button:hover {
             background-color: #45a049;
             color: white;
+        }
+        .cart-button {
+            right: 20px;
+        }
+        .profile-button {
+            right: 120px;
         }
         .main-content {
             padding: 20px;
@@ -96,20 +102,24 @@
     <header>
         <h1>Добро пожаловать, <span th:text="${username}">Пользователь</span></h1>
         <a href="/profile" class="profile-button">Профиль</a>
+        <a href="/cart" class="cart-button">Корзина</a>
     </header>
 
     <div class="main-content">
         <div class="sort-form">
-            <form action="/sort" method="get">
-                <select name="field">
+            <form action="/home" method="get">
+                <select name="field" th:value="${selectedField}">
                     <option th:each="field : ${sortFields}" 
                             th:value="${field}" 
                             th:text="${field}" 
-                            th:selected="${field} == ${selectedField}">Field</option>
+                            th:selected="${field} == ${selectedField}">Выберите поле</option>
                 </select>
                 <button type="submit">Сортировать</button>
             </form>
         </div>
+        
+        
+        
 
         <div class="book-grid">
             <div th:each="book : ${books}" class="book-item">
@@ -120,6 +130,7 @@
                 <p><strong>Депозит:</strong> <span th:text="${book.depositAmount}">Депозит</span></p>
                 <p><strong>Стоимость аренды:</strong> <span th:text="${book.rentalCost}">Стоимость аренды</span></p>
                 <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
+                <a th:href="@{/add_to_cart/{id}(id=${book.id})}" class="add-button">Добавить в корзину</a>
             </div>
         </div>
     </div>
