@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.Reader;
-import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.srevice.reader.ReaderService;
 import com.glb.practice.my_practice.srevice.user.UserService;
 
@@ -23,15 +22,13 @@ public class ProfileController {
     ReaderService readerService;
     @GetMapping({"","/"})
     public String getMethodName(Model model) {
-        User user = userService.thisUser();
-        Reader reader = user.getReader();
+        Reader reader = readerService.thisReader();
         model.addAttribute("reader", reader);
         return "profile";
     }
     @GetMapping({"/edit","/edit/"})
     public String editReader( Model model) {
-        User user = userService.thisUser();
-        Reader reader = user.getReader();
+        Reader reader = readerService.thisReader();
         model.addAttribute("reader", reader);
         return "reader_self_edit";
     }
