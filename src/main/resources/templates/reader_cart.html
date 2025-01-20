@@ -86,6 +86,11 @@
         <div class="action-buttons">
             <a th:href="@{/home}" class="home-button">На главную</a>
         </div>
+        <form action="/cart/order" method="get">
+            <label for="calendar">Выберите дату:</label>
+            <input type="date" id="calendar" name="expectedReturnDate">
+            <button type="submit">Отправить</button>
+        </form>
     </div>
 
 </body>
