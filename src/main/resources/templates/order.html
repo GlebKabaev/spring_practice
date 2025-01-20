@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Спасибо за заказ!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .main-content {
+            padding: 20px;
+            text-align: center;
+        }
+        .thank-you-message {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .home-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .home-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Корзина</h1>
+    </header>
+
+    <div class="main-content">
+        <p class="thank-you-message">Спасибо за ваш заказ!</p>
+        <a th:href="@{/home}" class="home-button">Вернуться на главную</a>
+    </div>
+
+</body>
+</html>
