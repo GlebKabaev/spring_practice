@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.Book;
@@ -37,7 +38,7 @@ public class CartController {
         return "reader_cart";
     }
 
-    @GetMapping({ "/delete_element/{id}", "/delete_element/{id}/" })
+    @PostMapping({ "/delete_element/{id}", "/delete_element/{id}/" })
     public String deleteBook(Model model, @PathVariable int id) {
         CartElement cartElement = cartElementService.findByIDCartElement(id);
         Reader reader = readerService.thisReader();
@@ -49,17 +50,24 @@ public class CartController {
 //TODO нельзя добавлять книги которых нет в наличии 
 //TODO не должно возвращаться при пустом заказе
 //TODO добавить возможность выбрать адресс для заказа
-    @GetMapping("/order")
+//TODO изучить транзакцию
+//TODO изучить CSRF
+    @PostMapping("/order")
     public String order(@RequestParam("expectedReturnDate") String expectedReturnDate) {
         Reader reader = readerService.thisReader();
         List<CartElement> cartElements = cartElementService.getCartElementsByReaderId(reader.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date expectedReturn = null;
+        Date today = new Date();
         try {
             expectedReturn = sdf.parse(expectedReturnDate);
         } catch (Exception e) {
             e.printStackTrace();
 
+            return "redirect:/cart";
+        }
+        if(today.getTime() > expectedReturn.getTime()){
+            
             return "redirect:/cart";
         }
         for (CartElement cartElement : cartElements) {
@@ -72,6 +80,7 @@ public class CartController {
             rentalService.saveRental(rental);
             cartElementService.deleteCartElement(cartElement.getId());
         }
+        
         return "order";
     }
 

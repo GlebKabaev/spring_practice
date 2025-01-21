@@ -78,7 +78,9 @@
                     <td th:text="${cartElement.id}">1</td>
                     <td th:text="${cartElement.book.title}">Название книги</td>
                     <td class="action-buttons">
-                        <a th:href="@{/cart/delete_element/{id}(id=${cartElement.id})}" class="delete-button">Удалить</a>
+                        <form th:action="@{/cart/delete_element/{id}(id=${cartElement.id})}" method="post">
+                            <button type="submit" class="delete-button">Удалить</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>
@@ -86,9 +88,10 @@
         <div class="action-buttons">
             <a th:href="@{/home}" class="home-button">На главную</a>
         </div>
-        <form action="/cart/order" method="get">
+        <form action="/cart/order" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
             <label for="calendar">Выберите дату:</label>
-            <input type="date" id="calendar" name="expectedReturnDate">
+            <input type="date" id="calendar" name="expectedReturnDate" required>
             <button type="submit">Отправить</button>
         </form>
     </div>
