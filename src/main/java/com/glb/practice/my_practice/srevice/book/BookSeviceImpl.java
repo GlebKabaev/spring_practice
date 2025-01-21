@@ -57,5 +57,9 @@ public class BookSeviceImpl implements BookService{
     public void deleteBook(int id) {
         BOOK_REPOSITORIY.deleteById(id);
     }
+    @Override
+    public List<Book> getNotZeroSortedBooks(String field) {
+        return BOOK_REPOSITORIY.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, field));
+    }
     
 }

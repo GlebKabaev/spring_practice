@@ -55,7 +55,7 @@ public class HomeController {
         
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("selectedField", field);
-        model.addAttribute("books", bookService.getBooks(field));
+        model.addAttribute("books", bookService.getNotZeroSortedBooks(field));
         model.addAttribute("username", reader.getFirstName() + " " + reader.getLastName());
         return "goods_list";
     }
