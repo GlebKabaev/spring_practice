@@ -29,8 +29,6 @@ public class Reader {
     private Set<Access> accessRecords;
     @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
     private Set<Rental> rentals;
-    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartElement> cartElements;
 
     public String toString() {
         return "Reader{" +
