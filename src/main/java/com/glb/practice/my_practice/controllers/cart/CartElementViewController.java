@@ -1,5 +1,8 @@
 package com.glb.practice.my_practice.controllers.cart;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +13,7 @@ import com.glb.practice.my_practice.srevice.reader.ReaderService;
 import com.glb.practice.my_practice.srevice.cart.CartElementService;
 
 import lombok.AllArgsConstructor;
-//TODO сортировка по имени пользователя
+
 @Controller
 @RequestMapping("/admin/carts")
 @AllArgsConstructor
@@ -21,8 +24,11 @@ public class CartElementViewController {
     private final BookService bookService;
 
     @GetMapping({"/", ""})
-    public String showCartElements(Model model) {
-        model.addAttribute("carts", cartService.getCartElements());
+    public String showCartElements(@RequestParam (defaultValue = "id", required = false) String field, Model model) {
+        List<String> sortFields = Arrays.asList("id","reader.lastName");
+        model.addAttribute("sortFields", sortFields);
+        model.addAttribute("selectedField", field);
+        model.addAttribute("carts", cartService.getCartElements(field));
         return "cart_list";
     }
 

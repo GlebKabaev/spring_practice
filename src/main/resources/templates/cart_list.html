@@ -6,6 +6,15 @@
 <body>
     <div th:insert="~{layout :: content}"></div>
     <h2>Список корзин</h2>
+    <form action="/admin/carts" method="get">
+        <select name="field">
+            <option th:each="field : ${sortFields}" 
+                    th:value="${field}" 
+                    th:text="${field}" 
+                    th:selected="${field} == ${selectedField}">Field</option>
+        </select>
+        <button type="submit">Сортировать</button>
+    </form>
     <table>
         <thead>
             <tr>
