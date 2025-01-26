@@ -47,8 +47,6 @@ public class CartController {
         }
         return "redirect:/cart";
     }
-//TODO нельзя добавлять книги которых нет в наличии 
-//TODO не должно возвращаться при пустом заказе
 //TODO добавить возможность выбрать адресс для заказа
 //TODO изучить транзакцию
 //TODO изучить CSRF
@@ -70,15 +68,19 @@ public class CartController {
             
             return "redirect:/cart";
         }
-        for (CartElement cartElement : cartElements) {
-            Book book = cartElement.getBook();
-            Rental rental = new Rental();
-            rental.setBook(book);
-            rental.setReader(reader);
-            rental.setExpectedReturnDate(expectedReturn);
-            rental.setIssueDate(expectedReturn);
-            rentalService.saveRental(rental);
-            cartElementService.deleteCartElement(cartElement.getId());
+        if(!cartElements.isEmpty()){
+            for (CartElement cartElement : cartElements) {
+                Book book = cartElement.getBook();
+                Rental rental = new Rental();
+                rental.setBook(book);
+                rental.setReader(reader);
+                rental.setExpectedReturnDate(expectedReturn);
+                rental.setIssueDate(today);
+                rentalService.saveRental(rental);
+                cartElementService.deleteCartElement(cartElement.getId());
+            }
+        }else{
+            return "redirect:/cart";
         }
         
         return "order";
