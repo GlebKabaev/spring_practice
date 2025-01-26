@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.glb.practice.my_practice.models.Book;
+import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.repository.rental.RentalRepository;
 import com.glb.practice.my_practice.srevice.book.BookService;
@@ -54,6 +55,11 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public void deleteRental(int id) {
        rentalRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Rental> getRentalsByReader(Reader reader) {
+        return rentalRepository.findByReader(reader);
     }
     
 }
