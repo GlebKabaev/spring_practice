@@ -22,11 +22,11 @@ public class User {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reader_id")
-    private Reader reader;  // Связь с Reader
+    private Reader reader;
 
-    @Column(name="role")
+    @Column(name = "role")
     private String role;
-    
+
     // Конструктор по умолчанию
     public User() {
     }
