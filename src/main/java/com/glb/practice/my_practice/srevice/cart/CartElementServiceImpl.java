@@ -3,6 +3,7 @@ package com.glb.practice.my_practice.srevice.cart;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.glb.practice.my_practice.models.CartElement;
@@ -17,9 +18,9 @@ public class CartElementServiceImpl implements CartElementService {
     CartElementRepository cartRepository;
 
     @Override
-    public List<CartElement> getCartElements() {
+    public List<CartElement> getCartElements(String field) {
         
-        return cartRepository.findAll();
+       return cartRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
     @Override
@@ -44,5 +45,7 @@ public class CartElementServiceImpl implements CartElementService {
     public List<CartElement> getCartElementsByReaderId(int id) {
         
         return cartRepository.findByReaderId(id);
-    } 
+    }
+
+    
 }
