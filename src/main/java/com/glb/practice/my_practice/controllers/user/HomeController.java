@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
-
 import com.glb.practice.my_practice.srevice.book.BookService;
 import com.glb.practice.my_practice.srevice.cart.CartElementService;
 import com.glb.practice.my_practice.srevice.reader.ReaderService;
+import com.glb.practice.my_practice.srevice.rental.RentalService;
 
 import lombok.AllArgsConstructor;
 
@@ -27,10 +27,16 @@ public class HomeController {
     private BookService bookService;
     private CartElementService cartElementService;
     private ReaderService readerService;
-    
+    private RentalService rentalService;
     @GetMapping("")
     public String defaultPage(@RequestParam String param) {
         return "redirect:/home/";
+    }
+    @GetMapping("/rentals")
+    public String rentalPage(Model model) {
+        Reader thisReader =readerService.thisReader();
+        model.addAttribute("rentals", rentalService.getRentalsByReader(thisReader));
+        return "reader_rentals";
     }
     //TODO добавить ручку "заказы"
     @GetMapping({ "/home", "/home/" })
