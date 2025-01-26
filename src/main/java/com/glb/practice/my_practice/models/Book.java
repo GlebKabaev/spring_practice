@@ -1,12 +1,11 @@
 package com.glb.practice.my_practice.models;
 
-
-
 import java.util.Set;
 
 import jakarta.persistence.*;
 
 import lombok.*;
+
 @Data
 @Builder
 @Entity
@@ -30,6 +29,10 @@ public class Book {
     private double rentalCost;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<Rental> rentals;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image image; 
+
     @Override
     public String toString() {
         return "Book{" +
@@ -42,7 +45,8 @@ public class Book {
                 ", rentalCost=" + rentalCost +
                 '}';
     }
-    public Book(){
+
+    public Book() {
 
     }
 }
