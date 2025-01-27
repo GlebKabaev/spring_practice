@@ -1,6 +1,5 @@
 package com.glb.practice.my_practice.controllers.book;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -91,7 +90,7 @@ public class BookViewController {
         try {
             if (file != null && !file.isEmpty()) {
                 Image image = imageService.saveImage(file);
-                book.setImage(image); // Привязываем изображение к книге
+                book.setImage(image); 
             }
             bookService.saveBook(book);
         } catch (Exception e) {
@@ -108,7 +107,7 @@ public class BookViewController {
         try {
             if (file != null && !file.isEmpty()) {
                 Image image = imageService.saveImage(file);
-                book.setImage(image); // Привязываем изображение к книге
+                book.setImage(image); 
             }
             bookService.updateBook(book);
         } catch (Exception e) {
