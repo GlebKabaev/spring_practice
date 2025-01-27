@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.controllers.book;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.glb.practice.my_practice.models.Book;
+import com.glb.practice.my_practice.models.Image;
 import com.glb.practice.my_practice.srevice.book.BookService;
+import com.glb.practice.my_practice.srevice.image.ImageService;
 
 import lombok.AllArgsConstructor;
 
@@ -22,7 +26,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class BookViewController {
     private final BookService bookService;
-
+    private final ImageService imageService;
     @GetMapping({ "/", "" })
     public String showBooks(Model model) {
         List<String> sortFields = Arrays.asList("id", "Название", "Автор");
@@ -51,10 +55,16 @@ public class BookViewController {
 
     }
 
-    @GetMapping({ "/{id}", "/{id}/" })
+    @GetMapping({"/{id}", "/{id}/"})
     public String showBookData(Model model, @PathVariable int id) {
-        // TODO добавить изображение и описание
-        model.addAttribute("book", bookService.findByIDBook(id));
+        Book book = bookService.findByIDBook(id);
+        if (book.getImage() != null) {
+            String base64Image = imageService.getImageBase64(book.getImage());
+            model.addAttribute("base64Image", base64Image);
+        } else {
+            model.addAttribute("base64Image", null);
+        }
+        model.addAttribute("book", book);
         return "book";
     }
 
@@ -76,9 +86,13 @@ public class BookViewController {
         return "book_add-edit";
     }
 
-    @PostMapping({ "/save_book", "/save_book/" })
-    public String saveBook(@ModelAttribute("book") Book book, Model model) {
+    @PostMapping({"/save_book", "/save_book/"})
+    public String saveBook(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
         try {
+            if (file != null && !file.isEmpty()) {
+                Image image = imageService.saveImage(file);
+                book.setImage(image); // Привязываем изображение к книге
+            }
             bookService.saveBook(book);
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,9 +103,13 @@ public class BookViewController {
         return "redirect:/admin/books";
     }
 
-    @PostMapping({ "/update_book", "/update_book/" })
-    public String updateBook(@ModelAttribute("book") Book book, Model model) {
+    @PostMapping({"/update_book", "/update_book/"})
+    public String updateBook(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
         try {
+            if (file != null && !file.isEmpty()) {
+                Image image = imageService.saveImage(file);
+                book.setImage(image); // Привязываем изображение к книге
+            }
             bookService.updateBook(book);
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,4 +120,5 @@ public class BookViewController {
         return "redirect:/admin/books";
     }
 
+    
 }
