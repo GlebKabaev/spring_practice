@@ -25,11 +25,13 @@ public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Transactional(readOnly = true)
     public Image getImage(int id) {
         logger.info("Fetching image with ID: {}", id);
         return imageRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Image saveImage(MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()) {
             Image image = new Image();
@@ -40,6 +42,7 @@ public class ImageService {
         }
         return null;
     }
+
     @Transactional(readOnly = true)
     public String getImageBase64(Image image) {
         if (image != null && image.getImageData() != null) {

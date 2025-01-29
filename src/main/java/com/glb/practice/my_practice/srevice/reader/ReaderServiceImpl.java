@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.repository.reader.ReaderRepository;
@@ -22,29 +23,34 @@ public class ReaderServiceImpl implements ReaderService {
     UserRepository userRepository;
 
     // TODO сделать нормальное имя для всех методов всех сервисов
+    @Transactional(readOnly = true)
     @Override
     public List<Reader> getReaders(String field) {
 
         return readerRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
+    @Transactional
     @Override
     public Reader saveReader(Reader reader) {
         reader.setPhone(validateAndFormatPhoneNumber(reader.getPhone()));
         return readerRepository.save(reader);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Reader findByIDReader(int id) {
         return readerRepository.findById(id).get();
     }
 
+    @Transactional
     @Override
     public Reader updateReader(Reader reader) {
         reader.setPhone(validateAndFormatPhoneNumber(reader.getPhone()));
         return readerRepository.save(reader);
     }
 
+    @Transactional
     @Override
     public void deleteReader(int id) {
         readerRepository.deleteById(id);

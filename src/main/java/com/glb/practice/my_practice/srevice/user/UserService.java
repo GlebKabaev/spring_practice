@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -25,40 +26,56 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);  // Ищем пользователя в базе данных
+        User user = userRepository.findByUsername(username); // Ищем пользователя в базе данных
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new CustomUserDetails(user);  // Возвращаем CustomUserDetails с данными User
+        return new CustomUserDetails(user); // Возвращаем CustomUserDetails с данными User
     }
-    public List<User> getUsers (String field) {
+
+    @Transactional(readOnly = true)
+    public List<User> getUsers(String field) {
         return userRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
-    public User saveUser(User user){
+
+    @Transactional
+    public User saveUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
-    public User findByIdUser(int id){
+
+    @Transactional(readOnly = true)
+    public User findByIdUser(int id) {
         return userRepository.findById(id).get();
     }
-    public User updateUser(User user){
+
+    @Transactional
+    public User updateUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
-    public User addReaderForUser(User user,Reader reader){
+
+    @Transactional
+    public User addReaderForUser(User user, Reader reader) {
         user.setReader(reader);
         return userRepository.save(user);
     }
-    public void deleteUser(int id){
+
+    @Transactional
+    public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
-    public User findByUserName(String userName){
+
+    @Transactional(readOnly = true)
+    public User findByUserName(String userName) {
         return userRepository.findByUsername(userName);
     }
-    public User thisUser(){
-        UserDetails userDetails =(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    public User thisUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = findByUserName(userDetails.getUsername());
         return user;
     }

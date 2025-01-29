@@ -1,65 +1,68 @@
 package com.glb.practice.my_practice.srevice.book;
 
 import java.util.List;
-
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.repository.book.BookRepository;
-
-import org.springframework.data.domain.Sort;
-
 import lombok.AllArgsConstructor;
+
 @Service
 @AllArgsConstructor
 @Primary
-public class BookSeviceImpl implements BookService{
-    private final BookRepository BOOK_REPOSITORIY;
+public class BookSeviceImpl implements BookService {
+
+    private final BookRepository bookRepository;
 
     @Override
+    @Transactional(readOnly = true) 
     public List<Book> getBooks(String field) {
-        //return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Direction.DESC, field));
-        return BOOK_REPOSITORIY.findAll(Sort.by(Sort.Order.asc(field)));
-    }
-    @Override
-    public List<Book> getNotZeroBooks(){
-        return BOOK_REPOSITORIY.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, "id"));
-
+        return bookRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
     @Override
+    @Transactional(readOnly = true) 
+    public List<Book> getNotZeroBooks() {
+        return bookRepository.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    @Transactional 
     public Book saveBook(Book book) {
-        if(book.getQuantity()>=0 && book.getRentalCost()>=0 && book.getDepositAmount()>=0){
-            return BOOK_REPOSITORIY.save(book);
-
-        }else{
+        if (book.getQuantity() >= 0 && book.getRentalCost() >= 0 && book.getDepositAmount() >= 0) {
+            return bookRepository.save(book);
+        } else {
             throw new IllegalArgumentException("поле не может быть отрицательным");
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Book findByIDBook(int id) {
-        return BOOK_REPOSITORIY.findById(id).get();
+        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
     @Override
+    @Transactional
     public Book updateBook(Book book) {
-        if(book.getQuantity()>=0 && book.getRentalCost()>=0 && book.getDepositAmount()>=0){
-            return BOOK_REPOSITORIY.save(book);
-
-        }else{
+        if (book.getQuantity() >= 0 && book.getRentalCost() >= 0 && book.getDepositAmount() >= 0) {
+            return bookRepository.save(book);
+        } else {
             throw new IllegalArgumentException("поле не может быть отрицательным");
         }
     }
 
     @Override
+    @Transactional 
     public void deleteBook(int id) {
-        BOOK_REPOSITORIY.deleteById(id);
+        bookRepository.deleteById(id);
     }
+
     @Override
+    @Transactional(readOnly = true) 
     public List<Book> getNotZeroSortedBooks(String field) {
-        return BOOK_REPOSITORIY.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, field));
+        return bookRepository.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, field));
     }
-    
 }
