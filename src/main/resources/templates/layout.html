@@ -193,6 +193,9 @@
                 <button th:onclick="|window.location.href='@{/admin/rentals}'|">Аренды</button>
                 <button th:onclick="|window.location.href='@{/admin/users}'|">Пользователи</button>
                 <button th:onclick="|window.location.href='@{/admin/carts}'|">Товары в корзине</button>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Выйти</button>
+                </form>
             </div>
             <div th:if="${error}" class="error-message">
                 <p th:text="${error}"></p>
