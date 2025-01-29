@@ -103,6 +103,9 @@
         <h1>Добро пожаловать, <span th:text="${username}">Пользователь</span></h1>
         <a href="/profile" class="profile-button">Профиль</a>
         <a href="/cart" class="cart-button">Корзина</a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Выйти</button>
+        </form>
     </header>
 
     <div class="main-content">
