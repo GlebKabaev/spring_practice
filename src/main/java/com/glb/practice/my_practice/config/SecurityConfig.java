@@ -1,6 +1,7 @@
 package com.glb.practice.my_practice.config;
 
 import com.glb.practice.my_practice.srevice.user.UserService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -61,6 +62,10 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login") 
+                .invalidateHttpSession(true)  // Удаление сессии
+                .deleteCookies("JSESSIONID")  
                 .permitAll()  // Страница логаута доступна всем
             );
         return http.build();  // Возвращаем SecurityFilterChain
