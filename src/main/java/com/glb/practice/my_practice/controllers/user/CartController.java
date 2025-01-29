@@ -48,7 +48,6 @@ public class CartController {
         return "redirect:/cart";
     }
 //TODO добавить возможность выбрать адресс для заказа
-//TODO изучить транзакцию
 //TODO изучить CSRF
     @PostMapping("/order")
     public String order(@RequestParam("expectedReturnDate") String expectedReturnDate) {
