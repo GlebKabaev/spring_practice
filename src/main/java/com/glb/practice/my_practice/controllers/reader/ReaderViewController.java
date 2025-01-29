@@ -3,6 +3,7 @@ package com.glb.practice.my_practice.controllers.reader;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,17 +12,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
+import com.glb.practice.my_practice.srevice.cart.CartElementService;
 import com.glb.practice.my_practice.srevice.reader.ReaderService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/admin/readers")
 @AllArgsConstructor
 public class ReaderViewController {
     private final ReaderService readerService;
+    private final CartElementService cartElementService;
 
     @GetMapping({ "/", "" })
     public String showReaders(Model model) {
@@ -58,8 +63,27 @@ public class ReaderViewController {
     @GetMapping({ "/{id}", "/{id}/" })
     public String showReaderData(Model model, @PathVariable int id) {
         // TODO список арендованных книг пользователем и время захода на сайт
-        model.addAttribute("reader", readerService.findByIDReader(id));
+        try{
+        Reader reader = readerService.findByIDReader(id);
+        model.addAttribute("reader", reader);
         return "reader";
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found");
+        }
+        
+    }
+
+    @GetMapping("/{id}/cart")
+    public String showReaderCart(Model model, @PathVariable int id) {
+        try{
+            Reader reader = readerService.findByIDReader(id);
+            model.addAttribute("reader",reader);
+            }catch(Exception e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found");
+            }
+        List<CartElement> cartElements = cartElementService.getCartElementsByReaderId(id);
+        model.addAttribute("cart_elements", cartElements);
+        return "admin_reader_cart";
     }
 
     @GetMapping({ "/new", "/new/" })

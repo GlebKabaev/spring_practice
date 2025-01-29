@@ -27,7 +27,7 @@
                 <td th:text="${reader.address}">Адрес</td>
                 <td th:text="${reader.phone}">Телефон</td>
                 <td>
-                    <a th:href="@{/admin/readers/{id}(id=${reader.id})}">Просмотр</a>
+                    <a th:href="@{/admin/readers/{id}/cart(id=${reader.id})}">Корзина</a>
                     <a th:href="@{/admin/readers/edit/{id}(id=${reader.id})}">Редактировать</a>
                     <a th:href="@{/admin/readers/delete_reader/{id}(id=${reader.id})}">Удалить</a>
                 </td>
