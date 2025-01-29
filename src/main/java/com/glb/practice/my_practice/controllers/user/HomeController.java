@@ -21,7 +21,7 @@ import com.glb.practice.my_practice.srevice.rental.RentalService;
 import lombok.AllArgsConstructor;
 
 @Controller
-@RequestMapping({ "/", "" })
+@RequestMapping("/")
 @AllArgsConstructor
 public class HomeController {
     private BookService bookService;
@@ -29,7 +29,7 @@ public class HomeController {
     private ReaderService readerService;
     private RentalService rentalService;
     @GetMapping("")
-    public String defaultPage(@RequestParam String param) {
+    public String defaultPage() {
         return "redirect:/home/";
     }
     @GetMapping("/rentals")
@@ -39,6 +39,7 @@ public class HomeController {
         return "reader_rentals";
     }
     //TODO добавить ручку "заказы"
+    //TODO добавть try catch в сервисы 
     @GetMapping({ "/home", "/home/" })
     public String sortBooks(@RequestParam(value = "field", required = false, defaultValue = "title") String field,
             Model model) {
