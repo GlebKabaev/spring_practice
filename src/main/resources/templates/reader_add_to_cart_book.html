@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить книгу в корзину</title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2>Добавить книгу в корзину читателя</h2>
+        <form th:action="@{'/admin/readers/' + ${reader.id} + '/cart/new'}" method="post">
+            <input type="hidden" name="readerId" th:value="${reader.id}" />
+            <div>
+                <label for="reader">Читатель:</label>
+                <span th:text="${reader.lastName + ' ' + reader.firstName}"></span>
+            </div>
+            <div>
+                <label for="book">Книга:</label>
+                <select id="book" name="bookId" required>
+                    <option value="">Выберите книгу</option>
+                    <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}">
+                        [[${book.title}]]
+                    </option>
+                </select>
+            </div>
+            <button type="submit">Добавить книгу в корзину</button>
+        </form>
+        <a class="back-link" th:href="@{/admin/readers/{id}/cart(id=${reader.id})}">Вернуться к корзине читателя</a>
+    </div>
+</body>
+</html>

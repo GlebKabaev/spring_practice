@@ -34,7 +34,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <button th:onclick="|window.location.href='@{/admin/cart/new/{id}(id=${reader.id})}'|">Добавить книгу в корзину</button>
+                    <button th:onclick="|window.location.href='@{/admin/readers/{id}/cart/new(id=${reader.id})}'|">Добавить книгу в корзину</button>
                 </td>
             </tr>
         </tbody>

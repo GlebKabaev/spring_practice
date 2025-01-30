@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
+import com.glb.practice.my_practice.srevice.book.BookService;
 import com.glb.practice.my_practice.srevice.cart.CartElementService;
 import com.glb.practice.my_practice.srevice.reader.ReaderService;
 
@@ -27,6 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ReaderViewController {
     private final ReaderService readerService;
     private final CartElementService cartElementService;
+    private final BookService bookService;
 
     @GetMapping({ "/", "" })
     public String showReaders(Model model) {
@@ -136,4 +139,22 @@ public class ReaderViewController {
         }
         return "redirect:/admin/readers";
     }
+    @GetMapping( "/{id}/cart/new")
+    public String newBookToReaderCart(@PathVariable int id, Model model) {
+        Reader reader = readerService.findByIDReader(id);
+        List<Book>books=bookService.getNotZeroBooks();
+        model.addAttribute("reader", reader);
+        model.addAttribute("books", books);
+
+        return "reader_add_to_cart_book";
+    }
+    @PostMapping( "/{id}/cart/new")
+    public String addBookToReaderCart(@PathVariable int id,@ModelAttribute("bookId") int bookId, Model model) {
+        Reader reader = readerService.findByIDReader(id);
+        Book book = bookService.findByIDBook(bookId);
+        cartElementService.saveCartElement(new CartElement(0,reader,book));
+        
+        return "redirect:/admin/readers/%d/cart".formatted(id);
+    }
+
 }
