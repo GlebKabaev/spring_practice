@@ -2,6 +2,102 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Регистрация пользователя</title>
+    <style>
+        /* Общие настройки */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        legend {
+            color: #4CAF50;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 4px #4CAF50;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -10,39 +106,29 @@
             <!-- Данные пользователя -->
             <fieldset>
                 <legend>Данные пользователя</legend>
-
                 <label for="username">Имя пользователя:</label>
                 <input type="text" id="username" th:field="*{user.username}" placeholder="Введите имя пользователя" required />
-
                 <label for="password">Пароль:</label>
                 <input type="password" id="password" th:field="*{user.password}" placeholder="Введите пароль" required />
             </fieldset>
-
             <!-- Данные читателя -->
             <fieldset>
                 <legend>Данные читателя</legend>
-
                 <label for="lastName">Фамилия:</label>
                 <input type="text" id="lastName" th:field="*{reader.lastName}" placeholder="Введите фамилию" required />
-
                 <label for="firstName">Имя:</label>
                 <input type="text" id="firstName" th:field="*{reader.firstName}" placeholder="Введите имя" required />
-
                 <label for="middleName">Отчество:</label>
                 <input type="text" id="middleName" th:field="*{reader.middleName}" placeholder="Введите отчество" required />
-
                 <label for="address">Адрес:</label>
                 <input type="text" id="address" th:field="*{reader.address}" placeholder="Введите адрес" required />
-
                 <label for="phone">Телефон:</label>
                 <input type="text" id="phone" th:field="*{reader.phone}" placeholder="Введите номер телефона" required />
             </fieldset>
-
             <!-- Сообщения об ошибках -->
             <div th:if="${error}" class="error-message">
                 <p th:text="${error}"></p>
             </div>
-
             <button type="submit">Зарегистрироваться</button>
         </form>
         <a class="back-link" th:href="@{/}">Вернуться на главную</a>

@@ -2,7 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Логин</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Общие настройки */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 25px 35px; /* Добавляем больше внутренних отступов */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 350px;
+            text-align: center; /* Выравниваем текст по центру */
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 25px; /* Увеличиваем отступ под заголовком */
+        }
+
+        form div {
+            margin-bottom: 15px;
+            text-align: left; /* Выравниваем содержимое формы по левому краю */
+            display: flex;
+            flex-direction: column; /* Размещаем метку и поле ввода друг за другом */
+            align-items: flex-start; /* Выравниваем метку и поле по левому краю */
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold; /* Делаем метки немного жирнее */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%; /* Поле ввода занимает всю доступную ширину */
+            height: 45px; /* Устанавливаем фиксированную высоту */
+            padding: 10px; /* Увеличиваем внутренние отступы внутри поля */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px; /* Увеличиваем размер шрифта */
+            box-sizing: border-box; /* Учитываем padding и border в высоте элемента */
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 4px #4CAF50;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            height: 45px; /* Сделаем высоту кнопки такой же, как у полей ввода */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; /* Кнопка занимает всю доступную ширину */
+            font-size: 16px;
+            margin-top: 15px; /* Добавляем отступ сверху */
+            box-sizing: border-box; /* Учитываем padding и border в высоте элемента */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            margin-top: 15px; /* Добавляем отступ сверху */
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,9 +104,7 @@
                 <label for="password">Пароль:</label>
                 <input type="password" id="password" name="password" placeholder="Введите пароль" required />
             </div>
-            <div>
-                <button type="submit">Войти</button>
-            </div>
+            <button type="submit">Войти</button>
         </form>
         <a th:href="@{/register}">Регистрация</a>
     </div>
