@@ -25,7 +25,7 @@ public class BookSeviceImpl implements BookService {
     @Override
     @Transactional(readOnly = true) 
     public List<Book> getNotZeroBooks() {
-        return bookRepository.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, "id"));
+        return bookRepository.findByQuantityNotAndDeletedFalse(0, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override
@@ -63,6 +63,6 @@ public class BookSeviceImpl implements BookService {
     @Override
     @Transactional(readOnly = true) 
     public List<Book> getNotZeroSortedBooks(String field) {
-        return bookRepository.findByQuantityNot(0, Sort.by(Sort.Direction.DESC, field));
+        return bookRepository.findByQuantityNotAndDeletedFalse(0, Sort.by(Sort.Direction.DESC, field));
     }
 }
