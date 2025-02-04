@@ -11,6 +11,7 @@ import lombok.*;
 @Entity
 @Table(name = "rentals")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +35,4 @@ public class Rental {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expectedReturnDate;
-    public Rental(){
-        
-    }
 }
