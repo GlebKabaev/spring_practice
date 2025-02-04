@@ -21,7 +21,7 @@ public class Rental {
     @JoinColumn(name = "reader_Id")
     private Reader reader;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_Id")
     private Book book;
 
