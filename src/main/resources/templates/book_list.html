@@ -5,19 +5,17 @@
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
-        <h2>Список книг</h2>
-    <body>
-        <form action="/admin/books/sort" method="get">
-            <select name="field">
-                <option th:each="field : ${sortFields}" 
-                        th:value="${field}" 
-                        th:text="${field}"
-                        th:selected="${field} == ${selectedField}">Field</option>
-            </select>
-            <button type="submit">Sort</button>
-        </form>
-        
-        
+    <h2>Список книг</h2>
+    <form action="/admin/books/sort" method="get">
+        <select name="field">
+            <option th:each="field : ${sortFields}" 
+                    th:value="${field}" 
+                    th:text="${field}"
+                    th:selected="${field} == ${selectedField}">Field</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+    
     <table>
         <thead>
             <tr>
@@ -28,6 +26,7 @@
                 <th>Количество</th>
                 <th>Депозит</th>
                 <th>Стоимость аренды</th>
+                <th>Удалена</th>
                 <th>Действия</th>
             </tr>
         </thead>
@@ -40,13 +39,14 @@
                 <td th:text="${book.quantity}">Количество</td>
                 <td th:text="${book.depositAmount}">Депозит</td>
                 <td th:text="${book.rentalCost}">Стоимость аренды</td>
+                <td th:text="${book.deleted} ? 'Да' : 'Нет'">Удалена</td>
                 <td>
                     <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
                     <a th:href="@{/admin/books/edit/{id}(id=${book.id})}">Редактировать</a>
                     <a th:href="@{/admin/books/delete_book/{id}(id=${book.id})}">Удалить</a>
                 </td>
             </tr>
-            <td colspan="7">
+            <td colspan="8">
                 <button th:onclick="|window.location.href='@{/admin/books/new}'|">Добавить</button>
             </td>
         </tbody>
