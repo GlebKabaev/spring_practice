@@ -1,6 +1,5 @@
 package com.glb.practice.my_practice.models;
 
-import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -11,6 +10,7 @@ import lombok.*;
 @Entity
 @Table(name = "readers")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Reader {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,6 @@ public class Reader {
     private String address;
     @Column(name = "Phone", nullable = false, unique = true)
     private String phone;
-    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
-    private Set<Access> accessRecords;
-    @OneToMany(mappedBy = "reader", cascade = CascadeType.ALL)
-    private Set<Rental> rentals;
 
     public String toString() {
         return "Reader{" +
@@ -41,7 +37,5 @@ public class Reader {
                 '}';
     }
 
-    public Reader() {
-
-    }
+    
 }
