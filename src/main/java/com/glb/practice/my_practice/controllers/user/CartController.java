@@ -47,15 +47,17 @@ public class CartController {
         }
         return "redirect:/cart";
     }
-//TODO добавить возможность выбрать адресс для заказа
-//TODO изучить CSRF
+
+    // TODO добавить возможность выбрать адресс для заказа
+    // TODO изучить CSRF
     @PostMapping("/order")
-    public String order(@RequestParam("expectedReturnDate") String expectedReturnDate) {
+    public String order(@RequestParam("expectedReturnDate") String expectedReturnDate,Model model) {
         Reader reader = readerService.thisReader();
         List<CartElement> cartElements = cartElementService.getCartElementsByReaderId(reader.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date expectedReturn = null;
         Date today = new Date();
+        String errorbooks = "";
         try {
             expectedReturn = sdf.parse(expectedReturnDate);
         } catch (Exception e) {
@@ -63,11 +65,11 @@ public class CartController {
 
             return "redirect:/cart";
         }
-        if(today.getTime() > expectedReturn.getTime()){
-            
+        if (today.getTime() > expectedReturn.getTime()) {
+
             return "redirect:/cart";
         }
-        if(!cartElements.isEmpty()){
+        if (!cartElements.isEmpty()) {
             for (CartElement cartElement : cartElements) {
                 Book book = cartElement.getBook();
                 Rental rental = new Rental();
@@ -75,16 +77,25 @@ public class CartController {
                 rental.setReader(reader);
                 rental.setExpectedReturnDate(expectedReturn);
                 rental.setIssueDate(today);
-                rentalService.saveRental(rental);
+                try {
+                    rentalService.saveRental(rental);
+                } catch (Exception e) {
+                    errorbooks = errorbooks + " " + book.getTitle() + ",";
+                }
                 cartElementService.deleteCartElement(cartElement.getId());
+                
             }
-        }else{
+        } else {
             return "redirect:/cart";
         }
-        
+        if(errorbooks!=""){
+            errorbooks="Некоторые книги из вашего списка небыли оформлены по причине их отсувствия,а именно:"+errorbooks;
+            errorbooks= errorbooks.substring(0, errorbooks.length() - 1)+".";
+
+            
+            model.addAttribute("error", errorbooks);
+        }
         return "order";
     }
-
-    
 
 }
