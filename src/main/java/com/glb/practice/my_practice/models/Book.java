@@ -1,6 +1,7 @@
 package com.glb.practice.my_practice.models;
 
-import java.util.Set;
+
+import org.springframework.data.convert.ValueConverter;
 
 import jakarta.persistence.*;
 
@@ -28,9 +29,11 @@ public class Book {
     private double depositAmount;
     @Column(name = "rental_cost", nullable = false)
     private double rentalCost;
+    @Column(name="deleted")
+    private boolean deleted;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
-    private Image image; 
+    private Image image;
 
     @Override
     public String toString() {
