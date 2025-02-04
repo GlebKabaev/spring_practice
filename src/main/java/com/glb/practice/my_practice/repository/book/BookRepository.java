@@ -8,5 +8,6 @@ import org.springframework.data.domain.Sort;
 import com.glb.practice.my_practice.models.Book;
 
 public interface BookRepository extends JpaRepository<Book,Integer> {
-    List<Book> findByQuantityNot(int quantity, Sort sort);
+    List<Book> findByQuantityNotAndDeletedFalse(int quantity, Sort sort);
+
 }
