@@ -8,6 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "carts")
 @AllArgsConstructor
+@NoArgsConstructor
 public class CartElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,5 @@ public class CartElement {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
-    public CartElement(){
 
-    }
 }
