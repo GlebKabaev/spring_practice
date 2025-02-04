@@ -31,6 +31,9 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public Rental saveRental(Rental rental) {
         Book book = bookService.findByIDBook(rental.getBook().getId());
+        if (rental.getBook().isDeleted()) {
+            throw new IllegalArgumentException("данная книга удалена");
+        }
         if (rental.getIssueDate().after(rental.getExpectedReturnDate())) {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
