@@ -11,6 +11,7 @@ import lombok.*;
 @Entity
 @Table(name = "books")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +28,6 @@ public class Book {
     private double depositAmount;
     @Column(name = "rental_cost", nullable = false)
     private double rentalCost;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private Set<Rental> rentals;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image; 
@@ -46,7 +45,5 @@ public class Book {
                 '}';
     }
 
-    public Book() {
-
-    }
+    
 }
