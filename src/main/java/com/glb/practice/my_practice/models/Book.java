@@ -1,8 +1,6 @@
 package com.glb.practice.my_practice.models;
 
 
-import org.springframework.data.convert.ValueConverter;
-
 import jakarta.persistence.*;
 
 import lombok.*;
