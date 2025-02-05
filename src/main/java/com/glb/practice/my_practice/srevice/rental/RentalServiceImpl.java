@@ -23,14 +23,14 @@ public class RentalServiceImpl implements RentalService {
     BookService bookService;
 
     @Transactional(readOnly = true)
-    public List<Rental> getRentals() {
+    public List<Rental> findAll() {
         return rentalRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Transactional
     @Override
-    public Rental saveRental(Rental rental) {
-        Book book = bookService.findByIDBook(rental.getBook().getId());
+    public Rental save(Rental rental) {
+        Book book = bookService.findById(rental.getBook().getId());
         if (rental.getBook().isDeleted()) {
             throw new IllegalArgumentException("данная книга удалена");
         }
@@ -39,7 +39,7 @@ public class RentalServiceImpl implements RentalService {
         }
         if (book.getQuantity() > 0) {
             book.setQuantity(book.getQuantity() - 1); // Уменьшаем количество на 1
-            bookService.saveBook(book); // Сохраняем обновленное количество книги
+            bookService.save(book); // Сохраняем обновленное количество книги
             return rentalRepository.save(rental); // Сохраняем запись аренды
         } else {
             throw new IllegalArgumentException("книги нет в наличии");
@@ -49,13 +49,13 @@ public class RentalServiceImpl implements RentalService {
 
     @Transactional(readOnly = true)
     @Override
-    public Rental findByIDRental(int id) {
+    public Rental findById(int id) {
         return rentalRepository.findById(id).get();
     }
 
     @Transactional
     @Override
-    public Rental updateRental(Rental rental) {
+    public Rental update(Rental rental) {
         if (rental.getIssueDate().after(rental.getExpectedReturnDate())) {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
@@ -64,13 +64,13 @@ public class RentalServiceImpl implements RentalService {
 
     @Transactional
     @Override
-    public void deleteRental(int id) {
+    public void deleteById(int id) {
         rentalRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Rental> getRentalsByReader(Reader reader) {
+    public List<Rental> findByReader(Reader reader) {
         return rentalRepository.findByReader(reader);
     }
 

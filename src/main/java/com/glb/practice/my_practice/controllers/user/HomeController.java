@@ -35,7 +35,7 @@ public class HomeController {
     @GetMapping("/rentals")
     public String rentalPage(Model model) {
         Reader thisReader =readerService.thisReader();
-        model.addAttribute("rentals", rentalService.getRentalsByReader(thisReader));
+        model.addAttribute("rentals", rentalService.findByReader(thisReader));
         return "reader_rentals";
     }
     //TODO добавить ручку "заказы"
@@ -76,8 +76,8 @@ public class HomeController {
     public String addToCart(@PathVariable int id,@RequestParam(value = "field", required = false, defaultValue = "title") String field) {
         Reader reader = readerService.thisReader();
 
-        CartElement cartElement = new CartElement(0, reader, bookService.findByIDBook(id));
-        cartElementService.saveCartElement(cartElement);
+        CartElement cartElement = new CartElement(0, reader, bookService.findById(id));
+        cartElementService.save(cartElement);
         
         
         return "redirect:/home?field="+field ;

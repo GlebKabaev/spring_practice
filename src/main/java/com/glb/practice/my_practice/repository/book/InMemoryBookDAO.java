@@ -11,22 +11,22 @@ import com.glb.practice.my_practice.models.Book;
 public class InMemoryBookDAO {
     private final List<Book> BOOKS=new ArrayList<>();
     
-    public List<Book> getBooks() {
+    public List<Book> findAll() {
         return BOOKS;
     }
-    public Book saveBook(Book book) {
+    public Book save(Book book) {
         BOOKS.add(book);
         return book;
     }
 
     
-    public Book findByIDBook(int id) {
+    public Book findById(int id) {
        return BOOKS.stream()
                .filter(element -> element.getId()==id).findFirst().orElse(null);
     }
 
     
-    public Book updateBook(Book book) {
+    public Book update(Book book) {
         var bookIndex=IntStream.range(0, BOOKS.size())
                                 .filter(element->BOOKS
                                         .get(element).getTitle()
@@ -41,8 +41,8 @@ public class InMemoryBookDAO {
     }
 
     
-    public void deleteBook(int id) {
-       var book= findByIDBook(id);
+    public void deleteById(int id) {
+       var book= findById(id);
        if(book!=null){
            BOOKS.remove(book);
        }

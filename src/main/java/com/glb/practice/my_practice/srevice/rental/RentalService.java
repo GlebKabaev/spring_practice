@@ -6,10 +6,10 @@ import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.Rental;
 
 public interface RentalService {
-    public List<Rental> getRentals();
-    Rental saveRental(Rental rental);
-    Rental findByIDRental(int id);
-    Rental updateRental(Rental rental);
-    void deleteRental(int id);
-    public List<Rental> getRentalsByReader(Reader reader);
+    public List<Rental> findAll();
+    Rental save(Rental rental);
+    Rental findById(int id);
+    Rental update(Rental rental);
+    void deleteById(int id);
+    public List<Rental> findByReader(Reader reader);
 } 

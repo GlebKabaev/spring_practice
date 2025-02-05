@@ -7,9 +7,9 @@ User -> WebPage:Click get rentals button
 activate WebPage
 WebPage-> RentalWebController: GET /rentals 
 activate RentalWebController
-RentalWebController-> RentalServiceImpl: getRentals()
+RentalWebController-> RentalServiceImpl: findAll()
 activate RentalServiceImpl
-RentalServiceImpl->RentalRepository: getRentals()
+RentalServiceImpl->RentalRepository: findAll()
 database "База данных" as db
 RentalRepository->db: query
 db-->RentalRepository: ResultSet
@@ -26,9 +26,9 @@ User -> WebPage:Click get rentals button
 activate WebPage
 WebPage-> RentalWebController: GET /rentals 
 activate RentalWebController
-RentalWebController-> RentalServiceImpl: getRentals()
+RentalWebController-> RentalServiceImpl: findAll()
 activate RentalServiceImpl
-RentalServiceImpl->RentalRepository: getRentals()
+RentalServiceImpl->RentalRepository: findAll()
 database "База данных" as db
 RentalRepository->db: query
 db-->RentalRepository: ResultSet
@@ -52,8 +52,8 @@ activate RentalServiceImpl
 RentalServiceImpl->RentalRepository:addRental()
 RentalRepository->db: query
 RentalWebController->RentalWebController:redirect:/rentals 
-RentalWebController-> RentalServiceImpl: getRentals()
-RentalServiceImpl->RentalRepository: getRentals()
+RentalWebController-> RentalServiceImpl: findAll()
+RentalServiceImpl->RentalRepository: findAll()
 database "База данных" as db
 RentalRepository->db: query
 db-->RentalRepository: ResultSet
@@ -89,8 +89,8 @@ RentalServiceImpl->RentalRepository:updateRentalById()
 RentalRepository->db: query
 
 RentalWebController->RentalWebController:redirect:/rentals 
-RentalWebController-> RentalServiceImpl: getRentals()
-RentalServiceImpl->RentalRepository: getRentals()
+RentalWebController-> RentalServiceImpl: findAll()
+RentalServiceImpl->RentalRepository: findAll()
 database "База данных" as db
 RentalRepository->db: query
 db-->RentalRepository: ResultSet
@@ -111,14 +111,14 @@ WebPage->RentalWebController:DELETE rentals /delete/id
 activate RentalWebController
 RentalWebController->RentalServiceImpl:deleteRentalById()
 activate RentalServiceImpl
-RentalServiceImpl->RentalRepository:deleteRental()
+RentalServiceImpl->RentalRepository:deleteById()
 RentalRepository->db: query
 RentalWebController->RentalWebController:redirect:/rentals 
 
 
 
-RentalWebController-> RentalServiceImpl: getRentals()
-RentalServiceImpl->RentalRepository: getRentals()
+RentalWebController-> RentalServiceImpl: findAll()
+RentalServiceImpl->RentalRepository: findAll()
 database "База данных" as db
 RentalRepository->db: query
 db-->RentalRepository: ResultSet

@@ -25,14 +25,14 @@ public class ReaderServiceImpl implements ReaderService {
     // TODO сделать нормальное имя для всех методов всех сервисов
     @Transactional(readOnly = true)
     @Override
-    public List<Reader> getReaders(String field) {
+    public List<Reader> findAll(String field) {
 
         return readerRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
     @Transactional
     @Override
-    public Reader saveReader(Reader reader) {
+    public Reader save(Reader reader) {
         reader.setPhone(validateAndFormatPhoneNumber(reader.getPhone()));
         return readerRepository.save(reader);
     }

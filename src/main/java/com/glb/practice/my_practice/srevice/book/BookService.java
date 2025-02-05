@@ -8,11 +8,11 @@ import com.glb.practice.my_practice.models.Book;
 
 
 public interface BookService {
-    List<Book> getBooks(String field);
-    List<Book> getNotZeroBooks();
+    List<Book> findAll(String field);
+    List<Book> findByQuantityNotZeroAndDeletedFalse();
     List<Book> getNotZeroSortedBooks(String field);
-    Book saveBook(Book book);
-    Book findByIDBook(int id);
-    Book updateBook(Book book);
-    void deleteBook(int id);
+    Book save(Book book);
+    Book findById(int id);
+    Book update(Book book);
+    void deleteById(int id);
 }

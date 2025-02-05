@@ -70,7 +70,7 @@ public class UserViewController {
     @GetMapping({"/delete_user/{id}","/delete_user/{id}/"})
     public String deleteUser(Model model,@PathVariable int id) {
         userService.deleteUser(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
     @PostMapping({"/update_user","/update_user/"})
     public String updateUser(@ModelAttribute("user") User user, Model model) {

@@ -30,7 +30,7 @@ public class BookViewController {
     public String showBooks(Model model) {
         List<String> sortFields = Arrays.asList("id", "Название", "Автор");
         model.addAttribute("sortFields", sortFields);
-        model.addAttribute("books", bookService.getBooks("id"));
+        model.addAttribute("books", bookService.findAll("id"));
         return "book_list";
     }
 
@@ -49,14 +49,14 @@ public class BookViewController {
         }
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("selectedField", field);
-        model.addAttribute("books", bookService.getBooks(field));
+        model.addAttribute("books", bookService.findAll(field));
         return "book_list";
 
     }
 
     @GetMapping({"/{id}", "/{id}/"})
     public String showBookData(Model model, @PathVariable int id) {
-        Book book = bookService.findByIDBook(id);
+        Book book = bookService.findById(id);
         if (book.getImage() != null) {
             String base64Image = imageService.getImageBase64(book.getImage());
             model.addAttribute("base64Image", base64Image);
@@ -68,8 +68,8 @@ public class BookViewController {
     }
 
     @GetMapping({ "delete_book/{id}", "delete_book/{id}/" })
-    public String deleteBook(Model model, @PathVariable int id) {
-        bookService.deleteBook(id);
+    public String deleteById(Model model, @PathVariable int id) {
+        bookService.deleteById(id);
         return "redirect:/admin/books";
     }
 
@@ -81,18 +81,18 @@ public class BookViewController {
 
     @GetMapping({ "/edit/{id}", "/edit/{id}/" })
     public String editBook(@PathVariable int id, Model model) {
-        model.addAttribute("book", bookService.findByIDBook(id));
+        model.addAttribute("book", bookService.findById(id));
         return "book_add-edit";
     }
 
     @PostMapping({"/save_book", "/save_book/"})
-    public String saveBook(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
+    public String save(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
         try {
             if (file != null && !file.isEmpty()) {
-                Image image = imageService.saveImage(file);
+                Image image = imageService.save(file);
                 book.setImage(image); 
             }
-            bookService.saveBook(book);
+            bookService.save(book);
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("book", book);
@@ -103,13 +103,13 @@ public class BookViewController {
     }
 
     @PostMapping({"/update_book", "/update_book/"})
-    public String updateBook(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
+    public String update(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
         try {
             if (file != null && !file.isEmpty()) {
-                Image image = imageService.saveImage(file);
+                Image image = imageService.save(file);
                 book.setImage(image); 
             }
-            bookService.updateBook(book);
+            bookService.update(book);
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("book", book);

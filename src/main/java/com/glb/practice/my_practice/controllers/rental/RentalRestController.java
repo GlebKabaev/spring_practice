@@ -15,23 +15,23 @@ public class RentalRestController {
     private final RentalService rentalService;
 
     @GetMapping({"/",""})
-    public List<Rental> getRentals() {
-        return rentalService.getRentals();
+    public List<Rental> findAll() {
+        return rentalService.findAll();
     }
     @PostMapping({"/save_rental","/save_rental/"})
-    public Rental saveRental(@RequestBody Rental rental) {
-        return rentalService.saveRental(rental);
+    public Rental save(@RequestBody Rental rental) {
+        return rentalService.save(rental);
     }
     @GetMapping({"/{id}","/{id}/"})
-    public Rental findByIDRental(@PathVariable int id) {
-        return rentalService.findByIDRental(id);
+    public Rental findById(@PathVariable int id) {
+        return rentalService.findById(id);
     }
     @PutMapping({"/update_rental", "/update_rental/"})
-    public Rental updateRental(@RequestBody Rental rental) {
-        return rentalService.updateRental(rental);
+    public Rental update(@RequestBody Rental rental) {
+        return rentalService.update(rental);
     }
     @DeleteMapping({"/delete_rental/{id}","/delete_rental/{id}/"})
-    public void deleteRental(@PathVariable int id) {
-        rentalService.deleteRental(id);
+    public void deleteById(@PathVariable int id) {
+        rentalService.deleteById(id);
     }
 }

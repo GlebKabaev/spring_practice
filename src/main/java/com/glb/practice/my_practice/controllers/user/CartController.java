@@ -33,17 +33,17 @@ public class CartController {
     @GetMapping({ "", "/" })
     public String getMethodName(Model model) {
         Reader reader = readerService.thisReader();
-        List<CartElement> cartElements = cartElementService.getCartElementsByReaderId(reader.getId());
+        List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
         model.addAttribute("cart_elements", cartElements);
         return "reader_cart";
     }
 
     @PostMapping({ "/delete_element/{id}", "/delete_element/{id}/" })
-    public String deleteBook(Model model, @PathVariable int id) {
-        CartElement cartElement = cartElementService.findByIDCartElement(id);
+    public String deleteById(Model model, @PathVariable int id) {
+        CartElement cartElement = cartElementService.findById(id);
         Reader reader = readerService.thisReader();
         if (reader.getId().equals(cartElement.getReader().getId())) {
-            cartElementService.deleteCartElement(id);
+            cartElementService.deleteById(id);
         }
         return "redirect:/cart";
     }
@@ -53,7 +53,7 @@ public class CartController {
     @PostMapping("/order")
     public String order(@RequestParam("expectedReturnDate") String expectedReturnDate,Model model) {
         Reader reader = readerService.thisReader();
-        List<CartElement> cartElements = cartElementService.getCartElementsByReaderId(reader.getId());
+        List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date expectedReturn = null;
         Date today = new Date();
@@ -78,11 +78,11 @@ public class CartController {
                 rental.setExpectedReturnDate(expectedReturn);
                 rental.setIssueDate(today);
                 try {
-                    rentalService.saveRental(rental);
+                    rentalService.save(rental);
                 } catch (Exception e) {
                     errorbooks = errorbooks + " " + book.getTitle() + ",";
                 }
-                cartElementService.deleteCartElement(cartElement.getId());
+                cartElementService.deleteById(cartElement.getId());
                 
             }
         } else {

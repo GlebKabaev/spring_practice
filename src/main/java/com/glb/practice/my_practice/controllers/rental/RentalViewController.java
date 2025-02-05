@@ -26,20 +26,20 @@ public class RentalViewController {
     @GetMapping({ "/", "" })
     public String showRentals(Model model) {
 
-        model.addAttribute("rentals", rentalService.getRentals());
+        model.addAttribute("rentals", rentalService.findAll());
         return "rental_list";
     }
 
     @GetMapping({ "/{id}", "/{id}/" })
     public String showRentalData(Model model, @PathVariable int id) {
-        model.addAttribute("rental", rentalService.findByIDRental(id));
+        model.addAttribute("rental", rentalService.findById(id));
         return "rental";
     }
 
     @GetMapping({ "/new", "/new/" })
     public String showCreateRentalForm(Model model) {
-        model.addAttribute("readers", readerService.getReaders("id"));
-        model.addAttribute("books", bookService.getNotZeroBooks());
+        model.addAttribute("readers", readerService.findAll("id"));
+        model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
         model.addAttribute("rental", new Rental());
         return "rental_add-edit";
     }
@@ -47,11 +47,11 @@ public class RentalViewController {
     @PostMapping({ "/save_rental", "/save_rental/" })
     public String saveRental(@ModelAttribute("rental") Rental rental, Model model) {
         try {
-            rentalService.saveRental(rental);
+            rentalService.save(rental);
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("readers", readerService.getReaders("id"));
-            model.addAttribute("books", bookService.getNotZeroBooks());
+            model.addAttribute("readers", readerService.findAll("id"));
+            model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
             model.addAttribute("rental", new Rental());
             model.addAttribute("error", e.getMessage());
             return "rental_add-edit";
@@ -62,26 +62,26 @@ public class RentalViewController {
 
     @GetMapping({ "/delete/{id}", "/delete/{id}/" })
     public String deleteRental(Model model, @PathVariable int id) {
-        rentalService.deleteRental(id);
+        rentalService.deleteById(id);
         return "redirect:/admin/rentals";
     }
 
     @GetMapping({ "/edit/{id}", "/edit/{id}/" })
     public String editRental(@PathVariable int id, Model model) {
-        model.addAttribute("readers", readerService.getReaders("id"));
-        model.addAttribute("books", bookService.getNotZeroBooks());
-        model.addAttribute("rental", rentalService.findByIDRental(id));
+        model.addAttribute("readers", readerService.findAll("id"));
+        model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
+        model.addAttribute("rental", rentalService.findById(id));
         return "rental_add-edit";
     }
 
     @PostMapping({ "/update_rental", "/update_rental/" })
     public String updateRental(@ModelAttribute("rental") Rental rental, Model model) {
         try {
-            rentalService.updateRental(rental);
+            rentalService.update(rental);
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("readers", readerService.getReaders("id"));
-            model.addAttribute("books", bookService.getNotZeroBooks());
+            model.addAttribute("readers", readerService.findAll("id"));
+            model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
             model.addAttribute("rental", rental);
             model.addAttribute("error", e.getMessage());
             return "rental_add-edit";

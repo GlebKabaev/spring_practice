@@ -2,7 +2,14 @@ package com.glb.practice.my_practice.controllers.user;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.glb.practice.my_practice.models.Book;
+import com.glb.practice.my_practice.models.Rental;
+import com.glb.practice.my_practice.models.User;
+import com.glb.practice.my_practice.srevice.book.BookService;
+import com.glb.practice.my_practice.srevice.user.UserService;
+
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,18 +22,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Map;
 
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 
 
 @RestController
+@AllArgsConstructor
 public class HelloUserRestController {
+    
     @GetMapping("/api/v1/greetings")
     @ResponseBody
     public Map<String,String>  getHello1(){
+
+        
         UserDetails userDetails =(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Map.of("greetings", "Hello, %s".formatted(userDetails.getUsername()));
+        return Map.of("greetings", "   Hello, %s".formatted(userDetails.getUsername()));
     }
     @GetMapping("/api/v2/greetings")
     public ResponseEntity <Map<String,String>> getHello2() {

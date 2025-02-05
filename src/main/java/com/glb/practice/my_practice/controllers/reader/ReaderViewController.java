@@ -36,7 +36,7 @@ public class ReaderViewController {
 
         List<String> sortFields = Arrays.asList("id", "Фамилия", "Имя", "Отчество");
         model.addAttribute("sortFields", sortFields);
-        model.addAttribute("readers", readerService.getReaders("id"));
+        model.addAttribute("readers", readerService.findAll("id"));
         return "reader_list";
     }
 
@@ -59,7 +59,7 @@ public class ReaderViewController {
         }
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("selectedField", field);
-        model.addAttribute("readers", readerService.getReaders(field));
+        model.addAttribute("readers", readerService.findAll(field));
         return "reader_list";
     }
 
@@ -84,7 +84,7 @@ public class ReaderViewController {
             }catch(Exception e){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found");
             }
-        List<CartElement> cartElements = cartElementService.getCartElementsByReaderId(id);
+        List<CartElement> cartElements = cartElementService.findByReaderId(id);
         model.addAttribute("cart_elements", cartElements);
         return "admin_reader_cart";
     }
@@ -98,7 +98,7 @@ public class ReaderViewController {
     @PostMapping({ "/save_reader", "/save_reader/" })
     public String saveReader(@ModelAttribute("reader") Reader reader, Model model) {
         try {
-            readerService.saveReader(reader);
+            readerService.save(reader);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -142,7 +142,7 @@ public class ReaderViewController {
     @GetMapping( "/{id}/cart/new")
     public String newBookToReaderCart(@PathVariable int id, Model model) {
         Reader reader = readerService.findByIDReader(id);
-        List<Book>books=bookService.getNotZeroBooks();
+        List<Book>books=bookService.findByQuantityNotZeroAndDeletedFalse();
         model.addAttribute("reader", reader);
         model.addAttribute("books", books);
 
@@ -151,8 +151,8 @@ public class ReaderViewController {
     @PostMapping( "/{id}/cart/new")
     public String addBookToReaderCart(@PathVariable int id,@ModelAttribute("bookId") int bookId, Model model) {
         Reader reader = readerService.findByIDReader(id);
-        Book book = bookService.findByIDBook(bookId);
-        cartElementService.saveCartElement(new CartElement(0,reader,book));
+        Book book = bookService.findById(bookId);
+        cartElementService.save(new CartElement(0,reader,book));
         
         return "redirect:/admin/readers/%d/cart".formatted(id);
     }

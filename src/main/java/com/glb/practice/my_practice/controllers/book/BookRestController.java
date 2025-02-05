@@ -18,25 +18,25 @@ import lombok.AllArgsConstructor;
 public class BookRestController {
     private final BookService bookService;
     @GetMapping({"/",""})
-    public List<Book> getBooks(){
+    public List<Book> findAll(){
         
-        return bookService.getBooks("id");
+        return bookService.findAll("id");
     }
     @PostMapping({"/save_book","/save_book/"})
-    public Book saveBook(@RequestBody Book book){
-        return bookService.saveBook(book);
+    public Book save(@RequestBody Book book){
+        return bookService.save(book);
     }
     @GetMapping({"/{id}","/{id}/"})
-    public Book findByIDBook(@PathVariable int id){
-        return bookService.findByIDBook(id);
+    public Book findById(@PathVariable int id){
+        return bookService.findById(id);
     }
     @PutMapping({"/update_book","/update_book/"})
-    public Book updateBook(@RequestBody Book book){
-        return bookService.updateBook(book);
+    public Book update(@RequestBody Book book){
+        return bookService.update(book);
     }
     @DeleteMapping({"delete_book/{id}","delete_book/{id}/"})
-    public void deleteBook(@PathVariable int id){
-        bookService.deleteBook(id);
+    public void deleteById(@PathVariable int id){
+        bookService.deleteById(id);
     }
     
 }

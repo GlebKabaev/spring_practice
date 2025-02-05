@@ -6,31 +6,34 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.glb.practice.my_practice.models.Book;
+import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.repository.book.BookRepository;
+import com.glb.practice.my_practice.srevice.cart.CartElementService;
+
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 @Primary
 public class BookSeviceImpl implements BookService {
-
+    private final CartElementService cartElementService;
     private final BookRepository bookRepository;
 
     @Override
     @Transactional(readOnly = true) 
-    public List<Book> getBooks(String field) {
+    public List<Book> findAll(String field) {
         return bookRepository.findAll(Sort.by(Sort.Order.asc(field)));
     }
 
     @Override
     @Transactional(readOnly = true) 
-    public List<Book> getNotZeroBooks() {
+    public List<Book> findByQuantityNotZeroAndDeletedFalse() {
         return bookRepository.findByQuantityNotAndDeletedFalse(0, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override
     @Transactional 
-    public Book saveBook(Book book) {
+    public Book save(Book book) {
         if (book.getQuantity() >= 0 && book.getRentalCost() >= 0 && book.getDepositAmount() >= 0) {
             return bookRepository.save(book);
         } else {
@@ -40,13 +43,13 @@ public class BookSeviceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public Book findByIDBook(int id) {
+    public Book findById(int id) {
         return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
     @Override
     @Transactional
-    public Book updateBook(Book book) {
+    public Book update(Book book) {
         if (book.getQuantity() >= 0 && book.getRentalCost() >= 0 && book.getDepositAmount() >= 0) {
             return bookRepository.save(book);
         } else {
@@ -56,8 +59,12 @@ public class BookSeviceImpl implements BookService {
 
     @Override
     @Transactional 
-    public void deleteBook(int id) {
+    public void deleteById(int id) {
         bookRepository.findById(id).get().setDeleted(true);
+        List<CartElement>cart=cartElementService.findByBookId(id);
+        for (CartElement cartElement : cart) {
+            cartElementService.deleteById(cartElement.getId());
+        }
     }
 
     @Override

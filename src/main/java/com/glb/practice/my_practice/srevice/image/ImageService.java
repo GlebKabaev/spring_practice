@@ -32,7 +32,7 @@ public class ImageService {
     }
 
     @Transactional
-    public Image saveImage(MultipartFile file) throws IOException {
+    public Image save(MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()) {
             Image image = new Image();
             image.setName(file.getOriginalFilename());

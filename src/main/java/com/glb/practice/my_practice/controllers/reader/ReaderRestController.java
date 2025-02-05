@@ -18,12 +18,12 @@ public class ReaderRestController {
     private final ReaderService readerService;
     
     @GetMapping({"/",""})
-    public List<Reader> getReaders() {
-        return readerService.getReaders("id");
+    public List<Reader> findAll() {
+        return readerService.findAll("id");
     }
     @PostMapping({"/save_reader","/save_reader/"})
-    public Reader saveReader(@RequestBody Reader reader){
-        return readerService.saveReader(reader);
+    public Reader save(@RequestBody Reader reader){
+        return readerService.save(reader);
     }
     @GetMapping({"/{id}","/{id}/"})
     public Reader findByIDReader(@PathVariable int id){
