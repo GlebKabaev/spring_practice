@@ -127,12 +127,18 @@
         <div class="book-grid">
             <div th:each="book : ${books}" class="book-item">
                 <h3 th:text="${book.title}">Название</h3>
+                <div th:if="${bookImages[book.id] != null}">
+                    <img th:src="@{|data:${book.image.contentType};base64,${bookImages[book.id]}|}" 
+                         alt="Book Image" style="max-width: 250px; max-height: 250px;" />
+                </div>
+                <div th:if="${bookImages[book.id] == null}">
+                    <p>Изображение не найдено.</p>
+                </div>
                 <p><strong>Автор:</strong> <span th:text="${book.author}">Автор</span></p>
                 <p><strong>Жанр:</strong> <span th:text="${book.genre}">Жанр</span></p>
                 <p><strong>Количество:</strong> <span th:text="${book.quantity}">Количество</span></p>
                 <p><strong>Депозит:</strong> <span th:text="${book.depositAmount}">Депозит</span></p>
                 <p><strong>Стоимость аренды:</strong> <span th:text="${book.rentalCost}">Стоимость аренды</span></p>
-
                 <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
 
                 <form th:action="@{/add_to_cart/{id}(id=${book.id})}" th:object="${selectedField}" method="post">
