@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${user.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2 th:text="${user.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></h2>
+        <form th:action="${user.id == null} ? @{/admin/users-readers/save} : @{/admin/users-readers/update}" method="post">
+            <div>
+                <h3>Информация о пользователе</h3>
+                <input type="hidden" th:field="*{user.id}" />
+                <input type="hidden" name="_method" value="put" />
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" th:field="*{user.username}" placeholder="Введите имя пользователя" required />
+
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" th:field="*{user.password}" placeholder="Введите пароль" required />
+                <label for="role">Роль:</label>
+                <input type="text" id="role" th:field="*{user.role}" placeholder="Укажите роль" required />
+            </div>
+
+            <div>
+                <h3>Информация о читателе</h3>
+                <input type="hidden" th:field="*{reader.id}" />
+                <input type="hidden" name="_method" value="put" />
+                <label for="lastName">Фамилия:</label>
+                <input type="text" id="lastName" th:field="*{reader.lastName}" placeholder="Введите фамилию" required />
+
+                <label for="firstName">Имя:</label>
+                <input type="text" id="firstName" th:field="*{reader.firstName}" placeholder="Введите имя" required />
+
+                <label for="middleName">Отчество:</label>
+                <input type="text" id="middleName" th:field="*{reader.middleName}" placeholder="Введите отчество" required />
+
+                <label for="address">Адрес:</label>
+                <input type="text" id="address" th:field="*{reader.address}" placeholder="Введите адрес" required />
+
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" th:field="*{reader.phone}" placeholder="Введите телефон" required />
+            </div>
+
+            <button type="submit" th:text="${user.id == null} ? 'Создать пользователя и читателя' : 'Сохранить изменения'"></button>
+        </form>
+        <a class="back-link" th:href="@{/admin/users-readers}">Вернуться к списку пользователей и читателей</a>
+    </div>
+</body>
+</html>

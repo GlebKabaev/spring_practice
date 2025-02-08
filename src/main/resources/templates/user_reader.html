@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Информация о пользователе и читателе</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2>Информация о пользователе и читателе</h2>
+
+        <div class="user-info">
+            <h3>Данные пользователя</h3>
+            <p><strong>ID:</strong> <span th:text="${user.id}">ID</span></p>
+            <p><strong>Имя пользователя:</strong> <span th:text="${user.username}">Имя пользователя</span></p>
+            <p><strong>Роль:</strong> <span th:text="${user.role}">ID</span></p>
+        </div>
+
+        <div class="reader-info" th:if="${reader != null}">
+            <h3>Данные читателя</h3>
+            <p><strong>ID:</strong> <span th:text="${reader.id}">ID</span></p>
+            <p><strong>Фамилия:</strong> <span th:text="${reader.lastName}">Фамилия</span></p>
+            <p><strong>Имя:</strong> <span th:text="${reader.firstName}">Имя</span></p>
+            <p><strong>Отчество:</strong> <span th:text="${reader.middleName}">Отчество</span></p>
+            <p><strong>Адрес:</strong> <span th:text="${reader.address}">Адрес</span></p>
+            <p><strong>Телефон:</strong> <span th:text="${reader.phone}">Телефон</span></p>
+        </div>
+        
+        <div th:if="${reader == null}">
+            <p>У данного пользователя нет связанного читателя.</p>
+        </div>
+
+        <div class="actions">
+            <button onclick="window.location.href='/'">На главную</button>
+            <button th:onclick="|window.location.href='@{/admin/users-readers/edit/{userId}(userId=${user.id})}'|">Редактировать</button>
+            <button th:onclick="|window.location.href='@{/admin/users-readers/delete/{userId}(userId=${user.id})}'|">Удалить</button>
+            <button th:onclick="|window.location.href='@{/admin/users-readers/{userId}/cart(userId=${user.id})}'|">Просмотр корзины</button>
+        </div>
+    </div>
+</body>
+</html>
