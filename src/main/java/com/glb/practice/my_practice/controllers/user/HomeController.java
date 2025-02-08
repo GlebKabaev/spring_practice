@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
-import com.glb.practice.my_practice.models.Image;
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.srevice.book.BookService;
 import com.glb.practice.my_practice.srevice.cart.CartElementService;
@@ -48,7 +47,7 @@ public class HomeController {
     }
 
     // TODO добавить ручку "заказы"
-    // TODO добавть try catch в сервисы
+    // TODO добавть trow в сервисы
     @GetMapping({ "/home", "/home/" })
     public String sortBooks(@RequestParam(value = "field", required = false, defaultValue = "title") String field,
             Model model) {
