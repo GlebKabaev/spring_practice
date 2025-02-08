@@ -15,7 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
+//TODO: переделать все mapping на верные
+//TODO:изучить restfullapi еще больше
+//TODO:создать сущность user reader
 @Controller
 @RequestMapping("/admin/users-readers")
 @AllArgsConstructor
@@ -93,10 +95,6 @@ public class UserReaderViewController {
     /** Удаление пользователя и его читателя */
     @GetMapping("/delete/{userId}")
     public String deleteUserAndReader(@PathVariable int userId) {
-        User user = userService.findByIdUser(userId);
-        if (user.getReader() != null) {
-            readerService.deleteReader(user.getReader().getId());
-        }
         userService.deleteUser(userId);
         return "redirect:/admin/users-readers";
     }
@@ -113,13 +111,14 @@ public class UserReaderViewController {
     }
 
     /** Обновление данных пользователя и его читателя */
+    //TODO проблема изменения reader так как он принимает id значение своего user
     @PostMapping("/update")
     public String updateUserAndReader(@ModelAttribute("user") User user,
                                       @ModelAttribute("reader") Reader reader,
                                       Model model) {
         try {
             readerService.updateReader(reader);
-            user.setReader(reader);
+           // user.setReader(reader);
             userService.updateUser(user);
         } catch (Exception e) {
             model.addAttribute("user", user);
