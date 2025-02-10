@@ -50,7 +50,6 @@ public class RegistrationController {
         if (isUserCreated){
         try{
             readerService.save(reader); 
-            user.setReader(reader);
             userService.addReaderForUser(user, reader);
             }catch(Exception e){
                 e.printStackTrace();

@@ -20,10 +20,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reader_id")
-    private Reader reader;
-
     @Column(name = "role")
     private String role;
 

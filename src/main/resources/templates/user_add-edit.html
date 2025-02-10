@@ -20,12 +20,6 @@
             <label for="role">Роль:</label>
             <input type="text" id="role" th:field="*{role}" placeholder="Введите роль" required />
 
-            <!-- Выбор читателя, если необходимо -->
-            <label for="reader">Читатель:</label>
-            <select id="reader" th:field="*{reader.id}">
-                <option th:each="r : ${readers}" th:value="${r.id}" th:text="${r.firstName} + ' ' + ${r.lastName}"></option>
-            </select>
-
             <button type="submit" th:text="${user.id == null} ? 'Создать пользователя' : 'Сохранить изменения'"></button>
         </form>
         <a class="back-link" th:href="@{/admin/users}">Вернуться к списку пользователей</a>

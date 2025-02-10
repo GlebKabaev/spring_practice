@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.glb.practice.my_practice.models.Reader;
+import com.glb.practice.my_practice.models.UserReader;
 import com.glb.practice.my_practice.repository.reader.ReaderRepository;
 import com.glb.practice.my_practice.repository.user.UserRepository;
 import com.glb.practice.my_practice.srevice.user.UserService;
+import com.glb.practice.my_practice.srevice.userReader.UserReaderService;
 
 import org.springframework.data.domain.Sort;
 
@@ -21,7 +23,8 @@ import lombok.AllArgsConstructor;
 public class ReaderServiceImpl implements ReaderService {
     ReaderRepository readerRepository;
     UserRepository userRepository;
-
+    UserReaderService userReaderService;
+    UserService userService;
     // TODO сделать нормальное имя для всех методов всех сервисов
     @Transactional(readOnly = true)
     @Override
@@ -100,8 +103,8 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public Reader thisReader() {
-        UserService userService = new UserService(userRepository);
-        return userService.thisUser().getReader();
+        UserReader userReader = userReaderService.findByUser(userService.thisUser());
+        return userReader.getReader();
     }
 
 }

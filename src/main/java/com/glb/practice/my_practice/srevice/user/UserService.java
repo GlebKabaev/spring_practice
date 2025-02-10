@@ -2,7 +2,9 @@ package com.glb.practice.my_practice.srevice.user;
 
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.User;
+import com.glb.practice.my_practice.models.UserReader;
 import com.glb.practice.my_practice.repository.user.UserRepository;
+import com.glb.practice.my_practice.srevice.userReader.UserReaderService;
 
 import lombok.AllArgsConstructor;
 
@@ -25,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
+    private final UserReaderService userReaderService;
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -59,9 +61,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User addReaderForUser(User user, Reader reader) {
-        user.setReader(reader);
-        return userRepository.save(user);
+    public UserReader addReaderForUser(User user, Reader reader) {
+        UserReader userReader=new UserReader();
+        userReader.setReader(reader);
+        userReader.setUser(user);
+        return userReaderService.save(userReader);
     }
 
     @Transactional
