@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${user.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></title>
+    <title th:text="${userReader.user.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
-        <h2 th:text="${user.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></h2>
+        <h2 th:text="${userReader.user.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></h2>
         
-        <form th:action="@{${user.id == null} ? '/admin/users-readers/save' : '/admin/users-readers/update'}" method="post">
-            <input type="hidden" th:if="${user.id != null}" th:field="*{user.id}" />
-            <input type="hidden" th:if="${reader.id != null}" th:field="*{reader.id}" />
+        <!-- Форма с использованием UserReader как единого объекта -->
+        <form th:action="@{${userReader.user.id == null} ? '/admin/users-readers/save' : '/admin/users-readers/update'}"
+            th:object="${userReader}" method="post">
+            
+            <!-- Поля для пользователя -->
             <div class="user-section">
                 <h3>Информация о пользователе</h3>
+                <input type="hidden" th:field="*{user.id}" />
                 <label for="username">Имя пользователя:</label>
                 <input type="text" id="username" th:field="*{user.username}" placeholder="Введите имя пользователя" required />
-
                 <label for="password">Пароль:</label>
                 <input type="password" id="password" th:field="*{user.password}" placeholder="Введите пароль" required />
-
                 <label for="role">Роль:</label>
                 <input type="text" id="role" th:field="*{user.role}" placeholder="Укажите роль" required />
             </div>
-
+            
+            <!-- Поля для читателя -->
             <div class="reader-section">
                 <h3>Информация о читателе</h3>
+                <input type="hidden" th:field="*{reader.id}" />
                 <label for="lastName">Фамилия:</label>
                 <input type="text" id="lastName" th:field="*{reader.lastName}" placeholder="Введите фамилию" required />
-
                 <label for="firstName">Имя:</label>
                 <input type="text" id="firstName" th:field="*{reader.firstName}" placeholder="Введите имя" required />
-
                 <label for="middleName">Отчество:</label>
                 <input type="text" id="middleName" th:field="*{reader.middleName}" placeholder="Введите отчество" required />
-
                 <label for="address">Адрес:</label>
                 <input type="text" id="address" th:field="*{reader.address}" placeholder="Введите адрес" required />
-
                 <label for="phone">Телефон:</label>
                 <input type="tel" id="phone" th:field="*{reader.phone}" placeholder="Введите телефон" required />
             </div>
-
+            
+            <!-- Кнопки -->
             <div class="form-actions">
                 <button type="submit">Сохранить</button>
                 <a th:href="@{/admin/users-readers}" class="button">Отмена</a>
             </div>
         </form>
 
+        <!-- Отображение ошибок -->
         <div th:if="${error != null}">
             <p class="error-message" th:text="${error}"></p>
         </div>

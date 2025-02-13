@@ -68,28 +68,27 @@ public class UserReaderViewController {
     /** Форма создания нового пользователя с читателем */
     @GetMapping("/new")
     public String showCreateUserReaderForm(Model model) {
-        model.addAttribute("reader", new Reader());
-        model.addAttribute("user", new User());
+        model.addAttribute("userReader", new UserReader(0,new User(),new Reader()));
         return "user_reader_add-edit";
     }
 
     /** Сохранение нового пользователя с читателем */
+    //TODO:исправить баг отсувствия создания userreader связи после ошибки с номером телефона
     @PostMapping("/save")
-    public String saveUserAndReader(@ModelAttribute("user") User user, @ModelAttribute("reader") Reader reader,
+    public String saveUserAndReader(@ModelAttribute("userReader") UserReader userReader,
             Model model) {
         try {
-            userService.saveUser(user);
-            readerService.save(reader);
-            userReaderService.save(new UserReader(0, user, reader));
+            userService.saveUser(userReader.getUser());
+            readerService.save(userReader.getReader());
+            userReaderService.save(userReader);
         } catch (Exception e) {
-            model.addAttribute("reader", reader);
-            model.addAttribute("user", user);
+            model.addAttribute("userReader", userReader);
             model.addAttribute("error", e.getMessage());
-            if (user.getId() != null) {
-                userService.deleteUser(user.getId());
+            if (userReader.getUser().getId() != null) {
+                userService.deleteUser(userReader.getUser().getId());
             }
-            if (reader.getId() != null) {
-                readerService.deleteReader(reader.getId());
+            if (userReader.getReader().getId() != null) {
+                readerService.deleteReader(userReader.getReader().getId());
             }
             return "user_reader_add-edit";
         }
@@ -107,23 +106,20 @@ public class UserReaderViewController {
     @GetMapping("/{userReaderId}/edit")
     public String editUserAndReader(@PathVariable int userReaderId, Model model) {
         UserReader userReader = userReaderService.findById(userReaderId);
-
-        model.addAttribute("reader", userReader.getReader());
-        model.addAttribute("user", userReader.getUser());
+        model.addAttribute("userReader", userReader);
+       
         return "user_reader_add-edit";
     }
 
     /** Обновление данных пользователя и его читателя */
-    // TODO проблема изменения reader так как он принимает id значение своего user
     @PostMapping("/update")
-    public String updateUserAndReader(@ModelAttribute("user") User user, @ModelAttribute("reader") Reader reader,
+    public String updateUserAndReader( @ModelAttribute("userReader") UserReader userReader,
             Model model) {
         try {
-            userService.updateUser(user);
-            readerService.updateReader(reader);
+            userService.updateUser(userReader.getUser());
+            readerService.updateReader(userReader.getReader());
         } catch (Exception e) {
-            model.addAttribute("reader", reader);
-            model.addAttribute("user", user);
+            model.addAttribute("userReader", userReader);
             model.addAttribute("error", e.getMessage());
             return "user_reader_add-edit";
         }
