@@ -68,12 +68,11 @@ public class UserReaderViewController {
     /** Форма создания нового пользователя с читателем */
     @GetMapping("/new")
     public String showCreateUserReaderForm(Model model) {
-        model.addAttribute("userReader", new UserReader(0,new User(),new Reader()));
+        model.addAttribute("userReader", new UserReader(0, new User(), new Reader()));
         return "user_reader_add-edit";
     }
+    
 
-    /** Сохранение нового пользователя с читателем */
-    //TODO:исправить баг отсувствия создания userreader связи после ошибки с номером телефона
     @PostMapping("/save")
     public String saveUserAndReader(@ModelAttribute("userReader") UserReader userReader,
             Model model) {
@@ -81,19 +80,25 @@ public class UserReaderViewController {
             userService.saveUser(userReader.getUser());
             readerService.save(userReader.getReader());
             userReaderService.save(userReader);
+            return "redirect:/admin/users-readers";
         } catch (Exception e) {
             model.addAttribute("userReader", userReader);
             model.addAttribute("error", e.getMessage());
             if (userReader.getUser().getId() != null) {
                 userService.deleteUser(userReader.getUser().getId());
+                userReader.setUser(new User());
             }
             if (userReader.getReader().getId() != null) {
                 readerService.deleteReader(userReader.getReader().getId());
+                userReader.setReader(new Reader());
             }
             return "user_reader_add-edit";
+
         }
-        return "redirect:/admin/users-readers";
+
     }
+
+   
 
     /** Удаление пользователя и его читателя */
     @GetMapping("/{userReaderId}/delete")
@@ -107,13 +112,13 @@ public class UserReaderViewController {
     public String editUserAndReader(@PathVariable int userReaderId, Model model) {
         UserReader userReader = userReaderService.findById(userReaderId);
         model.addAttribute("userReader", userReader);
-       
+
         return "user_reader_add-edit";
     }
 
     /** Обновление данных пользователя и его читателя */
     @PostMapping("/update")
-    public String updateUserAndReader( @ModelAttribute("userReader") UserReader userReader,
+    public String updateUserAndReader(@ModelAttribute("userReader") UserReader userReader,
             Model model) {
         try {
             userService.updateUser(userReader.getUser());

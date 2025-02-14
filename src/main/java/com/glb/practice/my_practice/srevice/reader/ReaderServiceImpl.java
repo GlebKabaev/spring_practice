@@ -37,6 +37,9 @@ public class ReaderServiceImpl implements ReaderService {
     @Override
     public Reader save(Reader reader) {
         reader.setPhone(validateAndFormatPhoneNumber(reader.getPhone()));
+        if (readerRepository.existsByPhone(reader.getPhone())) {
+            throw new IllegalArgumentException("Читатель с таким номером уже существует.");
+        }
         return readerRepository.save(reader);
     }
 
