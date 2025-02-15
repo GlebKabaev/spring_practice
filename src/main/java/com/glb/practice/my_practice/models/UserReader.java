@@ -15,7 +15,7 @@ public class UserReader {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
     @OneToOne
     @JoinColumn(name = "reader_id", nullable = false)

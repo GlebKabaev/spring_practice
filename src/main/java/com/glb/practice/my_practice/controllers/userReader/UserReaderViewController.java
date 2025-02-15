@@ -71,7 +71,6 @@ public class UserReaderViewController {
         model.addAttribute("userReader", new UserReader(0, new User(), new Reader()));
         return "user_reader_add-edit";
     }
-    
 
     @PostMapping("/save")
     public String saveUserAndReader(@ModelAttribute("userReader") UserReader userReader,
@@ -98,8 +97,6 @@ public class UserReaderViewController {
 
     }
 
-   
-
     /** Удаление пользователя и его читателя */
     @GetMapping("/{userReaderId}/delete")
     public String deleteUserAndReader(@PathVariable int userReaderId) {
@@ -111,6 +108,11 @@ public class UserReaderViewController {
     @GetMapping("/{userReaderId}/edit")
     public String editUserAndReader(@PathVariable int userReaderId, Model model) {
         UserReader userReader = userReaderService.findById(userReaderId);
+        if (userReader.getUser() == null) {
+            model.addAttribute("UsersReaders", userReaderService.findAll());
+            model.addAttribute("error","Связь c id %d не подлежит редактированию".formatted(userReader.getId()));
+            return "user_reader_list";
+        }
         model.addAttribute("userReader", userReader);
 
         return "user_reader_add-edit";

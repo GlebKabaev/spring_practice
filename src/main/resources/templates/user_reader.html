@@ -9,11 +9,15 @@
     <div class="container">
         <h2>Информация о пользователе и читателе</h2>
 
-        <div class="user-info">
+        <div class="user-info" th:if="${userReader.user != null}">
             <h3>Данные пользователя</h3>
             <p><strong>ID:</strong> <span th:text="${userReader.user.id}">ID</span></p>
             <p><strong>Имя пользователя:</strong> <span th:text="${userReader.user.username}">Имя пользователя</span></p>
             <p><strong>Роль:</strong> <span th:text="${userReader.user.role}">Роль</span></p>
+        </div>
+
+        <div th:if="${userReader.user == null}">
+            <p>У данного читателя нет связанного пользователя.</p>
         </div>
 
         <div class="reader-info" th:if="${userReader.reader != null}">

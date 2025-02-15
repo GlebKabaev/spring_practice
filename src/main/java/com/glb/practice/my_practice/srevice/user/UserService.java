@@ -28,6 +28,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserReaderService userReaderService;
+
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -62,7 +63,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserReader addReaderForUser(User user, Reader reader) {
-        UserReader userReader=new UserReader();
+        UserReader userReader = new UserReader();
         userReader.setReader(reader);
         userReader.setUser(user);
         return userReaderService.save(userReader);
@@ -70,6 +71,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void deleteUser(int id) {
+        UserReader userReader=userReaderService.findByUser(findByIdUser(id));
+        if (userReader != null) {
+            userReader.setUser(null);
+        }
         userRepository.deleteById(id);
     }
 
