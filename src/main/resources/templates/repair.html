@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="'Привязать пользователя' "></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2 th:text="'Привязать пользователя' "></h2>
+
+        <!-- Отображение информации о читателе -->
+        <div class="reader-info">
+            <h3>Информация о читателе</h3>
+            <p><strong>Фамилия:</strong> <span th:text="${reader.lastName}"></span></p>
+            <p><strong>Имя:</strong> <span th:text="${reader.firstName}"></span></p>
+            <p><strong>Отчество:</strong> <span th:text="${reader.middleName}"></span></p>
+            <p><strong>Адрес:</strong> <span th:text="${reader.address}"></span></p>
+            <p><strong>Телефон:</strong> <span th:text="${reader.phone}"></span></p>
+        </div>
+
+        <form th:action="@{'/admin/users-readers/' + ${userReader.id} + '/repair'}" th:object="${user}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" th:field="*{username}" placeholder="Введите имя пользователя"
+                    required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Введите пароль" required />
+            </div>
+
+            <div class="form-group">
+                <label for="role">Роль:</label>
+                <input type="text" id="role" th:field="*{role}" placeholder="Введите роль" required />
+            </div>
+
+            <input type="hidden" th:field="${reader.id}" />
+
+            <div class="form-actions">
+                <button type="submit">Сохранить</button>
+                <a th:href="@{/admin/users-readers}" class="button">Отмена</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

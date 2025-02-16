@@ -110,7 +110,7 @@ public class UserReaderViewController {
         UserReader userReader = userReaderService.findById(userReaderId);
         if (userReader.getUser() == null) {
             model.addAttribute("UsersReaders", userReaderService.findAll());
-            model.addAttribute("error","Связь c id %d не подлежит редактированию".formatted(userReader.getId()));
+            model.addAttribute("error", "Связь c id %d не подлежит редактированию".formatted(userReader.getId()));
             return "user_reader_list";
         }
         model.addAttribute("userReader", userReader);
@@ -135,8 +135,8 @@ public class UserReaderViewController {
 
     /** Просмотр корзины читателя */
     @GetMapping("/{userReaderID}/cart")
-    public String showReaderCart(@PathVariable int userReaderId, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderId);
+    public String showReaderCart(@PathVariable int userReaderID, Model model) {
+        UserReader userReader = userReaderService.findById(userReaderID);
         Reader reader = userReader.getReader();
         List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
 
@@ -159,13 +159,39 @@ public class UserReaderViewController {
 
     /** Добавление книги в корзину читателя */
     @PostMapping("/{userReaderID}/cart/new")
-    public String addBookToReaderCart(@PathVariable int userReaderId, @RequestParam("bookId") int bookId) {
-        UserReader userReader = userReaderService.findById(userReaderId);
+    public String addBookToReaderCart(@PathVariable int userReaderID, @RequestParam("bookId") int bookId) {
+        UserReader userReader = userReaderService.findById(userReaderID);
 
         Reader reader = userReader.getReader();
         Book book = bookService.findById(bookId);
         cartElementService.save(new CartElement(0, reader, book));
 
-        return "redirect:/admin/users-readers/%d/cart".formatted(userReaderId);
+        return "redirect:/admin/users-readers/%d/cart".formatted(userReaderID);
+    }
+
+    @GetMapping("/{userReaderID}/repair")
+    public String repairUser(@PathVariable int userReaderID, Model model) {
+        UserReader userReader = userReaderService.findById(userReaderID);
+        if (userReader.getUser() == null) {
+            model.addAttribute("userReader",userReader);
+            model.addAttribute("reader",userReader.getReader());
+            model.addAttribute("user", new User());
+            return "repair";
+        } else {
+            return "redirect:/admin/users-readers";
+        }
+    }
+
+    @PostMapping("/{userReaderID}/repair")
+    public String repair(@PathVariable int userReaderID, Model model, @ModelAttribute("user") User user) {
+        UserReader userReader = userReaderService.findById(userReaderID);
+        if (userReader.getUser() == null) {
+            userService.saveUser(user);
+            userReader.setUser(user);
+            userReaderService.update(userReader);
+            return "redirect:/admin/users-readers";
+        } else {
+            return "redirect:/admin/users-readers";
+        }
     }
 }
