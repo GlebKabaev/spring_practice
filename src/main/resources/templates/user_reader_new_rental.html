@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить аренду</title>
+</head>
+<body>
+    <div th:insert="~{layout :: content}"></div>
+    <div class="container">
+        <h2>Добавить аренду</h2>
+
+        
+        <div th:if="${error}" class="error">
+            <p th:text="${error}">Ошибка</p>
+        </div>
+
+        <form th:action="@{/admin/users-readers/{userReaderID}/rentals/new(userReaderID=${userReader.id})}" th:object="${rental}" method="post">
+            
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{reader}" th:value="${reader}" />
+
+            
+            <label for="bookId">Книга:</label>
+            <select id="bookId" th:field="*{book.id}" required>
+                <option value="" disabled selected>Выберите книгу</option>
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
+            </select>
+            <br><br>
+
+            
+            <label for="issueDate">Дата выдачи:</label>
+            <input type="date" id="issueDate" th:field="*{issueDate}" required />
+            <br><br>
+
+            
+            <label for="expectedReturnDate">Предполагаемая дата возврата:</label>
+            <input type="date" id="expectedReturnDate" th:field="*{expectedReturnDate}" required />
+            <br><br>
+
+           
+            <button type="submit">Создать аренду</button>
+        </form>
+
+        
+        <a class="back-link" th:href="@{/admin/users-readers/{userReaderID}/rentals(userReaderID=${userReader.id})}">
+            Вернуться к списку аренд
+        </a>
+    </div>
+</body>
+</html>

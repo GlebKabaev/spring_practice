@@ -40,6 +40,8 @@
                     <a th:if="${userReader.user != null}" th:href="@{/admin/users-readers/{id}/edit(id=${userReader.id})}">Редактировать</a>
                     <a th:href="@{/admin/users-readers/{userReaderId}(userReaderId=${userReader.id})}">Подробнее</a>
                     <a th:href="@{/admin/users-readers/{id}/cart(id=${userReader.id})}">Посмотреть корзину</a>
+                    <a th:href="@{/admin/users-readers/{id}/rentals(id=${userReader.id})}">Посмотреть аренды</a>
+                    <a th:if="${userReader.user == null}" th:href="@{/admin/users-readers/{id}/repair(id=${userReader.id})}">Восстановить</a>
                 </td>
             </tr>
         </tbody>

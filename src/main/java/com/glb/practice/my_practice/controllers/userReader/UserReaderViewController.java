@@ -4,6 +4,7 @@ import com.glb.practice.my_practice.models.*;
 import com.glb.practice.my_practice.srevice.book.BookService;
 import com.glb.practice.my_practice.srevice.cart.CartElementService;
 import com.glb.practice.my_practice.srevice.reader.ReaderService;
+import com.glb.practice.my_practice.srevice.rental.RentalService;
 import com.glb.practice.my_practice.srevice.user.UserService;
 import com.glb.practice.my_practice.srevice.userReader.UserReaderService;
 
@@ -26,6 +27,7 @@ public class UserReaderViewController {
     private final BookService bookService;
     private final UserService userService;
     private final ReaderService readerService;
+    private final RentalService rentalService;
 
     /** Показать список пользователей и читателей */
     // сортировку добавить
@@ -173,8 +175,8 @@ public class UserReaderViewController {
     public String repairUser(@PathVariable int userReaderID, Model model) {
         UserReader userReader = userReaderService.findById(userReaderID);
         if (userReader.getUser() == null) {
-            model.addAttribute("userReader",userReader);
-            model.addAttribute("reader",userReader.getReader());
+            model.addAttribute("userReader", userReader);
+            model.addAttribute("reader", userReader.getReader());
             model.addAttribute("user", new User());
             return "repair";
         } else {
@@ -194,4 +196,45 @@ public class UserReaderViewController {
             return "redirect:/admin/users-readers";
         }
     }
+
+    @GetMapping("/{userReaderID}/rentals")
+    public String showReaderRentals(@PathVariable int userReaderID, Model model) {
+        UserReader userReader = userReaderService.findById(userReaderID);
+        Reader reader = userReader.getReader();
+        List<Rental> rentals = rentalService.findByReader(reader);
+        model.addAttribute("reader", reader);
+        model.addAttribute("userReader", userReader);
+        model.addAttribute("rentals", rentals);
+        return "admin_reader_rentals";
+    }
+
+    @GetMapping("/{userReaderID}/rentals/new")
+    public String showCreateRentalForm(@PathVariable int userReaderID, Model model) {
+        UserReader userReader = userReaderService.findById(userReaderID);
+        model.addAttribute("reader", userReader.getReader());
+        model.addAttribute("userReader", userReader);
+        model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
+        model.addAttribute("rental", new Rental());
+        return "user_reader_new_rental";
+    }
+
+    @PostMapping("/{userReaderID}/rentals/new")
+    public String saveRental(@PathVariable int userReaderID, @ModelAttribute("rental") Rental rental, Model model) {
+        UserReader userReader = userReaderService.findById(userReaderID);
+        Reader reader = userReader.getReader();
+        try {
+            rental.setReader(reader);
+            rentalService.save(rental);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("reader", reader);
+            model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
+            model.addAttribute("rental", new Rental());
+            model.addAttribute("error", e.getMessage());
+            return "user_reader_new_rental";
+        }
+
+        return "redirect:/admin/users-readers/%d/rentals".formatted(userReader.getId());
+    }
+
 }
