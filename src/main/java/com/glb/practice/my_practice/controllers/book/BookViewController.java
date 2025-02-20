@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +24,7 @@ import lombok.AllArgsConstructor;
 public class BookViewController {
     private final BookService bookService;
     private final ImageService imageService;
+
     @GetMapping({ "/", "" })
     public String showBooks(Model model) {
         List<String> sortFields = Arrays.asList("id", "Название", "Автор");
@@ -54,7 +53,7 @@ public class BookViewController {
 
     }
 
-    @GetMapping({"/{id}", "/{id}/"})
+    @GetMapping({ "/{id}", "/{id}/" })
     public String showBookData(Model model, @PathVariable int id) {
         Book book = bookService.findById(id);
         if (book.getImage() != null) {
@@ -67,7 +66,7 @@ public class BookViewController {
         return "book";
     }
 
-    @GetMapping({ "delete_book/{id}", "delete_book/{id}/" })
+    @PatchMapping({ "delete_book/{id}", "delete_book/{id}/" })
     public String deleteById(Model model, @PathVariable int id) {
         bookService.deleteById(id);
         return "redirect:/admin/books";
@@ -85,12 +84,12 @@ public class BookViewController {
         return "book_add-edit";
     }
 
-    @PostMapping({"/save_book", "/save_book/"})
+    @PostMapping({ "/save_book", "/save_book/" })
     public String save(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
         try {
             if (file != null && !file.isEmpty()) {
                 Image image = imageService.save(file);
-                book.setImage(image); 
+                book.setImage(image);
             }
             bookService.save(book);
         } catch (Exception e) {
@@ -102,12 +101,12 @@ public class BookViewController {
         return "redirect:/admin/books";
     }
 
-    @PostMapping({"/update_book", "/update_book/"})
+    @PatchMapping({ "/update_book", "/update_book/" })
     public String update(@ModelAttribute("book") Book book, @RequestParam("file") MultipartFile file, Model model) {
         try {
             if (file != null && !file.isEmpty()) {
                 Image image = imageService.save(file);
-                book.setImage(image); 
+                book.setImage(image);
             }
             bookService.update(book);
         } catch (Exception e) {
@@ -119,5 +118,4 @@ public class BookViewController {
         return "redirect:/admin/books";
     }
 
-    
 }
