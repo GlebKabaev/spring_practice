@@ -55,7 +55,7 @@ public class CartElementViewController {
         return "redirect:/admin/carts";
     }
 
-    @GetMapping({"/delete/{id}", "/delete/{id}/"})
+    @DeleteMapping({"/delete/{id}", "/delete/{id}/"})
     public String deleteById(@PathVariable int id) {
         cartService.deleteById(id);
         return "redirect:/admin/carts";
@@ -69,7 +69,7 @@ public class CartElementViewController {
         return "cart_add-edit";
     }
 
-    @PostMapping({"/update_cart", "/update_cart/"})
+    @PatchMapping({"/update_cart", "/update_cart/"})
     public String update(@ModelAttribute("cart") CartElement cart, Model model) {
         try {
             cartService.update(cart);
