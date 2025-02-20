@@ -2,6 +2,7 @@ package com.glb.practice.my_practice.config;
 
 import com.glb.practice.my_practice.srevice.user.UserService;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -69,5 +71,13 @@ public class SecurityConfig {
                 .permitAll()  // Страница логаута доступна всем
             );
         return http.build();  // Возвращаем SecurityFilterChain
+    }
+    //для эмуляции http методов
+    @Bean
+    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
+        FilterRegistrationBean<HiddenHttpMethodFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new HiddenHttpMethodFilter());
+        filterRegistrationBean.addUrlPatterns("/*"); // Применяем фильтр ко всем URL
+        return filterRegistrationBean;
     }
 }
