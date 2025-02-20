@@ -6,15 +6,21 @@
 <body>
     <div th:insert="~{layout :: content}"></div>
     <h2>Список корзин</h2>
+
+    <!-- Форма сортировки -->
     <form action="/admin/carts" method="get">
-        <select name="field">
+        <label for="field">Сортировать по:</label>
+        <select id="field" name="field">
             <option th:each="field : ${sortFields}" 
                     th:value="${field}" 
                     th:text="${field}" 
-                    th:selected="${field} == ${selectedField}">Field</option>
+                    th:selected="${field == selectedField}">
+            </option>
         </select>
-        <button type="submit">Сортировать</button>
+        <button type="submit">Применить</button>
     </form>
+
+    <!-- Таблица корзин -->
     <table>
         <thead>
             <tr>
@@ -30,14 +36,20 @@
                 <td th:text="${cart.reader.lastName + ' ' + cart.reader.firstName}">Пользователь</td>
                 <td th:text="${cart.book.title}">Книга</td>
                 <td>
-                    
-                    <a th:href="@{/admin/carts/edit/{id}(id=${cart.id})}">Редактировать</a>
-                    <a th:href="@{/admin/carts/delete/{id}(id=${cart.id})}">Удалить</a>
+                    <!-- Редактирование -->
+                    <a th:href="@{/admin/carts/edit/{id}(id=${cart.id})}" class="action-edit">Редактировать</a>
+
+                    <!-- Удаление -->
+                    <form th:action="@{/admin/carts/delete/{id}(id=${cart.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="action-delete" onclick="return confirm('Вы уверены, что хотите удалить эту запись?');">Удалить</button>
+                    </form>
                 </td>
             </tr>
+            <!-- Кнопка "Добавить" -->
             <tr>
-                <td colspan="4">
-                    <button th:onclick="|window.location.href='@{/admin/carts/new}'|">Добавить</button>
+                <td colspan="4" style="text-align: right;">
+                    <a th:href="@{/admin/carts/new}" class="action-add">Добавить корзину</a>
                 </td>
             </tr>
         </tbody>

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Список книг</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <h2>Список книг</h2>
     <form action="/admin/books/sort" method="get">
         <select name="field">
-            <option th:each="field : ${sortFields}" 
-                    th:value="${field}" 
-                    th:text="${field}"
-                    th:selected="${field} == ${selectedField}">Field</option>
+            <option th:each="field : ${sortFields}" th:value="${field}" th:text="${field}"
+                th:selected="${field} == ${selectedField}">Field</option>
         </select>
         <button type="submit">Sort</button>
     </form>
-    
+
     <table>
         <thead>
             <tr>
@@ -41,9 +41,23 @@
                 <td th:text="${book.rentalCost}">Стоимость аренды</td>
                 <td th:text="${book.deleted} ? 'Да' : 'Нет'">Удалена</td>
                 <td>
-                    <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
-                    <a th:href="@{/admin/books/edit/{id}(id=${book.id})}">Редактировать</a>
-                    <a th:href="@{/admin/books/delete_book/{id}(id=${book.id})}">Удалить</a>
+                    <div class="actions">
+                        <!-- Просмотр -->
+                        <form th:action="@{/admin/books/{id}(id=${book.id})}" method="get">
+                            <button type="submit" class="action-view">Просмотр</button>
+                        </form>
+                
+                        <!-- Редактирование -->
+                        <form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="get">
+                            <button type="submit" class="action-edit">Редактировать</button>
+                        </form>
+                
+                        <!-- Удаление -->
+                        <form th:action="@{/admin/books/delete_book/{id}(id=${book.id})}" method="post">
+                            <input type="hidden" name="_method" value="patch" />
+                            <button type="submit" class="action-delete" onclick="return confirm('Вы уверены, что хотите удалить эту книгу?');">Удалить</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             <td colspan="8">
@@ -52,4 +66,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

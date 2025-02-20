@@ -56,16 +56,26 @@
         .delete-button:hover, .home-button:hover {
             background-color: #45a049;
         }
+        .empty-cart-message {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-
     <header>
         <h1>Корзина</h1>
     </header>
-
     <div class="main-content">
-        <table>
+        <!-- Проверка на пустую корзину -->
+        <div th:if="${#lists.isEmpty(cart_elements)}" class="empty-cart-message">
+            Ваша корзина пуста.
+        </div>
+
+        <!-- Таблица корзины -->
+        <table th:if="${not #lists.isEmpty(cart_elements)}">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -78,23 +88,28 @@
                     <td th:text="${cartElement.id}">1</td>
                     <td th:text="${cartElement.book.title}">Название книги</td>
                     <td class="action-buttons">
-                        <form th:action="@{/cart/delete_element/{id}(id=${cartElement.id})}" method="post">
-                            <button type="submit" class="delete-button">Удалить</button>
+                        <!-- Форма удаления -->
+                        <form th:action="@{/admin/carts/delete/{id}(id=${cartElement.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <button type="submit" class="delete-button" onclick="return confirm('Вы уверены, что хотите удалить эту книгу из корзины?');">Удалить</button>
                         </form>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Кнопка "На главную" -->
         <div class="action-buttons">
             <a th:href="@{/home}" class="home-button">На главную</a>
         </div>
-        <form action="/cart/order" method="post">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-            <label for="calendar">Выберите дату:</label>
-            <input type="date" id="calendar" name="expectedReturnDate" required>
-            <button type="submit">Отправить</button>
+
+        <!-- Форма заказа -->
+        <form action="/cart/order" method="post" th:if="${not #lists.isEmpty(cart_elements)}">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            <label for="calendar">Выберите дату возврата:</label>
+            <input type="date" id="calendar" name="expectedReturnDate" required min="{{#dates.format(#dates.createNow(), 'yyyy-MM-dd')}}" />
+            <button type="submit">Отправить заказ</button>
         </form>
     </div>
-
 </body>
 </html>

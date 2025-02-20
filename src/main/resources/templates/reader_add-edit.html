@@ -6,28 +6,63 @@
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
+        <!-- Заголовок -->
         <h2 th:text="${reader.id == null} ? 'Добавить пользователя' : 'Изменить пользователя'"></h2>
-        <form th:action="${reader.id == null} ? @{/admin/readers/save_reader} : @{/admin/readers/update_reader}" th:object="${reader}" method="post">
-            <input type="hidden" th:field="*{id}" />
-            <input type="hidden" name="_method" value="put" />
+
+        <!-- Форма -->
+        <form th:action="${reader.id == null} ? @{/admin/readers/save_reader} : @{/admin/readers/update_reader}" 
+              th:object="${reader}" 
+              method="post" 
+              th:method="${reader.id == null} ? 'post' : 'patch'">
             
+            <!-- Скрытое поле ID -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Фамилия -->
             <label for="lastName">Фамилия:</label>
             <input type="text" id="lastName" th:field="*{lastName}" placeholder="Введите фамилию" required />
+            <div th:if="${#fields.hasErrors('lastName')}" class="error">
+                <p th:errors="*{lastName}">Ошибка</p>
+            </div>
 
+            <!-- Имя -->
             <label for="firstName">Имя:</label>
             <input type="text" id="firstName" th:field="*{firstName}" placeholder="Введите имя" required />
+            <div th:if="${#fields.hasErrors('firstName')}" class="error">
+                <p th:errors="*{firstName}">Ошибка</p>
+            </div>
 
+            <!-- Отчество -->
             <label for="middleName">Отчество:</label>
             <input type="text" id="middleName" th:field="*{middleName}" placeholder="Введите отчество" required />
+            <div th:if="${#fields.hasErrors('middleName')}" class="error">
+                <p th:errors="*{middleName}">Ошибка</p>
+            </div>
 
+            <!-- Адрес -->
             <label for="address">Адрес:</label>
             <input type="text" id="address" th:field="*{address}" placeholder="Введите адрес" required />
+            <div th:if="${#fields.hasErrors('address')}" class="error">
+                <p th:errors="*{address}">Ошибка</p>
+            </div>
 
+            <!-- Телефон -->
             <label for="phone">Телефон:</label>
             <input type="tel" id="phone" th:field="*{phone}" placeholder="Введите телефон" required />
+            <div th:if="${#fields.hasErrors('phone')}" class="error">
+                <p th:errors="*{phone}">Ошибка</p>
+            </div>
 
+            <!-- Сообщение об ошибке -->
+            <div th:if="${error != null}" class="error">
+                <p th:text="${error}">Ошибка</p>
+            </div>
+
+            <!-- Кнопка отправки -->
             <button type="submit" th:text="${reader.id == null} ? 'Создать пользователя' : 'Сохранить изменения'"></button>
         </form>
+
+        <!-- Ссылка "Вернуться" -->
         <a class="back-link" th:href="@{/admin/readers}">Вернуться к списку пользователей</a>
     </div>
 </body>

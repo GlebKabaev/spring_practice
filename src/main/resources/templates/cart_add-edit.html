@@ -6,27 +6,48 @@
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
+        <!-- Заголовок -->
         <h2 th:text="${cart.id == null} ? 'Добавить корзину' : 'Изменить корзину'"></h2>
-        <form th:action="${cart.id == null} ? @{/admin/carts/save_cart} : @{/admin/carts/update_cart}" th:object="${cart}" method="post">
-            <input type="hidden" th:field="*{id}" />
-            <input type="hidden" name="_method" value="put" />
 
+        <!-- Форма -->
+        <form th:action="${cart.id == null} ? @{/admin/carts/save_cart} : @{/admin/carts/update_cart}" 
+              th:object="${cart}" 
+              method="post" 
+              th:method="${cart.id == null} ? 'post' : 'patch'">
+            
+            <!-- Скрытое поле ID -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Выбор читателя -->
             <label for="reader">Читатель:</label>
             <select id="reader" th:field="*{reader.id}" required>
-                <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.lastName + ' ' + reader.firstName}">
-                    Выберите читателя
+                <option value="" disabled selected>Выберите читателя</option>
+                <option th:each="reader : ${readers}" 
+                        th:value="${reader.id}" 
+                        th:text="${reader.lastName + ' ' + reader.firstName}">
                 </option>
             </select>
 
+            <!-- Выбор книги -->
             <label for="book">Книга:</label>
             <select id="book" th:field="*{book.id}" required>
-                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}">
-                    Выберите книгу
+                <option value="" disabled selected>Выберите книгу</option>
+                <option th:each="book : ${books}" 
+                        th:value="${book.id}" 
+                        th:text="${book.title}">
                 </option>
             </select>
 
+            <!-- Сообщение об ошибке -->
+            <div th:if="${error != null}" class="error">
+                <p th:text="${error}">Ошибка</p>
+            </div>
+
+            <!-- Кнопка отправки -->
             <button type="submit" th:text="${cart.id == null} ? 'Создать корзину' : 'Сохранить изменения'"></button>
         </form>
+
+        <!-- Ссылка "Вернуться" -->
         <a class="back-link" th:href="@{/admin/carts}">Вернуться к списку корзин</a>
     </div>
 </body>
