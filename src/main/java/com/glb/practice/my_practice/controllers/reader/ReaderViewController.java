@@ -6,12 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
@@ -66,24 +61,24 @@ public class ReaderViewController {
     @GetMapping({ "/{id}", "/{id}/" })
     public String showReaderData(Model model, @PathVariable int id) {
         // TODO список арендованных книг пользователем и время захода на сайт
-        try{
-        Reader reader = readerService.findByIDReader(id);
-        model.addAttribute("reader", reader);
-        return "reader";
-        }catch(Exception e){
+        try {
+            Reader reader = readerService.findByIDReader(id);
+            model.addAttribute("reader", reader);
+            return "reader";
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found");
         }
-        
+
     }
 
     @GetMapping("/{id}/cart")
     public String showReaderCart(Model model, @PathVariable int id) {
-        try{
+        try {
             Reader reader = readerService.findByIDReader(id);
-            model.addAttribute("reader",reader);
-            }catch(Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found");
-            }
+            model.addAttribute("reader", reader);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reader not found");
+        }
         List<CartElement> cartElements = cartElementService.findByReaderId(id);
         model.addAttribute("cart_elements", cartElements);
         return "admin_reader_cart";
@@ -114,7 +109,7 @@ public class ReaderViewController {
         return "redirect:/admin/readers";
     }
 
-    @GetMapping({ "/delete_reader/{id}", "/delete_reader/{id}/" })
+    @DeleteMapping({ "/delete_reader/{id}", "/delete_reader/{id}/" })
     public String deleteReader(Model model, @PathVariable int id) {
         readerService.deleteReader(id);
         return "redirect:/admin/readers";
@@ -126,7 +121,7 @@ public class ReaderViewController {
         return "reader_add-edit";
     }
 
-    @PostMapping({ "/update_reader", "/update_reader/" })
+    @PatchMapping({ "/update_reader", "/update_reader/" })
     public String updateReader(@ModelAttribute("reader") Reader reader, Model model) {
 
         try {
@@ -139,21 +134,23 @@ public class ReaderViewController {
         }
         return "redirect:/admin/readers";
     }
-    @GetMapping( "/{id}/cart/new")
+
+    @GetMapping("/{id}/cart/new")
     public String newBookToReaderCart(@PathVariable int id, Model model) {
         Reader reader = readerService.findByIDReader(id);
-        List<Book>books=bookService.findByQuantityNotZeroAndDeletedFalse();
+        List<Book> books = bookService.findByQuantityNotZeroAndDeletedFalse();
         model.addAttribute("reader", reader);
         model.addAttribute("books", books);
 
         return "reader_add_to_cart_book";
     }
-    @PostMapping( "/{id}/cart/new")
-    public String addBookToReaderCart(@PathVariable int id,@ModelAttribute("bookId") int bookId, Model model) {
+
+    @PostMapping("/{id}/cart/new")
+    public String addBookToReaderCart(@PathVariable int id, @ModelAttribute("bookId") int bookId, Model model) {
         Reader reader = readerService.findByIDReader(id);
         Book book = bookService.findById(bookId);
-        cartElementService.save(new CartElement(0,reader,book));
-        
+        cartElementService.save(new CartElement(0, reader, book));
+
         return "redirect:/admin/readers/%d/cart".formatted(id);
     }
 
