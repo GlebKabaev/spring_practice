@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.cart;
+package com.glb.practice.my_practice.service.cart;
 
 import java.util.List;
 

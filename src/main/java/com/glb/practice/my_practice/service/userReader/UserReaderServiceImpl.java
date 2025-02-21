@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.userReader;
+package com.glb.practice.my_practice.service.userReader;
 
 import lombok.AllArgsConstructor;
 import java.util.List;

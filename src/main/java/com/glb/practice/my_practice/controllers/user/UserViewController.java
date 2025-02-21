@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.User;
-import com.glb.practice.my_practice.srevice.user.UserService;
+import com.glb.practice.my_practice.service.user.UserService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

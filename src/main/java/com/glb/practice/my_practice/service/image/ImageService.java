@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.image;
+package com.glb.practice.my_practice.service.image;
 
 import java.io.IOException;
 import java.util.Base64;

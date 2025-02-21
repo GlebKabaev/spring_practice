@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.book;
+package com.glb.practice.my_practice.service.book;
 
 import java.util.List;
 import org.springframework.context.annotation.Primary;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.repository.book.BookRepository;
-import com.glb.practice.my_practice.srevice.cart.CartElementService;
+import com.glb.practice.my_practice.service.cart.CartElementService;
 
 import lombok.AllArgsConstructor;
 

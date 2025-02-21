@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.rental;
+package com.glb.practice.my_practice.service.rental;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.repository.rental.RentalRepository;
-import com.glb.practice.my_practice.srevice.book.BookService;
+import com.glb.practice.my_practice.service.book.BookService;
 
 import lombok.AllArgsConstructor;
 

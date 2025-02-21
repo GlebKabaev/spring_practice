@@ -1,12 +1,12 @@
 package com.glb.practice.my_practice.controllers.userReader;
 
 import com.glb.practice.my_practice.models.*;
-import com.glb.practice.my_practice.srevice.book.BookService;
-import com.glb.practice.my_practice.srevice.cart.CartElementService;
-import com.glb.practice.my_practice.srevice.reader.ReaderService;
-import com.glb.practice.my_practice.srevice.rental.RentalService;
-import com.glb.practice.my_practice.srevice.user.UserService;
-import com.glb.practice.my_practice.srevice.userReader.UserReaderService;
+import com.glb.practice.my_practice.service.book.BookService;
+import com.glb.practice.my_practice.service.cart.CartElementService;
+import com.glb.practice.my_practice.service.reader.ReaderService;
+import com.glb.practice.my_practice.service.rental.RentalService;
+import com.glb.practice.my_practice.service.user.UserService;
+import com.glb.practice.my_practice.service.userReader.UserReaderService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class UserReaderViewController {
         // List<String> sortFields = Arrays.asList("id", "username", "Фамилия", "Имя",
         // "Отчество");
         // model.addAttribute("sortFields", sortFields);
-        model.addAttribute("UsersReaders", userReaderService.findAll());
+        model.addAttribute("usersReaders", userReaderService.findAll());
         return "user_reader_list";
     }
 
@@ -100,7 +100,7 @@ public class UserReaderViewController {
     }
 
     /** Удаление пользователя и его читателя */
-    @GetMapping("/{userReaderId}/delete")
+    @DeleteMapping("/{userReaderId}/delete")
     public String deleteUserAndReader(@PathVariable int userReaderId) {
         userService.deleteUser(userReaderId);
         return "redirect:/admin/users-readers";
@@ -111,7 +111,7 @@ public class UserReaderViewController {
     public String editUserAndReader(@PathVariable int userReaderId, Model model) {
         UserReader userReader = userReaderService.findById(userReaderId);
         if (userReader.getUser() == null) {
-            model.addAttribute("UsersReaders", userReaderService.findAll());
+            model.addAttribute("usersReaders", userReaderService.findAll());
             model.addAttribute("error", "Связь c id %d не подлежит редактированию".formatted(userReader.getId()));
             return "user_reader_list";
         }
@@ -121,7 +121,7 @@ public class UserReaderViewController {
     }
 
     /** Обновление данных пользователя и его читателя */
-    @PostMapping("/update")
+    @PatchMapping("/update")
     public String updateUserAndReader(@ModelAttribute("userReader") UserReader userReader,
             Model model) {
         try {
@@ -184,7 +184,7 @@ public class UserReaderViewController {
         }
     }
 
-    @PostMapping("/{userReaderID}/repair")
+    @PatchMapping("/{userReaderID}/repair")
     public String repair(@PathVariable int userReaderID, Model model, @ModelAttribute("user") User user) {
         UserReader userReader = userReaderService.findById(userReaderID);
         if (userReader.getUser() == null) {

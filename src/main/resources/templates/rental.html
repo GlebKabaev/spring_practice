@@ -1,36 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Аренда</title>
+    <meta charset="UTF-8">
+    <title>Детали аренды</title>
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
-    <h2>Список аренд</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Пользователь</th>
-                <th>Книга</th>
-                <th>Дата выдачи</th>
-                <th>Предполагаемая дата возврата</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th="rental">
-                <td th:text="${rental.id}">ID</td>
-                <td th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}">Пользователь</td>
-                <td th:text="${rental.book.title}">Книга</td>
-                <td th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
-                <td th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Предполагаемая дата возврата</td>
-                <td>
-                    <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a>
-                    <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a>
-                    <a th:href="@{/admin/rentals/delete/{id}(id=${rental.id})}">Удалить</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <h2>Детали аренды</h2>
+        <div>
+            <p><strong>ID:</strong> <span th:text="${rental.id}"></span></p>
+            <p><strong>Пользователь:</strong> <span th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}"></span></p>
+            <p><strong>Книга:</strong> <span th:text="${rental.book.title}"></span></p>
+            <p><strong>Дата выдачи:</strong> <span th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}"></span></p>
+            <p><strong>Предполагаемая дата возврата:</strong> <span th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}"></span></p>
+        </div>
+        <div>
+            <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |
+            <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post" style="display:inline;">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту аренду?')">Удалить</button>
+            </form>
+        </div>
+        <br>
+        <a class="back-link" th:href="@{/admin/rentals}">Вернуться к списку аренд</a>
+    </div>
 </body>
 </html>

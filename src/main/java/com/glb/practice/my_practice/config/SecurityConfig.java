@@ -1,7 +1,5 @@
 package com.glb.practice.my_practice.config;
 
-import com.glb.practice.my_practice.srevice.user.UserService;
-
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+
+import com.glb.practice.my_practice.service.user.UserService;
 
 @Configuration
 public class SecurityConfig {

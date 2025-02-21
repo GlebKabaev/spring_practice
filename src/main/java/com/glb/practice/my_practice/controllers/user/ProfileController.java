@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.Reader;
-import com.glb.practice.my_practice.srevice.reader.ReaderService;
-import com.glb.practice.my_practice.srevice.user.UserService;
+import com.glb.practice.my_practice.service.reader.ReaderService;
+import com.glb.practice.my_practice.service.user.UserService;
 
 import lombok.AllArgsConstructor;
 

@@ -1,10 +1,10 @@
-package com.glb.practice.my_practice.srevice.user;
+package com.glb.practice.my_practice.service.user;
 
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.models.UserReader;
 import com.glb.practice.my_practice.repository.user.UserRepository;
-import com.glb.practice.my_practice.srevice.userReader.UserReaderService;
+import com.glb.practice.my_practice.service.userReader.UserReaderService;
 
 import lombok.AllArgsConstructor;
 

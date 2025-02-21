@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.glb.practice.my_practice.srevice.image.ImageService;
+import com.glb.practice.my_practice.service.image.ImageService;
 
 
 @Controller

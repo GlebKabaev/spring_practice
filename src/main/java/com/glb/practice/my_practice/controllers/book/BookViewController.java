@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.Image;
-import com.glb.practice.my_practice.srevice.book.BookService;
-import com.glb.practice.my_practice.srevice.image.ImageService;
+import com.glb.practice.my_practice.service.book.BookService;
+import com.glb.practice.my_practice.service.image.ImageService;
 
 import lombok.AllArgsConstructor;
 

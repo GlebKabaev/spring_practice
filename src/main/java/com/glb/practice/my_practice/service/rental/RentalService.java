@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.rental;
+package com.glb.practice.my_practice.service.rental;
 
 import java.util.List;
 

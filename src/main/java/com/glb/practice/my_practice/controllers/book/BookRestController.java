@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import com.glb.practice.my_practice.models.Book;
-import com.glb.practice.my_practice.srevice.book.BookService;
+import com.glb.practice.my_practice.service.book.BookService;
 
 import lombok.AllArgsConstructor;
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import com.glb.practice.my_practice.models.Rental;
-import com.glb.practice.my_practice.srevice.rental.RentalService;
+import com.glb.practice.my_practice.service.rental.RentalService;
 
 import lombok.AllArgsConstructor;
 @RestController

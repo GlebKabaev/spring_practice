@@ -1,4 +1,4 @@
-package com.glb.practice.my_practice.srevice.reader;
+package com.glb.practice.my_practice.service.reader;
 
 import java.util.List;
 

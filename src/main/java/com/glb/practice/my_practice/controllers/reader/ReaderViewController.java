@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
-import com.glb.practice.my_practice.srevice.book.BookService;
-import com.glb.practice.my_practice.srevice.cart.CartElementService;
-import com.glb.practice.my_practice.srevice.reader.ReaderService;
+import com.glb.practice.my_practice.service.book.BookService;
+import com.glb.practice.my_practice.service.cart.CartElementService;
+import com.glb.practice.my_practice.service.reader.ReaderService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;

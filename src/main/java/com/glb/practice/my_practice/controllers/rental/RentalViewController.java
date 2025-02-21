@@ -2,16 +2,18 @@ package com.glb.practice.my_practice.controllers.rental;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.glb.practice.my_practice.models.Rental;
-import com.glb.practice.my_practice.srevice.book.BookService;
-import com.glb.practice.my_practice.srevice.reader.ReaderService;
-import com.glb.practice.my_practice.srevice.rental.RentalService;
+import com.glb.practice.my_practice.service.book.BookService;
+import com.glb.practice.my_practice.service.reader.ReaderService;
+import com.glb.practice.my_practice.service.rental.RentalService;
 
 import lombok.AllArgsConstructor;
 
@@ -60,7 +62,7 @@ public class RentalViewController {
         return "redirect:/admin/rentals";
     }
 
-    @GetMapping({ "/delete/{id}", "/delete/{id}/" })
+    @DeleteMapping({ "/delete/{id}", "/delete/{id}/" })
     public String deleteRental(Model model, @PathVariable int id) {
         rentalService.deleteById(id);
         return "redirect:/admin/rentals";
@@ -74,7 +76,7 @@ public class RentalViewController {
         return "rental_add-edit";
     }
 
-    @PostMapping({ "/update_rental", "/update_rental/" })
+    @PatchMapping({ "/update_rental", "/update_rental/" })
     public String updateRental(@ModelAttribute("rental") Rental rental, Model model) {
         try {
             rentalService.update(rental);

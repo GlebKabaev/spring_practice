@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.models.User;
-import com.glb.practice.my_practice.srevice.book.BookService;
-import com.glb.practice.my_practice.srevice.user.UserService;
+import com.glb.practice.my_practice.service.book.BookService;
+import com.glb.practice.my_practice.service.user.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

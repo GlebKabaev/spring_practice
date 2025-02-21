@@ -15,9 +15,9 @@ import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.Rental;
-import com.glb.practice.my_practice.srevice.cart.CartElementServiceImpl;
-import com.glb.practice.my_practice.srevice.reader.ReaderService;
-import com.glb.practice.my_practice.srevice.rental.RentalService;
+import com.glb.practice.my_practice.service.cart.CartElementServiceImpl;
+import com.glb.practice.my_practice.service.reader.ReaderService;
+import com.glb.practice.my_practice.service.rental.RentalService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;

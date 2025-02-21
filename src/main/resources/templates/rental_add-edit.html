@@ -1,28 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></title>
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
-        <h2 th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></h2> 
-        <form th:action="${rental.id == null} ? @{/admin/rentals/save_rental} : @{/admin/rentals/update_rental}" th:object="${rental}" method="post">
+        <h2 th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></h2>
+
+        <!-- Отображение ошибок, если они есть -->
+        <div th:if="${error != null}" style="color: red;" th:text="${error}"></div>
+
+        <form th:action="${rental.id == null} ? @{/admin/rentals/save_rental} : @{/admin/rentals/update_rental}"
+              th:object="${rental}" method="post">
+            <!-- Скрытое поле ID для редактирования -->
             <input type="hidden" th:field="*{id}" />
-            <input type="hidden" name="_method" value="put" />
+
+            <!-- Используем _method только для PATCH при редактировании -->
+            <input th:if="${rental.id != null}" type="hidden" name="_method" value="patch" />
 
             <label for="reader">Читатель:</label>
             <select id="reader" th:field="*{reader.id}" required>
-                <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.lastName + ' ' + reader.firstName}">
-                    Выберите читателя
-                </option>
+                <option value="">Выберите читателя</option>
+                <option th:each="reader : ${readers}"
+                        th:value="${reader.id}"
+                        th:text="${reader.lastName + ' ' + reader.firstName}"></option>
             </select>
 
             <label for="book">Книга:</label>
             <select id="book" th:field="*{book.id}" required>
-                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}">
-                    Выберите книгу
-                </option>
+                <option value="">Выберите книгу</option>
+                <option th:each="book : ${books}"
+                        th:value="${book.id}"
+                        th:text="${book.title}"></option>
             </select>
 
             <label for="issueDate">Дата выдачи:</label>
@@ -31,8 +42,10 @@
             <label for="expectedReturnDate">Предполагаемая дата возврата:</label>
             <input type="date" id="expectedReturnDate" th:field="*{expectedReturnDate}" required />
 
-            <button type="submit" th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
+            <button type="submit"
+                    th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
         </form>
+
         <a class="back-link" th:href="@{/admin/rentals}">Вернуться к списку аренд</a>
     </div>
 </body>

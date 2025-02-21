@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import com.glb.practice.my_practice.models.Reader;
-import com.glb.practice.my_practice.srevice.reader.ReaderService;
+import com.glb.practice.my_practice.service.reader.ReaderService;
 
 import lombok.AllArgsConstructor;
 
