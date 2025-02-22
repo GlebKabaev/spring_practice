@@ -89,7 +89,7 @@
                     <td th:text="${cartElement.book.title}">Название книги</td>
                     <td class="action-buttons">
                         <!-- Форма удаления -->
-                        <form th:action="@{/admin/carts/delete/{id}(id=${cartElement.id})}" method="post">
+                        <form th:action="@{/cart/delete_element/{id}(id=${cartElement.id})}" method="post">
                             <input type="hidden" name="_method" value="delete" />
                             <button type="submit" class="delete-button" onclick="return confirm('Вы уверены, что хотите удалить эту книгу из корзины?');">Удалить</button>
                         </form>

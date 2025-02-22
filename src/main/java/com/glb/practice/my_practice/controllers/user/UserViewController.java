@@ -11,8 +11,11 @@ import com.glb.practice.my_practice.models.User;
 import com.glb.practice.my_practice.service.user.UserService;
 
 import lombok.AllArgsConstructor;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,8 +58,6 @@ public class UserViewController {
         try{
         userService.saveUser(user); 
         }catch(Exception e){
-            e.printStackTrace();
-            
             model.addAttribute("user", user);
             if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
                 model.addAttribute("error", "Пользователь с таким username уже существует. Пожалуйста, укажите другой username.");
@@ -67,12 +68,12 @@ public class UserViewController {
         }
         return "redirect:/admin/users"; 
     }
-    @GetMapping({"/delete_user/{id}","/delete_user/{id}/"})
-    public String deleteUser(Model model,@PathVariable int id) {
+    @DeleteMapping({"/delete_user/{id}","/delete_user/{id}/"})
+    public String deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }
-    @PostMapping({"/update_user","/update_user/"})
+    @PatchMapping({"/update_user","/update_user/"})
     public String updateUser(@ModelAttribute("user") User user, Model model) {
     
         try{

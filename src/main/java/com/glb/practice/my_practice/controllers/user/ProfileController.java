@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,7 +33,7 @@ public class ProfileController {
         model.addAttribute("reader", reader);
         return "reader_self_edit";
     }
-    @PostMapping({"/update_reader","/update_reader/"})
+    @PatchMapping({"/update_reader","/update_reader/"})
     public String updateReader(@ModelAttribute("reader") Reader reader, Model model) {
     
         try{

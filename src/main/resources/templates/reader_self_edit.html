@@ -66,6 +66,7 @@
     <div class="container">
         <h2>Редактировать профиль</h2>
         <form th:action="@{/profile/update_reader}" th:object="${reader}" method="post">
+            <input type="hidden" name="_method" value="patch">
             <input type="hidden" th:field="*{id}" />
 
             <label for="lastName">Фамилия:</label>

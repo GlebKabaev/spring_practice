@@ -8,6 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -22,8 +23,4 @@ public class User {
 
     @Column(name = "role")
     private String role;
-
-    // Конструктор по умолчанию
-    public User() {
-    }
 }

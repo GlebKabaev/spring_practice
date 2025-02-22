@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Список пользователей</title>
 </head>
 <body>
@@ -8,12 +9,12 @@
     <h2>Список пользователей</h2>
 
     <!-- Форма сортировки -->
-    <form action="/admin/users/sort" method="get">
+    <form th:action="@{/admin/users/sort}" method="get">
         <select name="field">
             <option th:each="field : ${sortFields}" 
                     th:value="${field}" 
                     th:text="${field}" 
-                    th:selected="${field} == ${selectedField}">Field</option>
+                    th:selected="${field eq selectedField}">Field</option>
         </select>
         <button type="submit">Сортировать</button>
     </form>
@@ -36,13 +37,17 @@
                 <td>
                     <a th:href="@{/admin/users/{id}(id=${user.id})}">Просмотр</a>
                     <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Редактировать</a>
-                    <a th:href="@{/admin/users/delete_user/{id}(id=${user.id})}">Удалить</a>
+                    <form th:action="@{/admin/users/delete_user/{id}(id=${user.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить пользователя?');">Удалить</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <!-- Кнопка добавления нового пользователя -->
-    <button th:onclick="|window.location.href='@{/admin/users/new}'|">Добавить</button>
+    <a th:href="@{/admin/users/new}">Добавить</a>
 </body>
 </html>

@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class CartController {
         return "reader_cart";
     }
 
-    @PostMapping({ "/delete_element/{id}", "/delete_element/{id}/" })
+    @DeleteMapping({ "/delete_element/{id}", "/delete_element/{id}/" })
     public String deleteById(Model model, @PathVariable int id) {
         CartElement cartElement = cartElementService.findById(id);
         Reader reader = readerService.thisReader();
