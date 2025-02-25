@@ -90,5 +90,9 @@ public class RentalViewController {
         }
         return "redirect:/admin/rentals";
     }
-
+    @GetMapping({ "/expired", "/expired/" })
+    public String expiredRentals( Model model) {
+        model.addAttribute("rentals", rentalService.findAllExpiredRentals());
+        return "rental_list";
+    }
 }

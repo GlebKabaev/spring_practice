@@ -109,5 +109,6 @@ public class ReaderServiceImpl implements ReaderService {
         UserReader userReader = userReaderService.findByUser(userService.thisUser());
         return userReader.getReader();
     }
+    
 
 }

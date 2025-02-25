@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//TODO: переделать все mapping на верные
 //TODO:изучить restfullapi еще больше
-//TODO:создать сущность user reader
 @Controller
 @RequestMapping("/admin/users-readers")
 @AllArgsConstructor

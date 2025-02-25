@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.service.rental;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
@@ -38,9 +39,9 @@ public class RentalServiceImpl implements RentalService {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
         if (book.getQuantity() > 0) {
-            book.setQuantity(book.getQuantity() - 1); // Уменьшаем количество на 1
-            bookService.save(book); // Сохраняем обновленное количество книги
-            return rentalRepository.save(rental); // Сохраняем запись аренды
+            book.setQuantity(book.getQuantity() - 1); 
+            bookService.save(book); 
+            return rentalRepository.save(rental); 
         } else {
             throw new IllegalArgumentException("книги нет в наличии");
         }
@@ -74,4 +75,11 @@ public class RentalServiceImpl implements RentalService {
         return rentalRepository.findByReader(reader);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<Rental> findAllExpiredRentals() {
+        Date date = new Date();
+        List<Rental>expiredRentals =rentalRepository.findByExpectedReturnDateBefore(date);
+        return expiredRentals;
+    }
 }
