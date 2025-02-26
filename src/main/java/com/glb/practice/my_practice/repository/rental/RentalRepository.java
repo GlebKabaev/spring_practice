@@ -10,5 +10,5 @@ import com.glb.practice.my_practice.models.Rental;
 
 public interface RentalRepository extends JpaRepository<Rental,Integer> {
     List<Rental> findByReader(Reader reader);
-    List<Rental> findByExpectedReturnDateBefore(Date currentDate);
+    List<Rental> findByExpectedReturnDateBeforeAndReturnedFalse(Date currentDate);
 }

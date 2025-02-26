@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.service.book.BookService;
 import com.glb.practice.my_practice.service.reader.ReaderService;
@@ -49,6 +50,7 @@ public class RentalViewController {
     @PostMapping({ "/save_rental", "/save_rental/" })
     public String saveRental(@ModelAttribute("rental") Rental rental, Model model) {
         try {
+            rental.setReturned(false);
             rentalService.save(rental);
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,9 +92,24 @@ public class RentalViewController {
         }
         return "redirect:/admin/rentals";
     }
+
     @GetMapping({ "/expired", "/expired/" })
-    public String expiredRentals( Model model) {
+    public String expiredRentals(Model model) {
         model.addAttribute("rentals", rentalService.findAllExpiredRentals());
         return "rental_list";
+    }
+
+    @PatchMapping("/return/{id}")
+    public String retunRental(@PathVariable int id) {
+        Rental rental = rentalService.findById(id);
+        if (!rental.getReturned()) {
+            rental.setReturned(true);
+            rentalService.update(rental);
+        }else{
+            rental.setReturned(false);
+            rentalService.update(rental);
+        }
+
+        return "redirect:/admin/rentals/%d".formatted(id);
     }
 }

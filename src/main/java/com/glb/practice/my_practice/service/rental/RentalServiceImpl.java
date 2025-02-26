@@ -15,7 +15,7 @@ import com.glb.practice.my_practice.repository.rental.RentalRepository;
 import com.glb.practice.my_practice.service.book.BookService;
 
 import lombok.AllArgsConstructor;
-
+//TODO: сделать что-то с css
 @Service
 @AllArgsConstructor
 @Primary
@@ -79,7 +79,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public List<Rental> findAllExpiredRentals() {
         Date date = new Date();
-        List<Rental>expiredRentals =rentalRepository.findByExpectedReturnDateBefore(date);
+        List<Rental>expiredRentals =rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(date);
         return expiredRentals;
     }
 }

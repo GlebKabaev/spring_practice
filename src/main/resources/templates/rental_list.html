@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Список аренд</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
@@ -19,6 +21,7 @@
                     <th>Книга</th>
                     <th>Дата выдачи</th>
                     <th>Предполагаемая дата возврата</th>
+                    <th>Статус</th>
                     <th>Действия</th>
                 </tr>
             </thead>
@@ -28,13 +31,33 @@
                     <td th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}">Пользователь</td>
                     <td th:text="${rental.book.title}">Книга</td>
                     <td th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
-                    <td th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Предполагаемая дата возврата</td>
+                    <td th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Предполагаемая дата возврата
+                    </td>
+
+                    <!-- Колонка со статусом -->
+                    <td class="text-center">
+                        <span th:if="${rental.returned}" class="badge bg-secondary">Возвращена</span>
+                        <span th:unless="${rental.returned}" class="badge bg-success">Активна</span>
+                    </td>
+
+                    <!-- Колонка с действиями -->
                     <td>
                         <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a> |
                         <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |
-                        <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post" style="display:inline;">
+                        <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post"
+                            style="display:inline;">
                             <input type="hidden" name="_method" value="delete">
-                            <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту аренду?')">Удалить</button>
+                            <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту аренду?')"
+                                class="btn btn-link text-danger p-0">Удалить</button>
+                        </form>
+                        <form th:action="@{/admin/rentals/return/{id}(id=${rental.id})}" method="post">
+                            <!-- Скрытое поле для эмуляции PATCH-запроса -->
+                            <input type="hidden" name="_method" value="PATCH" />
+
+                            <!-- Кнопка с динамическим текстом -->
+                            <button type="submit" th:text="${rental.returned} ? 'Отменить возврат' : 'Принять возврат'"
+                                th:class="${rental.returned} ? 'btn btn-danger' : 'btn btn-success'"
+                                class="btn"></button>
                         </form>
                     </td>
                 </tr>
@@ -44,7 +67,8 @@
         <a th:href="@{/admin/rentals/new}">
             <button>Добавить</button>
         </a>
-        
+
     </div>
 </body>
+
 </html>

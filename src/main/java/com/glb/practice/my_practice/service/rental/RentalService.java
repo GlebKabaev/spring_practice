@@ -13,4 +13,5 @@ public interface RentalService {
     void deleteById(int id);
     public List<Rental> findByReader(Reader reader);
     public List<Rental> findAllExpiredRentals();
+    
 } 

@@ -14,6 +14,9 @@
             <p><strong>Книга:</strong> <span th:text="${rental.book.title}"></span></p>
             <p><strong>Дата выдачи:</strong> <span th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}"></span></p>
             <p><strong>Предполагаемая дата возврата:</strong> <span th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}"></span></p>
+            <p><strong>Статус возврата:</strong> 
+                <span th:text="${rental.returned} ? 'возвращена' : 'не возвращена'"></span>
+            </p>
         </div>
         <div>
             <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |

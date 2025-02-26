@@ -1,4 +1,5 @@
 package com.glb.practice.my_practice.models;
+
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -6,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 
 import lombok.*;
+//TODO: установить nullable везде где надо
 @Data
 @Builder
 @Entity
@@ -30,9 +32,11 @@ public class Rental {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date issueDate;
 
-
     @Column(name = "expected_return_date")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expectedReturnDate;
+
+    @Column(name = "returned", nullable = false, columnDefinition = "boolean default false")
+    private Boolean returned; // true - книга возвращена, false - арендована
 }
