@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Список корзин</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <h2>Список корзин</h2>
@@ -11,10 +13,8 @@
     <form action="/admin/carts" method="get">
         <label for="field">Сортировать по:</label>
         <select id="field" name="field">
-            <option th:each="field : ${sortFields}" 
-                    th:value="${field}" 
-                    th:text="${field}" 
-                    th:selected="${field == selectedField}">
+            <option th:each="field : ${sortFields}" th:value="${field}" th:text="${field}"
+                th:selected="${field == selectedField}">
             </option>
         </select>
         <button type="submit">Применить</button>
@@ -42,7 +42,8 @@
                     <!-- Удаление -->
                     <form th:action="@{/admin/carts/delete/{id}(id=${cart.id})}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <button type="submit" class="action-delete" onclick="return confirm('Вы уверены, что хотите удалить эту запись?');">Удалить</button>
+                        <button type="submit" class="action-delete"
+                            onclick="return confirm('Вы уверены, что хотите удалить эту запись?');">Удалить</button>
                     </form>
                 </td>
             </tr>
@@ -55,4 +56,5 @@
         </tbody>
     </table>
 </body>
+
 </html>
