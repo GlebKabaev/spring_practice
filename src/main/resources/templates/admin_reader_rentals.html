@@ -3,78 +3,11 @@
 
 <head>
     <title>Арендованные книги</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        .main-content {
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        table th,
-        table td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .action-buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .home-button,
-        .create-rental-button {
-            display: inline-block;
-            margin: 10px 5px;
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .home-button:hover,
-        .create-rental-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    
 </head>
 
 <body>
+    <div th:insert="~{layout :: content}"></div>
     <header>
         <h1>Арендованные книги читателя</h1>
     </header>
@@ -107,9 +40,7 @@
                 class="create-rental-button">Создать аренду</a>
         </div>
         <!-- Кнопка "На главную" -->
-        <div class="action-buttons">
-            <a th:href="@{/home}" class="home-button">На главную</a>
-        </div>
+        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
     </div>
 </body>
 
