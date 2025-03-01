@@ -16,7 +16,7 @@ import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.Rental;
-import com.glb.practice.my_practice.service.cart.CartElementServiceImpl;
+import com.glb.practice.my_practice.service.cart.CartElementService;
 import com.glb.practice.my_practice.service.reader.ReaderService;
 import com.glb.practice.my_practice.service.rental.RentalService;
 
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping({ "/cart/", "/cart" })
 @AllArgsConstructor
 public class CartController {
-    CartElementServiceImpl cartElementService;
+    CartElementService cartElementService;
     ReaderService readerService;
     RentalService rentalService;
 
@@ -41,11 +41,7 @@ public class CartController {
 
     @DeleteMapping({ "/delete_element/{id}", "/delete_element/{id}/" })
     public String deleteById(Model model, @PathVariable int id) {
-        CartElement cartElement = cartElementService.findById(id);
-        Reader reader = readerService.thisReader();
-        if (reader.getId().equals(cartElement.getReader().getId())) {
-            cartElementService.deleteById(id);
-        }
+        cartElementService.deleteIfOwner(id);
         return "redirect:/cart";
     }
 
@@ -63,7 +59,7 @@ public class CartController {
             expectedReturn = sdf.parse(expectedReturnDate);
         } catch (Exception e) {
             e.printStackTrace();
-
+            model.addAttribute("error","Неправильный формат даты");
             return "redirect:/cart";
         }
         if (today.getTime() > expectedReturn.getTime()) {
