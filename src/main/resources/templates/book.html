@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Книга</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <h2>Книга</h2>
@@ -29,37 +31,36 @@
                 <td th:text="${book.rentalCost}">Стоимость аренды</td>
             </tr>
             <tr>
-                <td colspan="7">
-                    <div class="actions">
-                        <!-- Просмотр -->
-                        <form th:action="@{/admin/books/{id}(id=${book.id})}" method="get">
-                            <button type="submit" class="action-view">Просмотр</button>
-                        </form>
-                
-                        <!-- Редактирование -->
-                        <form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="get">
-                            <button type="submit" class="action-edit">Редактировать</button>
-                        </form>
-                
-                        <!-- Удаление -->
-                        <form th:action="@{/admin/books/delete_book/{id}(id=${book.id})}" method="post">
-                            <input type="hidden" name="_method" value="patch" />
-                            <button type="submit" class="action-delete" onclick="return confirm('Вы уверены, что хотите удалить эту книгу?');">Удалить</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            <tr>
                 <td colspan="7" style="text-align: center;">
                     <div th:if="${base64Image != null}">
-                        <img th:src="@{|data:${book.image.contentType};base64,${base64Image}|}" alt="Book Image" style="max-width: 300px; max-height: 300px;" />
+                        <img th:src="@{|data:${book.image.contentType};base64,${base64Image}|}" alt="Book Image"
+                            style="max-width: 300px; max-height: 300px;" />
                     </div>
                     <div th:if="${base64Image == null}">
                         <p>Изображение не найдено.</p>
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td colspan="7">
+                    <div class="actions">
+                        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+                        <!-- Редактирование -->
+                        <form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="get">
+                            <button type="submit" class="action-edit">Редактировать</button>
+                        </form>
+                        <!-- Удаление -->
+                        <form th:action="@{/admin/books/delete_book/{id}(id=${book.id})}" method="post">
+                            <input type="hidden" name="_method" value="patch" />
+                            <button type="submit" class="action-delete"
+                                onclick="return confirm('Вы уверены, что хотите удалить эту книгу?');">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
         </tbody>
     </table>
 </body>
+
 </html>
