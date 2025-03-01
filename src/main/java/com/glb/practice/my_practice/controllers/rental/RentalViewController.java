@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.glb.practice.my_practice.exception.RentalNotFoundException;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.service.book.BookService;
 import com.glb.practice.my_practice.service.reader.ReaderService;
@@ -100,16 +100,14 @@ public class RentalViewController {
     }
 
     @PatchMapping("/return/{id}")
-    public String retunRental(@PathVariable int id) {
-        Rental rental = rentalService.findById(id);
-        if (!rental.getReturned()) {
-            rental.setReturned(true);
-            rentalService.update(rental);
-        }else{
-            rental.setReturned(false);
-            rentalService.update(rental);
+    public String toggleRentalStatus(@PathVariable int id) {
+        try {
+            rentalService.toggleRentalStatus(id);
+            return "redirect:/admin/rentals/%d".formatted(id);
+        } catch (RentalNotFoundException e) {
+            return "redirect:/admin/rentals?error=notfound";
+        } catch (Exception e) {
+            return "redirect:/admin/rentals?error=server";
         }
-
-        return "redirect:/admin/rentals/%d".formatted(id);
     }
 }
