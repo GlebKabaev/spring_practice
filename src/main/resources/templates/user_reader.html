@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Информация о пользователе и читателе</title>
-    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
@@ -35,7 +34,7 @@
         </div>
 
         <div class="actions">
-            <button onclick="window.location.href='/'">На главную</button>
+            <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
             <button th:onclick="|window.location.href='@{/admin/users-readersV2/edit/{id}(id=${userReader.id})}'|">Редактировать</button>
             <button th:onclick="|window.location.href='@{/admin/users-readersV2/delete/{id}(id=${userReader.id})}'|">Удалить</button>
             <button th:onclick="|window.location.href='@{/admin/users-readersV2/{id}/cart(id=${userReader.id})}'|">Просмотр корзины</button>
