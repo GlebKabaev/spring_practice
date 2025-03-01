@@ -43,7 +43,7 @@
             <button type="submit" th:text="${book.id == null} ? 'Создать книгу' : 'Сохранить изменения'"></button>
         </form>
 
-        <a class="back-link" th:href="@{/admin/books}">Вернуться к списку книг</a>
+        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
     </div>
 </body>
 
