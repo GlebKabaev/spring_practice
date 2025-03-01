@@ -75,6 +75,7 @@ public class CartController {
                 Book book = cartElement.getBook();
                 Rental rental = new Rental();
                 rental.setBook(book);
+                rental.setReturned(false);
                 rental.setReader(reader);
                 rental.setExpectedReturnDate(expectedReturn);
                 rental.setIssueDate(today);
