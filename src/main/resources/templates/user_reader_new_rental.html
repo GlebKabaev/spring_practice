@@ -41,9 +41,7 @@
         </form>
 
         
-        <a class="back-link" th:href="@{/admin/users-readers/{userReaderID}/rentals(userReaderID=${userReader.id})}">
-            Вернуться к списку аренд
-        </a>
+        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
     </div>
 </body>
 </html>
