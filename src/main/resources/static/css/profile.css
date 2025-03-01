@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+header h1 {
+    margin: 0;
+}
+.main-content {
+    padding: 20px;
+}
+.profile-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 500px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.profile-card h2 {
+    text-align: center;
+    color: #4CAF50;
+}
+.profile-card p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+.profile-card p span {
+    font-weight: bold;
+}
+.edit-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.edit-button:hover {
+    background-color: #45a049;
+}
+.action-back {
+    display: block;
+    margin: 20px auto 0; /* Центрирование кнопки */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    font-size: 1em; /* Размер шрифта */
+    color: white; /* Белый текст */
+    background-color: #4CAF50; /* Зеленый фон */
+    border: none; /* Без границ */
+    border-radius: 5px; /* Закругленные углы */
+    text-align: center; /* Центрирование текста */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    cursor: pointer; /* Курсор указывает на возможность клика */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Плавный переход */
+}
+
+.action-back:hover {
+    background-color: #45a049; /* Темно-зеленый цвет при наведении */
+}
+
+.action-back:active {
+    background-color: #3e8e41; /* Более темный зеленый цвет при нажатии */
+    transform: scale(0.95); /* Уменьшает размер кнопки */
+}
