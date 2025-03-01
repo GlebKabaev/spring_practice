@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title th:text="${cart.id == null} ? 'Добавить корзину' : 'Изменить корзину'"></title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
@@ -10,11 +12,9 @@
         <h2 th:text="${cart.id == null} ? 'Добавить корзину' : 'Изменить корзину'"></h2>
 
         <!-- Форма -->
-        <form th:action="${cart.id == null} ? @{/admin/carts/save_cart} : @{/admin/carts/update_cart}" 
-              th:object="${cart}" 
-              method="post" 
-              th:method="${cart.id == null} ? 'post' : 'patch'">
-            
+        <form th:action="${cart.id == null} ? @{/admin/carts/save_cart} : @{/admin/carts/update_cart}"
+            th:object="${cart}" method="post" th:method="${cart.id == null} ? 'post' : 'patch'">
+
             <!-- Скрытое поле ID -->
             <input type="hidden" th:field="*{id}" />
 
@@ -22,9 +22,8 @@
             <label for="reader">Читатель:</label>
             <select id="reader" th:field="*{reader.id}" required>
                 <option value="" disabled selected>Выберите читателя</option>
-                <option th:each="reader : ${readers}" 
-                        th:value="${reader.id}" 
-                        th:text="${reader.lastName + ' ' + reader.firstName}">
+                <option th:each="reader : ${readers}" th:value="${reader.id}"
+                    th:text="${reader.lastName + ' ' + reader.firstName}">
                 </option>
             </select>
 
@@ -32,9 +31,7 @@
             <label for="book">Книга:</label>
             <select id="book" th:field="*{book.id}" required>
                 <option value="" disabled selected>Выберите книгу</option>
-                <option th:each="book : ${books}" 
-                        th:value="${book.id}" 
-                        th:text="${book.title}">
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}">
                 </option>
             </select>
 
@@ -46,9 +43,9 @@
             <!-- Кнопка отправки -->
             <button type="submit" th:text="${cart.id == null} ? 'Создать корзину' : 'Сохранить изменения'"></button>
         </form>
-
-        <!-- Ссылка "Вернуться" -->
-        <a class="back-link" th:href="@{/admin/carts}">Вернуться к списку корзин</a>
+        <!-- Кнопка возвращения -->
+        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
     </div>
 </body>
+
 </html>
