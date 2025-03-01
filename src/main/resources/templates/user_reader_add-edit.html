@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${userReader.reader.id == null} ? 'Добавить пользователя и читателя' : 'Изменить пользователя и читателя'"></title>
-    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div th:insert="~{layout :: content}"></div>
@@ -44,7 +43,7 @@
             <!-- Кнопки -->
             <div class="form-actions">
                 <button type="submit">Сохранить</button>
-                <a th:href="@{/admin/users-readers}" class="button">Отмена</a>
+                <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
             </div>
         </form>
 
