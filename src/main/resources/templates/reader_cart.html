@@ -2,67 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Корзина</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-        }
-        .main-content {
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        table th, table td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        table th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .action-buttons {
-            text-align: center;
-        }
-        .delete-button, .home-button {
-            display: inline-block;
-            margin: 10px 5px;
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .delete-button:hover, .home-button:hover {
-            background-color: #45a049;
-        }
-        .empty-cart-message {
-            text-align: center;
-            font-size: 18px;
-            color: #666;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/readerCart.css}" />
 </head>
 <body>
     <header>
@@ -100,7 +40,7 @@
 
         <!-- Кнопка "На главную" -->
         <div class="action-buttons">
-            <a th:href="@{/home}" class="home-button">На главную</a>
+            <button type="button" onclick="window.history.back()" class="home-button">Вернуться</button>
         </div>
 
         <!-- Форма заказа -->
