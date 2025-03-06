@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.glb.practice.my_practice.models.Book;
 import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.models.Reader;
-import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.service.cart.CartElementService;
+import com.glb.practice.my_practice.service.order.OrderService;
 import com.glb.practice.my_practice.service.reader.ReaderService;
 import com.glb.practice.my_practice.service.rental.RentalService;
 
@@ -30,7 +29,7 @@ public class CartController {
     CartElementService cartElementService;
     ReaderService readerService;
     RentalService rentalService;
-
+    OrderService orderService;
     @GetMapping({ "", "/" })
     public String getMethodName(Model model) {
         Reader reader = readerService.thisReader();
@@ -48,18 +47,18 @@ public class CartController {
     // TODO добавить возможность выбрать адресс для заказа
     // TODO изучить CSRF
     @PostMapping("/order")
-    public String order(@RequestParam("expectedReturnDate") String expectedReturnDate,Model model) {
+    public String order(@RequestParam("expectedReturnDate") String expectedReturnDate, Model model) {
         Reader reader = readerService.thisReader();
         List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date expectedReturn = null;
         Date today = new Date();
-        String errorbooks = "";
+        StringBuilder errorBooks = new StringBuilder();
         try {
             expectedReturn = sdf.parse(expectedReturnDate);
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("error","Неправильный формат даты");
+            model.addAttribute("error", "Неправильный формат даты");
             return "redirect:/cart";
         }
         if (today.getTime() > expectedReturn.getTime()) {
@@ -67,31 +66,14 @@ public class CartController {
             return "redirect:/cart";
         }
         if (!cartElements.isEmpty()) {
-            for (CartElement cartElement : cartElements) {
-                Book book = cartElement.getBook();
-                Rental rental = new Rental();
-                rental.setBook(book);
-                rental.setReturned(false);
-                rental.setReader(reader);
-                rental.setExpectedReturnDate(expectedReturn);
-                rental.setIssueDate(today);
-                try {
-                    rentalService.save(rental);
-                } catch (Exception e) {
-                    errorbooks = errorbooks + " " + book.getTitle() + ",";
-                }
-                cartElementService.deleteById(cartElement.getId());
-                
-            }
+           orderService.processOrder(reader,expectedReturn,cartElements,errorBooks);
         } else {
             return "redirect:/cart";
         }
-        if(errorbooks!=""){
-            errorbooks="Некоторые книги из вашего списка небыли оформлены по причине их отсувствия,а именно:"+errorbooks;
-            errorbooks= errorbooks.substring(0, errorbooks.length() - 1)+".";
-
-            
-            model.addAttribute("error", errorbooks);
+        if (errorBooks.length() > 0) {
+            String errorMessage = "Некоторые книги из вашего списка не были оформлены по причине их отсутствия, а именно: " 
+                + errorBooks.substring(0, errorBooks.length() - 1) + ".";
+            model.addAttribute("error", errorMessage);
         }
         return "order";
     }

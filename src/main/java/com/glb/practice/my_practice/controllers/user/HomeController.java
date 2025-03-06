@@ -45,8 +45,7 @@ public class HomeController {
         model.addAttribute("rentals", rentalService.findByReader(thisReader));
         return "reader_rentals";
     }
-
-    // TODO добавить ручку "заказы"
+    
     // TODO добавть trow в сервисы
     @GetMapping({ "/home", "/home/" })
     public String sortBooks(@RequestParam(value = "field", required = false, defaultValue = "title") String field,

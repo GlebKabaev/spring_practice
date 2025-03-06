@@ -6,9 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.glb.practice.my_practice.models.Book;
-import com.glb.practice.my_practice.models.CartElement;
 import com.glb.practice.my_practice.repository.book.BookRepository;
-import com.glb.practice.my_practice.service.cart.CartElementService;
 
 import lombok.AllArgsConstructor;
 
@@ -16,7 +14,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Primary
 public class BookService {
-    private final CartElementService cartElementService;
     private final BookRepository bookRepository;
 
     @Transactional(readOnly = true)
@@ -55,10 +52,6 @@ public class BookService {
     @Transactional
     public void deleteById(int id) {
         bookRepository.findById(id).get().setDeleted(true);
-        List<CartElement> cart = cartElementService.findByBookId(id);
-        for (CartElement cartElement : cart) {
-            cartElementService.deleteById(cartElement.getId());
-        }
     }
 
     @Transactional(readOnly = true)

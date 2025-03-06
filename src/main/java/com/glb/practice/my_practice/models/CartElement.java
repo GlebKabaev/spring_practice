@@ -17,7 +17,7 @@ public class CartElement {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reader_id")
     private Reader reader;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
 
