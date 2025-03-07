@@ -1,10 +1,7 @@
 package com.glb.practice.my_practice.controllers.userReader;
 
 import com.glb.practice.my_practice.models.*;
-import com.glb.practice.my_practice.service.book.BookService;
-import com.glb.practice.my_practice.service.cart.CartElementService;
 import com.glb.practice.my_practice.service.reader.ReaderService;
-import com.glb.practice.my_practice.service.rental.RentalService;
 import com.glb.practice.my_practice.service.user.UserService;
 import com.glb.practice.my_practice.service.userReader.UserReaderService;
 
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 //TODO:изучить restfullapi еще больше
 @Controller
@@ -21,11 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserReaderViewController {
     private final UserReaderService userReaderService;
-    private final CartElementService cartElementService;
-    private final BookService bookService;
     private final UserService userService;
     private final ReaderService readerService;
-    private final RentalService rentalService;
 
     /** Показать список пользователей и читателей */
     // сортировку добавить
@@ -133,42 +126,6 @@ public class UserReaderViewController {
         return "redirect:/admin/users-readers";
     }
 
-    /** Просмотр корзины читателя */
-    @GetMapping("/{userReaderID}/cart")
-    public String showReaderCart(@PathVariable int userReaderID, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderID);
-        Reader reader = userReader.getReader();
-        List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
-
-        model.addAttribute("reader", reader);
-        model.addAttribute("cart_elements", cartElements);
-        return "admin_reader_cart";
-    }
-
-    /* Форма добавления книги в корзину */
-    @GetMapping("/{userReaderID}/cart/new")
-    public String newBookToReaderCart(@PathVariable int userReaderId, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderId);
-        Reader reader = userReader.getReader();
-
-        List<Book> books = bookService.findByQuantityNotZeroAndDeletedFalse();
-        model.addAttribute("reader", reader);
-        model.addAttribute("books", books);
-        return "reader_add_to_cart_book";
-    }
-
-    /** Добавление книги в корзину читателя */
-    @PostMapping("/{userReaderID}/cart/new")
-    public String addBookToReaderCart(@PathVariable int userReaderID, @RequestParam("bookId") int bookId) {
-        UserReader userReader = userReaderService.findById(userReaderID);
-
-        Reader reader = userReader.getReader();
-        Book book = bookService.findById(bookId);
-        cartElementService.save(new CartElement(0, reader, book));
-
-        return "redirect:/admin/users-readers/%d/cart".formatted(userReaderID);
-    }
-
     @GetMapping("/{userReaderID}/repair")
     public String repairUser(@PathVariable int userReaderID, Model model) {
         UserReader userReader = userReaderService.findById(userReaderID);
@@ -195,44 +152,5 @@ public class UserReaderViewController {
         }
     }
 
-    @GetMapping("/{userReaderID}/rentals")
-    public String showReaderRentals(@PathVariable int userReaderID, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderID);
-        Reader reader = userReader.getReader();
-        List<Rental> rentals = rentalService.findByReader(reader);
-        model.addAttribute("reader", reader);
-        model.addAttribute("userReader", userReader);
-        model.addAttribute("rentals", rentals);
-        return "admin_reader_rentals";
-    }
-
-    @GetMapping("/{userReaderID}/rentals/new")
-    public String showCreateRentalForm(@PathVariable int userReaderID, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderID);
-        model.addAttribute("reader", userReader.getReader());
-        model.addAttribute("userReader", userReader);
-        model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
-        model.addAttribute("rental", new Rental());
-        return "user_reader_new_rental";
-    }
-
-    @PostMapping("/{userReaderID}/rentals/new")
-    public String saveRental(@PathVariable int userReaderID, @ModelAttribute("rental") Rental rental, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderID);
-        Reader reader = userReader.getReader();
-        try {
-            rental.setReader(reader);
-            rentalService.save(rental);
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("reader", reader);
-            model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
-            model.addAttribute("rental", new Rental());
-            model.addAttribute("error", e.getMessage());
-            return "user_reader_new_rental";
-        }
-
-        return "redirect:/admin/users-readers/%d/rentals".formatted(userReader.getId());
-    }
 
 }
