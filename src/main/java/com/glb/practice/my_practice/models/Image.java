@@ -14,13 +14,13 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     
-    @Column(name = "content_type")
+    @Column(name = "content_type", nullable = false)
     private String contentType;
     
     @Lob
-    @Column(name = "image_data")
+    @Column(name = "image_data", nullable = false)
     private byte[] imageData;
 }

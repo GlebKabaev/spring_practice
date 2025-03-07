@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 
 import lombok.*;
-//TODO: установить nullable везде где надо
 @Data
 @Builder
 @Entity
@@ -20,19 +19,19 @@ public class Rental {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "reader_Id")
+    @JoinColumn(name = "reader_Id", nullable = false)
     private Reader reader;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_Id")
+    @JoinColumn(name = "book_Id", nullable = false)
     private Book book;
 
-    @Column(name = "issue_date")
+    @Column(name = "issue_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date issueDate;
 
-    @Column(name = "expected_return_date")
+    @Column(name = "expected_return_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expectedReturnDate;

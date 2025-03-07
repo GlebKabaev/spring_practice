@@ -15,10 +15,10 @@ public class CartElement {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reader_id")
+    @JoinColumn(name = "reader_id", nullable = false)
     private Reader reader;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
 }
