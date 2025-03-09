@@ -34,7 +34,6 @@ public class RegistrationController {
     public String registerUser(@ModelAttribute("user") User user, @ModelAttribute("reader") Reader reader, Model model,
             @RequestParam("confirmPassword") String confirmPassword) {
         boolean isUserCreated;
-        // TODO подтвердите пароль
         user.setRole("ROLE_USER");
         try {
             if (user.getPassword().equals(confirmPassword)) {
