@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,8 +49,7 @@ public class UserReaderRentalViewController {
         model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
         model.addAttribute("rental", new Rental());
         return "user_reader_new_rental";
-    }
-
+    }    
     @PostMapping("/new")
     public String saveRental(@PathVariable int userReaderID, @ModelAttribute("rental") Rental rental, Model model) {
         UserReader userReader = userReaderService.findById(userReaderID);
@@ -68,4 +68,11 @@ public class UserReaderRentalViewController {
 
         return "redirect:/admin/users-readers/%d/rentals".formatted(userReader.getId());
     }
+    @PatchMapping("/toggleStatus/{rentalID}")
+    public String toggleStatus(@PathVariable int userReaderID,@PathVariable int rentalID) {
+        rentalService.toggleRentalStatus(rentalID);
+        
+        return "redirect:/admin/users-readers/%d/rentals".formatted(userReaderID);
+    }
+    
 }
