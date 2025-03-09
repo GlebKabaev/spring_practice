@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,20 +35,20 @@ public class UserReaderCartViewController {
         Reader reader = userReader.getReader();
         List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
 
-        model.addAttribute("reader", reader);
+        model.addAttribute("userReader", userReader);
         model.addAttribute("cart_elements", cartElements);
-        return "admin_reader_cart";
+        return "admin_userReader_cart";
     }
 
     @GetMapping("/new")
-    public String newBookToReaderCart(@PathVariable int userReaderId, Model model) {
-        UserReader userReader = userReaderService.findById(userReaderId);
+    public String newBookToReaderCart(@PathVariable int userReaderID, Model model) {
+        UserReader userReader = userReaderService.findById(userReaderID);
         Reader reader = userReader.getReader();
 
         List<Book> books = bookService.findByQuantityNotZeroAndDeletedFalse();
         model.addAttribute("reader", reader);
         model.addAttribute("books", books);
-        return "reader_add_to_cart_book";
+        return "admin_userReader_add_to_cart_book";
     }
 
     /** Добавление книги в корзину читателя */
@@ -60,5 +61,12 @@ public class UserReaderCartViewController {
         cartElementService.save(new CartElement(0, reader, book));
 
         return "redirect:/admin/users-readers/%d/cart".formatted(userReaderID);
+    }
+    
+    @DeleteMapping("delete/{cartID}")
+    public String deleteBookFromCart(@PathVariable int userReaderID,@PathVariable int cartID){
+        cartElementService.deleteById(cartID);
+        return "redirect:/admin/users-readers/%d/cart".formatted(userReaderID);
+
     }
 }
