@@ -3,7 +3,7 @@
 <head>
     <title>Регистрация пользователя</title>
     <style>
-        /* Общие настройки */
+        /* Стили остаются без изменений */
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -110,6 +110,8 @@
                 <input type="text" id="username" th:field="*{user.username}" placeholder="Введите имя пользователя" required />
                 <label for="password">Пароль:</label>
                 <input type="password" id="password" th:field="*{user.password}" placeholder="Введите пароль" required />
+                <label for="confirmPassword">Подтверждение пароля:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Подтвердите пароль" required />
             </fieldset>
             <!-- Данные читателя -->
             <fieldset>
