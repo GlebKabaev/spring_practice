@@ -3,7 +3,7 @@
 
 <head>
     <title>Арендованные книги</title>
-    
+
 </head>
 
 <body>
@@ -23,6 +23,8 @@
                     <th>Название книги</th>
                     <th>Дата выдачи</th>
                     <th>Ожидаемая дата возврата</th>
+                    <th>Статус возврата</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +33,14 @@
                     <td th:text="${rental.book.title}"></td>
                     <td th:text="${rental.issueDate}"></td>
                     <td th:text="${rental.expectedReturnDate}"></td>
+                    <td th:text="${rental.returned}"></td>
+                    <td>
+                        <form th:action="@{/admin/users-readers/{userReaderID}/rentals/toggleStatus/{rentalID}(userReaderID=${userReader.id},rentalID=${rental.id})}" method="post">
+                            <input type="hidden" name="_method" value="patch" />
+                            <button type="submit" class="action-buttons"> Изменить статус </button>
+                        </form>
+                    </td>
+                    
                 </tr>
             </tbody>
         </table>
