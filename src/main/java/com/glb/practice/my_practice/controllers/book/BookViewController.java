@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.controllers.book;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.glb.practice.my_practice.models.Book;
@@ -107,12 +106,16 @@ public class BookViewController {
             if (file != null && !file.isEmpty()) {
                 Image image = imageService.save(file);
                 book.setImage(image);
+            }else{
+               Image image2= bookService.findById(book.getId()).getImage();
+               book.setImage(image2);
             }
             bookService.update(book);
+        } catch (IOException e) {
+            model.addAttribute("error", "Не удалось загрузить изображение: " + e.getMessage());
+            return "book_add-edit";
         } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("book", book);
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", "Ошибка сохранения: " + e.getMessage());
             return "book_add-edit";
         }
         return "redirect:/admin/books";
