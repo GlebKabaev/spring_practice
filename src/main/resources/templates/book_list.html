@@ -9,12 +9,17 @@
     <div th:insert="~{layout :: content}"></div>
     <h2>Список книг</h2>
     <form action="/admin/books/sort" method="get">
+        <!-- Передаем текущую страницу и размер страницы -->
+        <input type="hidden" name="page" th:value="${currentPage}" />
+        <input type="hidden" name="size" th:value="${size}" />
         <select name="field">
             <option th:each="field : ${sortFields}" th:value="${field}" th:text="${field}"
-                th:selected="${field} == ${selectedField}">Field</option>
+                th:selected="${field} == ${selectedField}">
+            </option>
         </select>
         <button type="submit">Sort</button>
     </form>
+
 
     <table>
         <thead>
@@ -46,16 +51,17 @@
                         <form th:action="@{/admin/books/{id}(id=${book.id})}" method="get">
                             <button type="submit" class="action-view">Просмотр</button>
                         </form>
-                
+
                         <!-- Редактирование -->
                         <form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="get">
                             <button type="submit" class="action-edit">Редактировать</button>
                         </form>
-                
+
                         <!-- Удаление -->
                         <form th:action="@{/admin/books/delete_book/{id}(id=${book.id})}" method="post">
                             <input type="hidden" name="_method" value="patch" />
-                            <button type="submit" class="action-delete" onclick="return confirm('Вы уверены, что хотите удалить эту книгу?');">Удалить</button>
+                            <button type="submit" class="action-delete"
+                                onclick="return confirm('Вы уверены, что хотите удалить эту книгу?');">Удалить</button>
                         </form>
                     </div>
                 </td>
@@ -65,6 +71,20 @@
             </td>
         </tbody>
     </table>
+    <div class="pagination" style="margin-top: 20px;">
+        <a th:if="${currentPage > 0}"
+            th:href="@{/admin/books(field=${selectedField}, page=${currentPage - 1}, size=${size})}">
+            ← Назад
+        </a>
+        <span style="margin: 0 10px;">
+            Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
+        </span>
+        <a th:if="${currentPage + 1 < totalPages}"
+            th:href="@{/admin/books(field=${selectedField}, page=${currentPage + 1}, size=${size})}">
+            Вперед →
+        </a>
+    </div>
+
 </body>
 
 </html>

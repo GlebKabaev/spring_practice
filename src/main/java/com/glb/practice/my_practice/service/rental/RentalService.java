@@ -30,6 +30,7 @@ public class RentalService  {
     public List<Rental> findAll() {
         return rentalRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
+    @Transactional(readOnly = true)
     public Page<Rental> findPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return rentalRepository.findAll(pageable);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -24,33 +25,34 @@ public class BookViewController {
     private final BookService bookService;
     private final ImageService imageService;
 
-    @GetMapping({ "/", "" })
-    public String showBooks(Model model) {
-        List<String> sortFields = Arrays.asList("id", "Название", "Автор");
-        model.addAttribute("sortFields", sortFields);
-        model.addAttribute("books", bookService.findAll("id"));
-        return "book_list";
-    }
+    @GetMapping({ "/", "/sort","" })
+    public String showBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(value = "field", defaultValue = "id") String field,
+            Model model) {
 
-    @GetMapping("/sort")
-    public String sortBooks(@RequestParam("field") String field, Model model) {
         List<String> sortFields = Arrays.asList("id", "Название", "Автор");
-        switch (field) {
-            case "Название":
-                field = "title";
-                break;
-            case "Автор":
-                field = "author";
-                break;
-            default:
-                break;
+
+        String sortFieldForQuery = field;
+        if ("Название".equals(field)) {
+            sortFieldForQuery = "title";
+        } else if ("Автор".equals(field)) {
+            sortFieldForQuery = "author";
         }
+    
+        Page<Book> bookPage = bookService.findPaginated(page, size, sortFieldForQuery);
+    
         model.addAttribute("sortFields", sortFields);
+        model.addAttribute("books", bookPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", bookPage.getTotalPages());
+        model.addAttribute("size", size);
         model.addAttribute("selectedField", field);
-        model.addAttribute("books", bookService.findAll(field));
+    
         return "book_list";
-
     }
+    
 
     @GetMapping({ "/{id}", "/{id}/" })
     public String showBookData(Model model, @PathVariable int id) {
@@ -106,9 +108,9 @@ public class BookViewController {
             if (file != null && !file.isEmpty()) {
                 Image image = imageService.save(file);
                 book.setImage(image);
-            }else{
-               Image image2= bookService.findById(book.getId()).getImage();
-               book.setImage(image2);
+            } else {
+                Image image2 = bookService.findById(book.getId()).getImage();
+                book.setImage(image2);
             }
             bookService.update(book);
         } catch (IOException e) {
