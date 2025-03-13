@@ -56,7 +56,7 @@ public class SecurityConfig {
                     
                     // Перенаправляем в зависимости от роли
                     if (isAdmin) {
-                        response.sendRedirect("/admin/users"); // Админ-страница
+                        response.sendRedirect("/admin/users-readers"); // Админ-страница
                     } else {
                         response.sendRedirect("/home"); // Страница пользователя
                     }
