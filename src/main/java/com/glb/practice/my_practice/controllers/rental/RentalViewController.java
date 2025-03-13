@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.controllers.rental;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.glb.practice.my_practice.exception.RentalNotFoundException;
 import com.glb.practice.my_practice.models.Rental;
@@ -27,9 +29,16 @@ public class RentalViewController {
     private final BookService bookService;
 
     @GetMapping({ "/", "" })
-    public String showRentals(Model model) {
+    public String showRentals(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
 
-        model.addAttribute("rentals", rentalService.findAll());
+        Page<Rental> rentalPage = rentalService.findPaginated(page, size);
+
+        model.addAttribute("rentals", rentalPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", rentalPage.getTotalPages());
+        model.addAttribute("size", size);
         return "rental_list";
     }
 

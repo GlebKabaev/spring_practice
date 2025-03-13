@@ -14,6 +14,9 @@ import com.glb.practice.my_practice.models.Reader;
 import com.glb.practice.my_practice.models.Rental;
 import com.glb.practice.my_practice.repository.rental.RentalRepository;
 import com.glb.practice.my_practice.service.book.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import lombok.AllArgsConstructor;
 @Service
@@ -26,6 +29,10 @@ public class RentalService  {
     @Transactional(readOnly = true)
     public List<Rental> findAll() {
         return rentalRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+    public Page<Rental> findPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return rentalRepository.findAll(pageable);
     }
 
     @Transactional
