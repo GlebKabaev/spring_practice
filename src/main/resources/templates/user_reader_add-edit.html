@@ -11,7 +11,7 @@
         <!-- Форма с использованием UserReader как единого объекта -->
         <form th:action="@{${userReader.reader.id == null} ? '/admin/users-readers/save' : '/admin/users-readers/update'}"
             th:object="${userReader}" method="post">
-            
+            <input type="hidden" name="_method" th:value="${userReader.id != null} ? 'patch' : 'post'" />
             <!-- Поля для пользователя -->
             <div class="user-section">
                 <h3>Информация о пользователе</h3>
