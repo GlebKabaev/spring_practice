@@ -61,7 +61,7 @@ public class UserReaderViewController {
     /** Форма создания нового пользователя с читателем */
     @GetMapping("/new")
     public String showCreateUserReaderForm(Model model) {
-        model.addAttribute("userReader", new UserReader(0, new User(), new Reader()));
+        model.addAttribute("userReader", new UserReader(null, new User(), new Reader()));
         return "user_reader_add-edit";
     }
 
@@ -89,11 +89,9 @@ public class UserReaderViewController {
         }
 
     }
-
-    /** Удаление пользователя и его читателя */
     @DeleteMapping("/{userReaderId}/delete")
     public String deleteUserAndReader(@PathVariable int userReaderId) {
-        userService.deleteUser(userReaderId);
+        userService.deleteUser(userReaderService.findById(userReaderId).getUser().getId());
         return "redirect:/admin/users-readers";
     }
 
