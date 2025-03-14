@@ -28,7 +28,7 @@ public class BookViewController {
     @GetMapping({ "/", "/sort","" })
     public String showBooks(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(value = "field", defaultValue = "id") String field,
             Model model) {
 
