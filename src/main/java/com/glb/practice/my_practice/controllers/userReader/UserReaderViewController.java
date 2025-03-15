@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 //TODO:изучить restfullapi еще больше
 @Controller
 @RequestMapping("/admin/users-readers")
@@ -69,6 +68,7 @@ public class UserReaderViewController {
     public String saveUserAndReader(@ModelAttribute("userReader") UserReader userReader,
             Model model) {
         try {
+            userReader.getUser().setRole("ROLE_USER");
             userService.saveUser(userReader.getUser());
             readerService.save(userReader.getReader());
             userReaderService.save(userReader);
@@ -89,6 +89,7 @@ public class UserReaderViewController {
         }
 
     }
+
     @DeleteMapping("/{userReaderId}/delete")
     public String deleteUserAndReader(@PathVariable int userReaderId) {
         userService.deleteUser(userReaderService.findById(userReaderId).getUser().getId());
@@ -149,6 +150,5 @@ public class UserReaderViewController {
             return "redirect:/admin/users-readers";
         }
     }
-
 
 }
