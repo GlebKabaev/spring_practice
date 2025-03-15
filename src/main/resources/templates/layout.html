@@ -13,11 +13,9 @@
             <h1>Крутая библиотека</h1>
             <div class="navigation">
                 <button th:onclick="|window.location.href='@{/admin/books}'|">Книги</button>
-                <button th:onclick="|window.location.href='@{/admin/readers}'|">Пользователи</button>
                 <button th:onclick="|window.location.href='@{/admin/rentals}'|">Аренды</button>
-                <button th:onclick="|window.location.href='@{/admin/users}'|">Пользователи</button>
-                <button th:onclick="|window.location.href='@{/admin/carts}'|">Товары в корзине</button>
-                <button th:onclick="|window.location.href='@{/admin/users-readers}'|">Пользователь и читатель</button>
+                <button th:onclick="|window.location.href='@{/admin/users}'|">Администраторы</button>
+                <button th:onclick="|window.location.href='@{/admin/users-readers}'|">Пользователь-читатель</button>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit">Выйти</button>
                 </form>
