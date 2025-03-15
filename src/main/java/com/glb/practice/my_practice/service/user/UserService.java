@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public List<User> getUsers(String field) {
-        return userRepository.findAll(Sort.by(Sort.Order.asc(field)));
+        return userRepository.findByRole("ROLE_ADMIN",Sort.by(Sort.Order.asc(field)));
     }
 
     @Transactional
