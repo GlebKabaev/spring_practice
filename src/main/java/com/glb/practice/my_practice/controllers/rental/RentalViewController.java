@@ -103,9 +103,16 @@ public class RentalViewController {
     }
 
     @GetMapping({ "/expired", "/expired/" })
-    public String expiredRentals(Model model) {
-        model.addAttribute("rentals", rentalService.findAllExpiredRentals());
-        return "rental_list";
+    public String expiredRentals(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Page<Rental> rentalPage = rentalService.findAllExpiredRentals(page, size);
+        model.addAttribute("rentals", rentalPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", rentalPage.getTotalPages());
+        model.addAttribute("size", size);
+        return "rental_expired_list";
     }
 
     @PatchMapping("/return/{id}")
