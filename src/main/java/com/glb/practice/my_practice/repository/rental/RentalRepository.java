@@ -12,6 +12,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface RentalRepository extends JpaRepository<Rental,Integer> {
     List<Rental> findByReader(Reader reader);
-    List<Rental> findByExpectedReturnDateBeforeAndReturnedFalse(Date currentDate);
+    Page<Rental> findByExpectedReturnDateBeforeAndReturnedFalse(Date date, Pageable pageable);
     Page<Rental> findAll(Pageable pageable);
 }
