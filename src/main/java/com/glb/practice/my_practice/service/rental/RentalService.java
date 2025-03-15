@@ -35,7 +35,6 @@ public class RentalService  {
         Pageable pageable = PageRequest.of(page, size);
         return rentalRepository.findAll(pageable);
     }
-
     @Transactional
     public Rental save(Rental rental) {
         Book book = bookService.findById(rental.getBook().getId());
@@ -80,9 +79,10 @@ public class RentalService  {
     }
 
     @Transactional(readOnly = true)
-    public List<Rental> findAllExpiredRentals() {
-        Date date = new Date();
-        List<Rental>expiredRentals =rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(date);
+    public Page<Rental> findAllExpiredRentals(int page, int size) {
+        Date currentDate = new Date();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Rental>expiredRentals =rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(currentDate, pageable);
         return expiredRentals;
     }
     public Rental toggleRentalStatus(int id) {
