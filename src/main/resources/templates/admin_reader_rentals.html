@@ -3,7 +3,6 @@
 
 <head>
     <title>Арендованные книги</title>
-
 </head>
 
 <body>
@@ -12,10 +11,32 @@
         <h1>Арендованные книги читателя</h1>
     </header>
     <div class="main-content">
-        <!-- Отображаем имя читателя -->
         <h2 th:text="'Читатель: ' + ${reader.lastName} + ' ' + ${reader.firstName} + ' ' + ${reader.middleName}"></h2>
 
-        <!-- Таблица аренд -->
+
+        <form method="get" th:action="@{/admin/users-readers/{userReaderID}/rentals(userReaderID=${userReader.id})}">
+            <label for="field">Сортировать по:</label>
+            <select id="field" name="field" onchange="this.form.submit()">
+                <option value="issueDate" th:selected="${field == 'issueDate'}">Дата выдачи</option>
+                <option value="expectedReturnDate" th:selected="${field == 'expectedReturnDate'}">Ожидаемая дата
+                    возврата</option>
+                <option value="returned" th:selected="${field == 'returned'}">Статус возврата</option>
+            </select>
+        </form>
+
+        <div class="switch-buttons" style="margin: 15px 0;">
+            <a th:if="${expired != null and expired}"
+                th:href="@{/admin/users-readers/{userReaderID}/rentals(userReaderID=${userReader.id}, field=${field}, page=0, size=${size})}"
+                class="btn">
+                Аренды пользователя
+            </a>
+            <a th:if="${expired == null or !expired}"
+                th:href="@{/admin/users-readers/{userReaderID}/rentals/expired(userReaderID=${userReader.id}, field=${field}, page=0, size=${size})}"
+                class="btn">
+                Просроченные аренды
+            </a>
+        </div>
+
         <table>
             <thead>
                 <tr>
@@ -35,22 +56,32 @@
                     <td th:text="${rental.expectedReturnDate}"></td>
                     <td th:text="${rental.returned}"></td>
                     <td>
-                        <form th:action="@{/admin/users-readers/{userReaderID}/rentals/toggleStatus/{rentalID}(userReaderID=${userReader.id},rentalID=${rental.id})}" method="post">
+                        <form
+                            th:action="@{/admin/users-readers/{userReaderID}/rentals/toggleStatus/{rentalID}(userReaderID=${userReader.id},rentalID=${rental.id})}"
+                            method="post">
                             <input type="hidden" name="_method" value="patch" />
-                            <button type="submit" class="action-buttons"> Изменить статус </button>
+                            <button type="submit" class="action-buttons">Изменить статус</button>
                         </form>
                     </td>
-                    
                 </tr>
             </tbody>
         </table>
-        <!-- Кнопка "Создать аренду" -->
-        <div class="action-buttons">
-            <a th:href="@{/admin/users-readers/{userReaderID}/rentals/new(userReaderID=${userReader.id})}"
-                class="create-rental-button">Создать аренду</a>
+
+
+        <div class="pagination" style="margin-top: 20px;"
+            th:with="baseUrl=(${expired} != null and ${expired}) ? '/admin/users-readers/' + ${userReader.id} + '/rentals/expired' : '/admin/users-readers/' + ${userReader.id} + '/rentals'">
+            <a th:if="${currentPage > 0}"
+                th:href="@{${baseUrl}(field=${field}, page=${currentPage - 1}, size=${size})}">
+                ← Назад
+            </a>
+            <span style="margin: 0 10px;">
+                Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
+            </span>
+            <a th:if="${currentPage + 1 < totalPages}"
+                th:href="@{${baseUrl}(field=${field}, page=${currentPage + 1}, size=${size})}">
+                Вперед →
+            </a>
         </div>
-        <!-- Кнопка "На главную" -->
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
     </div>
 </body>
 
