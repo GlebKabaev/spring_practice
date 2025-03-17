@@ -31,9 +31,10 @@ public class RentalViewController {
     @GetMapping({ "/", "" })
     public String showRentals(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
+            @RequestParam(value = "field", defaultValue = "id") String field,
             Model model) {
 
-        Page<Rental> rentalPage = rentalService.findPaginated(page, size);
+        Page<Rental> rentalPage = rentalService.findPaginated(page, size,field);
 
         model.addAttribute("rentals", rentalPage.getContent());
         model.addAttribute("currentPage", page);
