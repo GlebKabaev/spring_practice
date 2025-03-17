@@ -6,6 +6,8 @@ import com.glb.practice.my_practice.service.user.UserService;
 import com.glb.practice.my_practice.service.userReader.UserReaderService;
 
 import lombok.AllArgsConstructor;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +22,16 @@ public class UserReaderViewController {
     private final ReaderService readerService;
 
     /** Показать список пользователей и читателей */
-    // сортировку добавить
     @GetMapping({ "/", "" })
-    public String showUsersAndReaders(Model model) {
-        // List<String> sortFields = Arrays.asList("id", "username", "Фамилия", "Имя",
-        // "Отчество");
-        // model.addAttribute("sortFields", sortFields);
-        model.addAttribute("usersReaders", userReaderService.findAll());
+    public String showUsersAndReaders(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size, Model model,
+            @RequestParam(value = "field", defaultValue = "id") String field,
+            @RequestParam(value = "search", required = false) String searchQuery) {
+        Page<UserReader> userReaderPage = userReaderService.findPaginated(page, size,field,searchQuery);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", userReaderPage.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("usersReaders", userReaderPage.getContent());
         return "user_reader_list";
     }
 
