@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Список пользователей и читателей</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
 
     <h2>Список пользователей и связанных читателей</h2>
+    <form action="/admin/users-readers" method="get">
+        <input type="text" name="search" placeholder="Введите имя пользователя" th:value="${searchQuery}" />
+        <button type="submit">Искать</button>
+        <input type="hidden" name="size" th:value="${size}" />
+        <input type="hidden" name="field" th:value="${field}" />
+    </form>
 
     <table>
         <thead>
@@ -25,8 +33,9 @@
             <tr th:each="userReader : ${usersReaders}">
                 <td th:text="${userReader.id}">ID Связи</td>
 
-                
-                <td th:text="${userReader.user != null ? userReader.user.username : 'Не назначен'}">Имя пользователя</td>
+
+                <td th:text="${userReader.user != null ? userReader.user.username : 'Не назначен'}">Имя пользователя
+                </td>
                 <td th:text="${userReader.user != null ? userReader.user.role : 'Не назначена'}">Роль</td>
 
                 <td th:text="${userReader.reader.lastName}">Фамилия читателя</td>
@@ -35,19 +44,34 @@
                 <td th:text="${userReader.reader.phone}">Телефон читателя</td>
 
                 <td>
-                    <a th:if="${userReader.user != null}" th:href="@{/admin/users-readers/{id}/edit(id=${userReader.id})}">Редактировать</a>
+                    <a th:if="${userReader.user != null}"
+                        th:href="@{/admin/users-readers/{id}/edit(id=${userReader.id})}">Редактировать</a>
                     <a th:href="@{/admin/users-readers/{userReaderId}(userReaderId=${userReader.id})}">Подробнее</a>
                     <a th:href="@{/admin/users-readers/{id}/cart(id=${userReader.id})}">Посмотреть корзину</a>
                     <a th:href="@{/admin/users-readers/{id}/rentals(id=${userReader.id})}">Посмотреть аренды</a>
-                    <a th:if="${userReader.user == null}" th:href="@{/admin/users-readers/{id}/repair(id=${userReader.id})}">Восстановить</a>
+                    <a th:if="${userReader.user == null}"
+                        th:href="@{/admin/users-readers/{id}/repair(id=${userReader.id})}">Восстановить</a>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <div class="add-button-container">
-        <button th:onclick="|window.location.href='@{/admin/users-readers/new}'|">Добавить пользователя и читателя</button>
+        <button th:onclick="|window.location.href='@{/admin/users-readers/new}'|">Добавить пользователя и
+            читателя</button>
     </div>
-
+    <div class="pagination" style="margin-top: 20px;">
+        <a th:if="${currentPage > 0}" th:href="@{/admin/users-readers(page=${currentPage - 1}, size=${size})}">
+            ← Назад
+        </a>
+        <span style="margin: 0 10px;">
+            Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
+        </span>
+        <a th:if="${currentPage + 1 < totalPages}"
+            th:href="@{/admin/users-readers(page=${currentPage + 1}, size=${size})}">
+            Вперед →
+        </a>
+    </div>
 </body>
+
 </html>
