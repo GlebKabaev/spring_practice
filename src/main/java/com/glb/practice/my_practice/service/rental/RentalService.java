@@ -19,10 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
 import lombok.AllArgsConstructor;
+
 @Service
 @AllArgsConstructor
 @Primary
-public class RentalService  {
+public class RentalService {
     RentalRepository rentalRepository;
     BookService bookService;
 
@@ -30,11 +31,13 @@ public class RentalService  {
     public List<Rental> findAll() {
         return rentalRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
+
     @Transactional(readOnly = true)
-    public Page<Rental> findPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Rental> findPaginated(int page, int size, String field) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
         return rentalRepository.findAll(pageable);
     }
+
     @Transactional
     public Rental save(Rental rental) {
         Book book = bookService.findById(rental.getBook().getId());
@@ -45,10 +48,10 @@ public class RentalService  {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
         if (book.getQuantity() > 0) {
-            book.setQuantity(book.getQuantity() - 1); 
-            bookService.save(book); 
+            book.setQuantity(book.getQuantity() - 1);
+            bookService.save(book);
             rental.setReturned(false);
-            return rentalRepository.save(rental); 
+            return rentalRepository.save(rental);
         } else {
             throw new IllegalArgumentException("книги нет в наличии");
         }
@@ -74,17 +77,30 @@ public class RentalService  {
     }
 
     @Transactional(readOnly = true)
+    public Page<Rental> findByReader(int page, int size, String field,Reader reader) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
+        return rentalRepository.findByReader(reader,pageable);
+    }
+    @Transactional(readOnly = true)
     public List<Rental> findByReader(Reader reader) {
         return rentalRepository.findByReader(reader);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Rental> findExpiredByReaderPaginaited(int page, int size, String field, Reader reader) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
+        return rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalseAndReader(new Date(), reader, pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Rental> findAllExpiredRentals(int page, int size) {
         Date currentDate = new Date();
         Pageable pageable = PageRequest.of(page, size);
-        Page<Rental>expiredRentals =rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(currentDate, pageable);
+        Page<Rental> expiredRentals = rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(currentDate,
+                pageable);
         return expiredRentals;
     }
+
     public Rental toggleRentalStatus(int id) {
         Rental rental = findById(id);
         if (rental == null) {
