@@ -1,7 +1,7 @@
 package com.glb.practice.my_practice.controllers.userReader;
 
-import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,7 @@ import com.glb.practice.my_practice.service.rental.RentalService;
 import com.glb.practice.my_practice.service.userReader.UserReaderService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/users-readers/{userReaderID}/rentals")
@@ -30,14 +31,22 @@ public class UserReaderRentalViewController {
     private final BookService bookService;
 
     @GetMapping
-    public String showReaderRentals(@PathVariable int userReaderID, Model model) {
+    public String showReaderRentals(Model model, @PathVariable int userReaderID,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(value = "field", defaultValue = "issueDate") String field) {
 
         UserReader userReader = userReaderService.findById(userReaderID);
         Reader reader = userReader.getReader();
-        List<Rental> rentals = rentalService.findByReader(reader);
+        Page<Rental> rentalPage = rentalService.findByReader(page, size, field, reader);
+
         model.addAttribute("reader", reader);
         model.addAttribute("userReader", userReader);
-        model.addAttribute("rentals", rentals);
+        model.addAttribute("rentals", rentalPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", rentalPage.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("field", field);
         return "admin_reader_rentals";
     }
 
@@ -49,7 +58,8 @@ public class UserReaderRentalViewController {
         model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
         model.addAttribute("rental", new Rental());
         return "user_reader_new_rental";
-    }    
+    }
+
     @PostMapping("/new")
     public String saveRental(@PathVariable int userReaderID, @ModelAttribute("rental") Rental rental, Model model) {
         UserReader userReader = userReaderService.findById(userReaderID);
@@ -68,11 +78,31 @@ public class UserReaderRentalViewController {
 
         return "redirect:/admin/users-readers/%d/rentals".formatted(userReader.getId());
     }
+
     @PatchMapping("/toggleStatus/{rentalID}")
-    public String toggleStatus(@PathVariable int userReaderID,@PathVariable int rentalID) {
+    public String toggleStatus(@PathVariable int userReaderID, @PathVariable int rentalID) {
         rentalService.toggleRentalStatus(rentalID);
-        
+
         return "redirect:/admin/users-readers/%d/rentals".formatted(userReaderID);
     }
-    
+
+    @GetMapping("/expired")
+    public String getExpiredRentals(Model model, @PathVariable int userReaderID,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(value = "field", defaultValue = "issueDate") String field) {
+        UserReader userReader= userReaderService.findById(userReaderID);
+        Reader reader = userReader.getReader();
+        Page<Rental> rentalPage = rentalService.findExpiredByReaderPaginaited(page, size,field,reader);
+        model.addAttribute("reader", reader);
+        model.addAttribute("userReader", userReader);
+        model.addAttribute("rentals", rentalPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", rentalPage.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("field", field);
+        model.addAttribute("expired", true);
+        return "admin_reader_rentals";
+    }
+
 }
