@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Информация о пользователе и читателе</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
@@ -11,7 +13,8 @@
         <div class="user-info" th:if="${userReader.user != null}">
             <h3>Данные пользователя</h3>
             <p><strong>ID:</strong> <span th:text="${userReader.user.id}">ID</span></p>
-            <p><strong>Имя пользователя:</strong> <span th:text="${userReader.user.username}">Имя пользователя</span></p>
+            <p><strong>Имя пользователя:</strong> <span th:text="${userReader.user.username}">Имя пользователя</span>
+            </p>
             <p><strong>Роль:</strong> <span th:text="${userReader.user.role}">Роль</span></p>
         </div>
 
@@ -28,21 +31,27 @@
             <p><strong>Адрес:</strong> <span th:text="${userReader.reader.address}">Адрес</span></p>
             <p><strong>Телефон:</strong> <span th:text="${userReader.reader.phone}">Телефон</span></p>
         </div>
-        
+
         <div th:if="${userReader.reader == null}">
             <p>У данного пользователя нет связанного читателя.</p>
         </div>
 
         <div class="actions">
             <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
-            <button th:onclick="|window.location.href='@{/admin/users-readers/{id}/edit(id=${userReader.id})}'|">Редактировать</button>
+            <div th:if="${userReader.user != null}">
+                <button
+                    th:onclick="|window.location.href='@{/admin/users-readers/{id}/edit(id=${userReader.id})}'|">Редактировать</button>
+            </div>
             <form th:action="@{/admin/users-readers/{id}/delete(id=${userReader.id})}" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <button type="submit" class="action-delete"
                     onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?');">Удалить</button>
             </form>
-            <button th:onclick="|window.location.href='@{/admin/users-readers/{id}/cart(id=${userReader.id})}'|">Просмотр корзины</button>
+            <button
+                th:onclick="|window.location.href='@{/admin/users-readers/{id}/cart(id=${userReader.id})}'|">Просмотр
+                корзины</button>
         </div>
     </div>
 </body>
+
 </html>
