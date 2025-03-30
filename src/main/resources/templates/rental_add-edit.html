@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title th:text="${rental.id == null} ? 'Добавить аренду' : 'Изменить аренду'"></title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
@@ -13,7 +15,7 @@
         <div th:if="${error != null}" style="color: red;" th:text="${error}"></div>
 
         <form th:action="${rental.id == null} ? @{/admin/rentals/save_rental} : @{/admin/rentals/update_rental}"
-              th:object="${rental}" method="post">
+            th:object="${rental}" method="post">
             <!-- Скрытое поле ID для редактирования -->
             <input type="hidden" th:field="*{id}" />
 
@@ -23,17 +25,14 @@
             <label for="reader">Читатель:</label>
             <select id="reader" th:field="*{reader.id}" required>
                 <option value="">Выберите читателя</option>
-                <option th:each="reader : ${readers}"
-                        th:value="${reader.id}"
-                        th:text="${reader.lastName + ' ' + reader.firstName}"></option>
+                <option th:each="reader : ${readers}" th:value="${reader.id}"
+                    th:text="${reader.lastName + ' ' + reader.firstName}"></option>
             </select>
 
             <label for="book">Книга:</label>
             <select id="book" th:field="*{book.id}" required>
                 <option value="">Выберите книгу</option>
-                <option th:each="book : ${books}"
-                        th:value="${book.id}"
-                        th:text="${book.title}"></option>
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
             </select>
 
             <label for="issueDate">Дата выдачи:</label>
@@ -42,11 +41,14 @@
             <label for="expectedReturnDate">Предполагаемая дата возврата:</label>
             <input type="date" id="expectedReturnDate" th:field="*{expectedReturnDate}" required />
 
-            <button type="submit"
-                    th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
+            <label for="returned">Возвращена:</label>
+            <input type="checkbox" id="returned" th:field="*{returned}" />
+
+            <button type="submit" th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
         </form>
 
         <a th:href="@{/admin/rentals}" class="action-back">← Вернуться к списку аренд</a>
     </div>
 </body>
+
 </html>
