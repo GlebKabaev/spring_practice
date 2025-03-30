@@ -60,7 +60,6 @@ public class RentalViewController {
     @PostMapping({ "/save_rental", "/save_rental/" })
     public String saveRental(@ModelAttribute("rental") Rental rental, Model model) {
         try {
-            rental.setReturned(false);
             rentalService.save(rental);
         } catch (Exception e) {
             e.printStackTrace();
