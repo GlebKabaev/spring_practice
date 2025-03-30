@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Добавить книгу в корзину</title>
 </head>
+
 <body>
     <div th:insert="~{layout :: content}"></div>
     <div class="container">
@@ -22,7 +24,12 @@
             </div>
             <button type="submit">Добавить книгу в корзину</button>
         </form>
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <!-- Исправленная ссылка с Thymeleaf -->
+        <div class="action-buttons">
+            <a th:href="@{'/admin/users-readers/' + ${userReaderID} + '/cart'}" class="home-button"
+                role="button">Вернуться</a>
+        </div>
     </div>
 </body>
+
 </html>

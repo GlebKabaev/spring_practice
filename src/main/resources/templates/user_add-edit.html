@@ -30,7 +30,8 @@
             <button type="submit"
                 th:text="${user.id == null} ? 'Создать пользователя' : 'Сохранить изменения'"></button>
         </form>
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <!-- Для возврата к списку пользователей -->
+        <a th:href="@{/admin/users}" class="action-back">← Вернуться к списку пользователей</a>
     </div>
 </body>
 

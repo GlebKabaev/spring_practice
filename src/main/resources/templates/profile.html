@@ -19,7 +19,7 @@
             <p><span>Телефон:</span> <span th:text="${reader.phone}">Телефон</span></p>
             <a th:href="@{/profile/edit}" class="edit-button">Редактировать профиль</a>
         </div>
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <a th:href="@{/}" class="action-back">← Вернуться</a>
     </div>
 
 </body>

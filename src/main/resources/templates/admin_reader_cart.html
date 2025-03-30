@@ -35,7 +35,9 @@
             <tr>
                 <td colspan="4">
                     <button th:onclick="|window.location.href='@{/admin/readers/{id}/cart/new(id=${reader.id})}'|">Добавить книгу в корзину</button>
-                    <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+                    <div class="action-buttons">
+                        <a href="/admin/readers/{id}" class="home-button" role="button">Вернуться</a>
+                    </div>
                 </td>
             </tr>
         </tbody>

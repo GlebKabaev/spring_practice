@@ -25,7 +25,7 @@
                 <td>********</td> <!-- Скрываем пароль -->
                 <td th:text="${user.role}">Роль</td>
             </tr>
-            <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+            <a th:href="@{/admin/users}" class="action-back">← Вернуться к списку пользователей</a>
             <a th:href="@{/admin/users/new}" class="btn">Создать нового пользователя</a>
             <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn">Редактировать</a>
             <!-- Форма для удаления с методом DELETE -->

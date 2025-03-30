@@ -48,7 +48,9 @@
     </div>
 
     <!-- Кнопка вернуться -->
-    <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+    <!-- Замените текущую кнопку на ссылку с явным редиректом -->
+    <a th:href="@{/admin/users-readers/{userReaderID}(userReaderID=${userReaderID})}" class="action-back">Вернуться к
+        профилю читателя</a>
     <a th:href="@{/admin/users-readers/{userReaderID}/cart/new(userReaderID=${userReaderID})}">Добавить</a>
 </body>
 

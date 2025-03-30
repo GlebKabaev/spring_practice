@@ -24,7 +24,7 @@
             </div>
             <button type="submit">Добавить книгу в корзину</button>
         </form>
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <a th:href="@{/admin/readers/{id}(id=${reader.id})}" class="action-back">← Вернуться к профилю читателя</a>
     </div>
 </body>
 </html>

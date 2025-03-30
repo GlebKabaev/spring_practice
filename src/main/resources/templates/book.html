@@ -44,7 +44,7 @@
             <tr>
                 <td colspan="7">
                     <div class="actions">
-                        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+                        <a th:href="@{/admin/books}" class="action-back">← Вернуться к списку книг</a>
                         <!-- Редактирование -->
                         <form th:action="@{/admin/books/edit/{id}(id=${book.id})}" method="get">
                             <button type="submit" class="action-edit">Редактировать</button>

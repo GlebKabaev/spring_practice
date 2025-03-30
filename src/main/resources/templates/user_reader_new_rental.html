@@ -41,7 +41,7 @@
         </form>
 
         
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <a th:href="@{/admin/users-readers/{id}(id=${userReader.id})}" class="action-back">← Вернуться к профилю</a>
     </div>
 </body>
 </html>

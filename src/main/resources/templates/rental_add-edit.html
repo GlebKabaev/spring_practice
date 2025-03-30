@@ -46,7 +46,7 @@
                     th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
         </form>
 
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <a th:href="@{/admin/rentals}" class="action-back">← Вернуться к списку аренд</a>
     </div>
 </body>
 </html>

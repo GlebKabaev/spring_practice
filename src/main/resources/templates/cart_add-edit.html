@@ -44,7 +44,7 @@
             <button type="submit" th:text="${cart.id == null} ? 'Создать корзину' : 'Сохранить изменения'"></button>
         </form>
         <!-- Кнопка возвращения -->
-        <button type="button" onclick="window.history.back()" class="action-back">Вернуться</button>
+        <a th:href="@{/admin/carts}" class="action-back">← Вернуться к списку корзин</a>
     </div>
 </body>
 
