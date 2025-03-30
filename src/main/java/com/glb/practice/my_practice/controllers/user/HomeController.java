@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,11 +46,13 @@ public class HomeController {
         model.addAttribute("rentals", rentalService.findByReader(thisReader));
         return "reader_rentals";
     }
-    
+
     // TODO добавть trow в сервисы
     @GetMapping({ "/home", "/home/" })
     public String sortBooks(@RequestParam(value = "field", required = false, defaultValue = "title") String field,
-            Model model) {
+            Model model, @RequestParam(value = "search", required = false) String searchQuery,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Reader reader = readerService.thisReader();
         List<String> sortFields = Arrays.asList("Название", "Автор", "Депозит", "Стоимость аренды");
         if (sortFields.contains(field)) {
@@ -68,10 +71,12 @@ public class HomeController {
                 break;
             case "Стоимость аренды":
                 field = "rentalCost";
+                break;
             default:
+                field = "title";
                 break;
         }
-        List<Book> books = bookService.getNotZeroSortedBooks(field);
+        Page<Book> books = bookService.findPaginatedSearched(page, size, field, searchQuery);
         Map<Integer, String> bookImages = new HashMap<>();
 
         for (Book book : books) {
@@ -82,9 +87,13 @@ public class HomeController {
         }
         model.addAttribute("sortFields", sortFields);
         model.addAttribute("selectedField", field);
-        model.addAttribute("books", books);
+        model.addAttribute("books", books.getContent());
         model.addAttribute("bookImages", bookImages);
+        model.addAttribute("size", size);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", books.getTotalPages());
         model.addAttribute("username", reader.getFirstName() + " " + reader.getLastName());
+        model.addAttribute("search", searchQuery);
         return "goods_list";
     }
 

@@ -14,7 +14,12 @@
             <button type="submit">Выйти</button>
         </form>
     </header>
-
+    <form action="/home" method="get">
+        <input type="text" name="search" placeholder="Введите название книги" th:value="${searchQuery}" />
+        <button type="submit">Искать</button>
+        <input type="hidden" name="size" th:value="${size}" />
+        <input type="hidden" name="field" th:value="${field}" />
+    </form>
     <div class="main-content">
         <div class="sort-form">
             <form action="/home" method="get">
@@ -57,6 +62,17 @@
             </div>
         </div>
     </div>
-
+    <div class="pagination" style="margin-top: 20px;">
+        <a th:if="${currentPage > 0}" th:href="@{/home(page=${currentPage - 1}, size=${size}, search=${search})}">
+            ← Назад
+        </a>
+        <span style="margin: 0 10px;">
+            Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
+        </span>
+        <a th:if="${currentPage + 1 < totalPages}"
+            th:href="@{/home(page=${currentPage + 1}, size=${size}, search=${search})}">
+            Вперед →
+        </a>
+    </div>
 </body>
 </html>

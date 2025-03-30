@@ -31,6 +31,16 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
+    public Page<Book> findPaginatedSearched(int page, int size, String field, String searchQuery) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            return bookRepository.findByTitleContainingIgnoreCase(searchQuery, pageable);
+        } else {
+            return bookRepository.findAll(pageable);
+        }
+    }
+
+    @Transactional(readOnly = true)
     public List<Book> findByQuantityNotZeroAndDeletedFalse() {
         return bookRepository.findByQuantityNotAndDeletedFalse(0, Sort.by(Sort.Direction.DESC, "id"));
     }
