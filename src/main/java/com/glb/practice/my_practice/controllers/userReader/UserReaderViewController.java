@@ -120,6 +120,7 @@ public class UserReaderViewController {
     public String updateUserAndReader(@ModelAttribute("userReader") UserReader userReader,
             Model model) {
         try {
+            userReader.getUser().setRole("ROLE_USER");
             userService.updateUser(userReader.getUser());
             readerService.updateReader(userReader.getReader());
         } catch (Exception e) {
@@ -147,9 +148,18 @@ public class UserReaderViewController {
     public String repair(@PathVariable int userReaderID, Model model, @ModelAttribute("user") User user) {
         UserReader userReader = userReaderService.findById(userReaderID);
         if (userReader.getUser() == null) {
-            userService.saveUser(user);
-            userReader.setUser(user);
-            userReaderService.update(userReader);
+            try{
+                user.setRole("ROLE_USER");
+                userService.saveUser(user);
+                userReader.setUser(user);
+                userReaderService.update(userReader);
+            }
+            catch(Exception e){
+                
+                model.addAttribute("error","Пользователь с таким именем уже существует");
+                return repairUser(userReaderID,model);
+
+            }
             return "redirect:/admin/users-readers";
         } else {
             return "redirect:/admin/users-readers";
