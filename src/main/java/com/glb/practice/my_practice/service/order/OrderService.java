@@ -19,12 +19,11 @@ import lombok.AllArgsConstructor;
 public class OrderService {
     RentalService rentalService;
     CartElementService cartElementService;
-    public void processOrder(Reader reader, Date expectedReturnDate, List<CartElement> cartElements,
+    public void processOrder(Reader reader, Date expectedReturnDate,Date orderDate, List<CartElement> cartElements,
             StringBuilder errorBooks) {
-        Date today = new Date();
         for (CartElement cartElement : cartElements) {
             Book book = cartElement.getBook();
-            Rental rental = new Rental(0, reader, book, today, expectedReturnDate, false);
+            Rental rental = new Rental(0, reader, book, orderDate, expectedReturnDate, false);
             try {
                 rentalService.save(rental);
             } catch (Exception e) {

@@ -30,8 +30,9 @@ public class CartController {
     ReaderService readerService;
     RentalService rentalService;
     OrderService orderService;
+
     @GetMapping({ "", "/" })
-    public String getMethodName(Model model) {
+    public String cart(Model model) {
         Reader reader = readerService.thisReader();
         List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
         model.addAttribute("cart_elements", cartElements);
@@ -47,26 +48,33 @@ public class CartController {
     // TODO добавить возможность выбрать адресс для заказа
     // TODO изучить CSRF
     @PostMapping("/order")
-    public String order(@RequestParam("expectedReturnDate") String expectedReturnDate, Model model) {
+    public String order(@RequestParam("expectedReturnDate") String expectedReturnDate, Model model,
+    @RequestParam("orderDate") String orderDate) {
         Reader reader = readerService.thisReader();
         List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date expectedReturn = null;
+        Date expectedReturnSDF = null;
+        Date orderDateSDF = null;
         Date today = new Date();
         StringBuilder errorBooks = new StringBuilder();
         try {
-            expectedReturn = sdf.parse(expectedReturnDate);
+            expectedReturnSDF = sdf.parse(expectedReturnDate);
+            orderDateSDF=sdf.parse(orderDate);
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Неправильный формат даты");
-            return "redirect:/cart";
+            return cart(model);
         }
-        if (today.getTime() > expectedReturn.getTime()) {
-
-            return "redirect:/cart";
+        if (orderDateSDF.getTime() > expectedReturnSDF.getTime()) {
+            model.addAttribute("error", "Дата аренды не может быть позже даты возврата.");
+            return cart(model);
+        }
+        if (today.getTime() > orderDateSDF.getTime()) {
+            model.addAttribute("error", "Дата аренды не может быть позже сегодняшней даты.");
+            return cart(model);
         }
         if (!cartElements.isEmpty()) {
-           orderService.processOrder(reader,expectedReturn,cartElements,errorBooks);
+           orderService.processOrder(reader,expectedReturnSDF,orderDateSDF,cartElements,errorBooks);
         } else {
             return "redirect:/cart";
         }

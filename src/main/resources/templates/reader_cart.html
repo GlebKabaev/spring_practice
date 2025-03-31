@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Корзина</title>
     <link rel="stylesheet" th:href="@{/css/readerCart.css}" />
 </head>
+
 <body>
     <header>
         <h1>Корзина</h1>
@@ -14,6 +16,8 @@
             Ваша корзина пуста.
         </div>
 
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        
         <!-- Таблица корзины -->
         <table th:if="${not #lists.isEmpty(cart_elements)}">
             <thead>
@@ -31,7 +35,8 @@
                         <!-- Форма удаления -->
                         <form th:action="@{/cart/delete_element/{id}(id=${cartElement.id})}" method="post">
                             <input type="hidden" name="_method" value="delete" />
-                            <button type="submit" class="delete-button" onclick="return confirm('Вы уверены, что хотите удалить эту книгу из корзины?');">Удалить</button>
+                            <button type="submit" class="delete-button"
+                                onclick="return confirm('Вы уверены, что хотите удалить эту книгу из корзины?');">Удалить</button>
                         </form>
                     </td>
                 </tr>
@@ -46,10 +51,19 @@
         <!-- Форма заказа -->
         <form action="/cart/order" method="post" th:if="${not #lists.isEmpty(cart_elements)}">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-            <label for="calendar">Выберите дату возврата:</label>
-            <input type="date" id="calendar" name="expectedReturnDate" required min="{{#dates.format(#dates.createNow(), 'yyyy-MM-dd')}}" />
+            <div>
+                <label for="calendar">Выберите дату аренды:</label>
+                <input type="date" id="calendar" name="orderDate" required
+                    min="{{#dates.format(#dates.createNow(), 'yyyy-MM-dd')}}" />
+            </div>
+            <div>
+                <label for="calendar">Выберите дату возврата:</label>
+                <input type="date" id="calendar" name="expectedReturnDate" required
+                    min="{{#dates.format(#dates.createNow(), 'yyyy-MM-dd')}}" />
+            </div>
             <button type="submit">Отправить заказ</button>
         </form>
     </div>
 </body>
+
 </html>
