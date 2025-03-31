@@ -14,7 +14,7 @@ import com.glb.practice.my_practice.service.reader.ReaderService;
 import com.glb.practice.my_practice.service.user.UserService;
 
 import lombok.AllArgsConstructor;
-
+//TODO: делегировать бизнес логику на сервис
 @Controller
 @RequestMapping({ "/register", "/register/" })
 @AllArgsConstructor
