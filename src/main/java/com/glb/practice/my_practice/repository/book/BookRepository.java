@@ -11,6 +11,7 @@ import com.glb.practice.my_practice.models.Book;
 
 public interface BookRepository extends JpaRepository<Book,Integer> {
     List<Book> findByQuantityNotAndDeletedFalse(int quantity, Sort sort);
+    Page<Book> findByQuantityNotAndDeletedFalse(int quantity, Pageable pageable);
     Page<Book> findAll(Pageable pageable);
-    Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+    Page<Book> findByQuantityNotAndDeletedFalseAndTitleContainingIgnoreCase(int quantity, String title, Pageable pageable);
 }

@@ -34,9 +34,9 @@ public class BookService {
     public Page<Book> findPaginatedSearched(int page, int size, String field, String searchQuery) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
         if (searchQuery != null && !searchQuery.isEmpty()) {
-            return bookRepository.findByTitleContainingIgnoreCase(searchQuery, pageable);
+            return bookRepository.findByQuantityNotAndDeletedFalseAndTitleContainingIgnoreCase(0,searchQuery, pageable);
         } else {
-            return bookRepository.findAll(pageable);
+            return bookRepository.findByQuantityNotAndDeletedFalse(0,pageable);
         }
     }
 
