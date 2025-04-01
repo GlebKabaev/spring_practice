@@ -10,26 +10,26 @@
         <a href="/profile" class="profile-button">Профиль</a>
         <a href="/cart" class="cart-button">Корзина</a>
         <a href="/rentals" class="rentals-button">Аренды</a>
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Выйти</button>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="logout-button">Выйти</button>
         </form>
     </header>
-    <form action="/home" method="get">
+    <form action="/home" method="get" class="search-form">
         <input type="text" name="search" placeholder="Введите название книги" th:value="${searchQuery}" />
-        <button type="submit">Искать</button>
+        <button type="submit" class="search-button">Искать</button>
         <input type="hidden" name="size" th:value="${size}" />
         <input type="hidden" name="field" th:value="${field}" />
     </form>
     <div class="main-content">
         <div class="sort-form">
-            <form action="/home" method="get">
-                <select name="field" th:value="${selectedField}">
+            <form action="/home" method="get" class="sort-form-inner">
+                <select name="field" th:value="${selectedField}" class="sort-select">
                     <option th:each="field : ${sortFields}" 
                             th:value="${field}" 
                             th:text="${field}" 
                             th:selected="${field} == ${selectedField}">Выберите поле</option>
                 </select>
-                <button type="submit">Сортировать</button>
+                <button type="submit" class="sort-button">Сортировать</button>
             </form>
         </div>
         
@@ -41,7 +41,7 @@
                 <h3 th:text="${book.title}">Название</h3>
                 <div th:if="${bookImages[book.id] != null}">
                     <img th:src="@{|data:${book.image.contentType};base64,${bookImages[book.id]}|}" 
-                         alt="Book Image" style="max-width: 250px; max-height: 250px;" />
+                         alt="Book Image" />
                 </div>
                 <div th:if="${bookImages[book.id] == null}">
                     <p>Изображение не найдено.</p>
@@ -52,13 +52,12 @@
                 <p><strong>Депозит:</strong> <span th:text="${book.depositAmount}">Депозит</span></p>
                 <p><strong>Стоимость аренды:</strong> <span th:text="${book.rentalCost}">Стоимость аренды</span></p>
                 <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
-
-                <form th:action="@{/add_to_cart/{id}(id=${book.id})}" th:object="${selectedField}" method="post">
+            
+                <form th:action="@{/add_to_cart/{id}(id=${book.id})}" method="post">
                     <input type="hidden" name="field" th:value="${selectedField}" />
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <button type="submit" class="add-button">Добавить в корзину</button>
                 </form>
-                
             </div>
         </div>
     </div>
