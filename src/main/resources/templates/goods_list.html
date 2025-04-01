@@ -8,19 +8,21 @@
     <header>
         <h1>Добро пожаловать, <span th:text="${username}">Пользователь</span></h1>
         <a href="/profile" class="profile-button">Профиль</a>
-        <a href="/cart" class="cart-button">Корзина</a>
         <a href="/rentals" class="rentals-button">Аренды</a>
+        <a href="/cart" class="cart-button">Корзина</a>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="logout-button">Выйти</button>
         </form>
     </header>
-    <form action="/home" method="get" class="search-form">
-        <input type="text" name="search" placeholder="Введите название книги" th:value="${searchQuery}" />
-        <button type="submit" class="search-button">Искать</button>
-        <input type="hidden" name="size" th:value="${size}" />
-        <input type="hidden" name="field" th:value="${field}" />
-    </form>
+
     <div class="main-content">
+        <form action="/home" method="get" class="search-form">
+            <input type="text" name="search" placeholder="Введите название книги" th:value="${searchQuery}" />
+            <button type="submit" class="search-button">Искать</button>
+            <input type="hidden" name="size" th:value="${size}" />
+            <input type="hidden" name="field" th:value="${field}" />
+        </form>
+
         <div class="sort-form">
             <form action="/home" method="get" class="sort-form-inner">
                 <select name="field" th:value="${selectedField}" class="sort-select">
@@ -32,9 +34,6 @@
                 <button type="submit" class="sort-button">Сортировать</button>
             </form>
         </div>
-        
-        
-        
 
         <div class="book-grid">
             <div th:each="book : ${books}" class="book-item">
@@ -52,7 +51,6 @@
                 <p><strong>Депозит:</strong> <span th:text="${book.depositAmount}">Депозит</span></p>
                 <p><strong>Стоимость аренды:</strong> <span th:text="${book.rentalCost}">Стоимость аренды</span></p>
                 <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
-            
                 <form th:action="@{/add_to_cart/{id}(id=${book.id})}" method="post">
                     <input type="hidden" name="field" th:value="${selectedField}" />
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -60,18 +58,18 @@
                 </form>
             </div>
         </div>
-    </div>
-    <div class="pagination" style="margin-top: 20px;">
-        <a th:if="${currentPage > 0}" th:href="@{/home(page=${currentPage - 1}, size=${size}, search=${search})}">
-            ← Назад
-        </a>
-        <span style="margin: 0 10px;">
-            Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
-        </span>
-        <a th:if="${currentPage + 1 < totalPages}"
-            th:href="@{/home(page=${currentPage + 1}, size=${size}, search=${search})}">
-            Вперед →
-        </a>
+
+        <div class="pagination">
+            <a th:if="${currentPage > 0}" th:href="@{/home(page=${currentPage - 1}, size=${size}, search=${search})}">
+                ← Назад
+            </a>
+            <span>
+                Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
+            </span>
+            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/home(page=${currentPage + 1}, size=${size}, search=${search})}">
+                Вперед →
+            </a>
+        </div>
     </div>
 </body>
 </html>
