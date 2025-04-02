@@ -59,6 +59,12 @@ public class HomeController {
             sortFields.set(sortFields.indexOf(field), sortFields.get(0));
             sortFields.set(0, field);
         }
+        if(page<0 || size<0){
+            model.addAttribute("error","Ошибка пагинации" );
+            page=0;
+            size=10;
+            return sortBooks(field,model,searchQuery,page,size);
+        }
         switch (field) {
             case "Название":
                 field = "title";
