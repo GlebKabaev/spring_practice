@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Книга</title>
+    <link rel="stylesheet" th:href="@{/css/book.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="book-title">Книга: <span th:text="${book.title}">Название</span></h2>
+        
+        <div class="book-details">
+            <div class="book-image">
+                <div th:if="${base64Image != null}" class="image-wrapper">
+                    <img th:src="@{|data:${book.image.contentType};base64,${base64Image}|}" 
+                         alt="Book Image" class="responsive-img"/>
+                </div>
+                <div th:if="${base64Image == null}" class="no-image">
+                    <p>Изображение не найдено</p>
+                </div>
+            </div>
+
+            <div class="book-info">
+                <table>
+                    <tr>
+                        <th>ID:</th>
+                        <td th:text="${book.id}">123</td>
+                    </tr>
+                    <tr>
+                        <th>Автор:</th>
+                        <td th:text="${book.author}">Автор</td>
+                    </tr>
+                    <tr>
+                        <th>Жанр:</th>
+                        <td th:text="${book.genre}">Жанр</td>
+                    </tr>
+                    <tr>
+                        <th>В наличии:</th>
+                        <td th:text="${book.quantity}">5</td>
+                    </tr>
+                    <tr>
+                        <th>Депозит:</th>
+                        <td th:text="${book.depositAmount}">500 ₽</td>
+                    </tr>
+                    <tr>
+                        <th>Аренда/сутки:</th>
+                        <td th:text="${book.rentalCost}">150 ₽</td>
+                    </tr>
+                </table>
+
+                <div class="actions">
+                    <form th:action="@{/add_to_cart/{id}(id=${book.id})}" method="post" class="add-to-cart-form">
+                        <input type="hidden" name="field" th:value="${selectedField}" />
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="add-to-cart-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M19 5h-14l1.5-2h11l1.5 2zm-5 12h-4v-10h4v10zm3.5-6h-11c-.276 0-.5.224-.5.5s.224.5.5.5h11c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/>
+                            </svg>
+                            В корзину
+                        </button>
+                    </form>
+                    
+                    <a th:href="@{/}" class="back-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M13.828 12l6.364-6.364-1.414-1.414L11 12l7.778 7.778-1.414 1.414L13.828 12z"/>
+                        </svg>
+                        Вернуться
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
