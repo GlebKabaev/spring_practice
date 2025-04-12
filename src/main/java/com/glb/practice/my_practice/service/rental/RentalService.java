@@ -1,6 +1,6 @@
 package com.glb.practice.my_practice.service.rental;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
@@ -89,14 +89,13 @@ public class RentalService {
     @Transactional(readOnly = true)
     public Page<Rental> findExpiredByReaderPaginaited(int page, int size, String field, Reader reader) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
-        return rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalseAndReader(new Date(), reader, pageable);
+        return rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalseAndReader(LocalDate.now(), reader, pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Rental> findAllExpiredRentals(int page, int size) {
-        Date currentDate = new Date();
         Pageable pageable = PageRequest.of(page, size);
-        Page<Rental> expiredRentals = rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(currentDate,
+        Page<Rental> expiredRentals = rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(LocalDate.now(),
                 pageable);
         return expiredRentals;
     }
