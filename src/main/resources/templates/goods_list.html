@@ -50,7 +50,7 @@
                 <p><strong>Количество:</strong> <span th:text="${book.quantity}">Количество</span></p>
                 <p><strong>Депозит:</strong> <span th:text="${book.depositAmount}">Депозит</span></p>
                 <p><strong>Стоимость аренды:</strong> <span th:text="${book.rentalCost}">Стоимость аренды</span></p>
-                <a th:href="@{/admin/books/{id}(id=${book.id})}">Просмотр</a>
+                <a th:href="@{/book/{id}(id=${book.id})}">Просмотр</a>
                 <form th:action="@{/add_to_cart/{id}(id=${book.id})}" method="post">
                     <input type="hidden" name="field" th:value="${selectedField}" />
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
