@@ -30,7 +30,6 @@
                 <div class="cart-item" th:each="cartElement : ${cart_elements}">
                     <div class="item-details">
                         <div class="item-header">
-                            <span class="item-id">ID: <span th:text="${cartElement.id}">123</span></span>
                             <h3 th:text="${cartElement.book.title}">Название книги</h3>
                         </div>
                         <div class="item-actions">

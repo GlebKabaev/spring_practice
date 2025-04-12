@@ -14,7 +14,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Название книги</th>
                     <th>Дата аренды</th>
                     <th>Ожидаемая дата возврата</th>
@@ -23,7 +22,6 @@
             </thead>
             <tbody>
                 <tr th:each="rental : ${rentals}">
-                    <td th:text="${rental.id}">1</td>
                     <td th:text="${rental.book.title}">Название книги</td>
                     <td th:text="${rental.issueDate}">2025-01-01</td>
                     <td th:text="${rental.expectedReturnDate}">2025-02-01</td>
