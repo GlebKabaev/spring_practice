@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,12 +30,12 @@ public class Rental {
     @Column(name = "issue_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date issueDate;
+    private LocalDate issueDate;
 
     @Column(name = "expected_return_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date expectedReturnDate;
+    private LocalDate expectedReturnDate;
 
     @Column(name = "returned", nullable = false, columnDefinition = "boolean default false")
     private Boolean returned; // true - книга возвращена, false - арендована

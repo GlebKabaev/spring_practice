@@ -1,5 +1,6 @@
 package com.glb.practice.my_practice.service.order;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class OrderService {
     RentalService rentalService;
     CartElementService cartElementService;
-    public void processOrder(Reader reader, Date expectedReturnDate,Date orderDate, List<CartElement> cartElements,
+    public void processOrder(Reader reader, LocalDate expectedReturnDate,LocalDate orderDate, List<CartElement> cartElements,
             StringBuilder errorBooks) {
         for (CartElement cartElement : cartElements) {
             Book book = cartElement.getBook();

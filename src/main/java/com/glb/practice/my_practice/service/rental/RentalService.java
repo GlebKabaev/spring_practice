@@ -44,7 +44,7 @@ public class RentalService {
         if (rental.getBook().isDeleted()) {
             throw new IllegalArgumentException("данная книга удалена");
         }
-        if (rental.getIssueDate().after(rental.getExpectedReturnDate())) {
+        if (rental.getIssueDate().isAfter(rental.getExpectedReturnDate())) {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
         if (book.getQuantity() > 0) {
@@ -65,7 +65,7 @@ public class RentalService {
 
     @Transactional
     public Rental update(Rental rental) {
-        if (rental.getIssueDate().after(rental.getExpectedReturnDate())) {
+        if (rental.getIssueDate().isAfter(rental.getExpectedReturnDate())) {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
         return rentalRepository.save(rental);

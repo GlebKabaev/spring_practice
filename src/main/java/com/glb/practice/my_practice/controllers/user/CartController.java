@@ -1,6 +1,7 @@
 package com.glb.practice.my_practice.controllers.user;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Date;
 
@@ -52,29 +53,29 @@ public class CartController {
     @RequestParam("orderDate") String orderDate) {
         Reader reader = readerService.thisReader();
         List<CartElement> cartElements = cartElementService.findByReaderId(reader.getId());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date expectedReturnSDF = null;
-        Date orderDateSDF = null;
-        Date today = new Date();
+       
+        LocalDate expectedReturnLocalDate=null;
+        LocalDate orderLocalDate=null;
+        LocalDate today=LocalDate.now();
         StringBuilder errorBooks = new StringBuilder();
         try {
-            expectedReturnSDF = sdf.parse(expectedReturnDate);
-            orderDateSDF=sdf.parse(orderDate);
+            expectedReturnLocalDate = LocalDate.parse(expectedReturnDate);
+            orderLocalDate = LocalDate.parse(orderDate);
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Неправильный формат даты");
             return cart(model);
         }
-        if (orderDateSDF.getTime() > expectedReturnSDF.getTime()) {
+        if (orderLocalDate.isAfter(expectedReturnLocalDate)) {
             model.addAttribute("error", "Дата аренды не может быть позже даты возврата.");
             return cart(model);
         }
-        if (today.getTime() > orderDateSDF.getTime()) {
+        if (today.isAfter(today)) {
             model.addAttribute("error", "Дата аренды не может быть позже сегодняшней даты.");
             return cart(model);
         }
         if (!cartElements.isEmpty()) {
-           orderService.processOrder(reader,expectedReturnSDF,orderDateSDF,cartElements,errorBooks);
+           orderService.processOrder(reader,expectedReturnLocalDate,orderLocalDate,cartElements,errorBooks);
         } else {
             return "redirect:/cart";
         }
