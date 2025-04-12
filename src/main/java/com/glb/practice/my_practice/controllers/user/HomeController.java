@@ -47,7 +47,7 @@ public class HomeController {
         return "reader_rentals";
     }
 
-    // TODO добавть trow в сервисы
+    
     @GetMapping({ "/home", "/home/" })
     public String sortBooks(@RequestParam(value = "field", required = false, defaultValue = "title") String field,
             Model model, @RequestParam(value = "search", required = false) String searchQuery,
