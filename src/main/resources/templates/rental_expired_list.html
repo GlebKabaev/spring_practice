@@ -18,58 +18,65 @@
     </a>
 
     <!-- Таблица аренд -->
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Пользователь</th>
-                <th>Книга</th>
-                <th>Дата выдачи</th>
-                <th>Дата возврата</th>
-                <th>Статус</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="rental : ${rentals}">
-                <td th:text="${rental.id}">ID</td>
-                <td th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}">Пользователь</td>
-                <td th:text="${rental.book.title}">Книга</td>
-                <td th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
-                <td th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Дата возврата</td>
+    <!-- Таблица аренд -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Пользователь</th>
+            <th>Книга</th>
+            <th>Дата выдачи</th>
+            <th>Дата возврата</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="rental : ${rentals}">
+            <td th:text="${rental.id}">ID</td>
+            <!-- Ссылка на пользователя -->
+            <td>
+                <a th:href="@{/admin/readers/{id}(id=${rental.reader.id})}"
+                   th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}">
+                    Пользователь
+                </a>
+            </td>
+            <td th:text="${rental.book.title}">Книга</td>
+            <td th:text="${#temporals.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
+            <td th:text="${#temporals.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Дата возврата</td>
 
-                <!-- Статус аренды -->
-                <td>
-                    <span th:if="${rental.returned}" class="badge bg-secondary">Возвращена</span>
-                    <span th:unless="${rental.returned}" class="badge bg-success">Активна</span>
-                </td>
+            <!-- Статус аренды -->
+            <td>
+                <span th:if="${rental.returned}" class="badge bg-secondary">Возвращена</span>
+                <span th:unless="${rental.returned}" class="badge bg-success">Активна</span>
+            </td>
 
-                <!-- Действия -->
-                <td>
-                    <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a> |
-                    <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |
+            <!-- Действия -->
+            <td>
+                <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a> |
+                <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |
 
-                    <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post"
-                        style="display:inline;">
-                        <input type="hidden" name="_method" value="delete">
-                        <button type="submit" onclick="return confirm('Удалить аренду?')">Удалить</button>
-                    </form>
+                <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post"
+                    style="display:inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit" onclick="return confirm('Удалить аренду?')">Удалить</button>
+                </form>
 
-                    <form th:action="@{/admin/rentals/return/{id}(id=${rental.id})}" method="post" style="display:inline;">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <button type="submit" th:text="${rental.returned} ? 'Отменить возврат' : 'Принять возврат'"></button>
-                    </form>
-                </td>
-            </tr>
+                <form th:action="@{/admin/rentals/return/{id}(id=${rental.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="PATCH">
+                    <button type="submit" th:text="${rental.returned} ? 'Отменить возврат' : 'Принять возврат'"></button>
+                </form>
+            </td>
+        </tr>
 
-            <!-- Кнопка "Добавить аренду" -->
-            <tr>
-                <td colspan="7" style="text-align: right;">
-                    <a th:href="@{/admin/rentals/new}" class="action-add">Добавить аренду</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- Кнопка "Добавить аренду" -->
+        <tr>
+            <td colspan="7" style="text-align: right;">
+                <a th:href="@{/admin/rentals/new}" class="action-add">Добавить аренду</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
     <!-- Пагинация -->
     <div class="pagination" style="margin-top: 20px;">

@@ -12,8 +12,8 @@
             <p><strong>ID:</strong> <span th:text="${rental.id}"></span></p>
             <p><strong>Пользователь:</strong> <span th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}"></span></p>
             <p><strong>Книга:</strong> <span th:text="${rental.book.title}"></span></p>
-            <p><strong>Дата выдачи:</strong> <span th:text="${#dates.format(rental.issueDate, 'dd-MM-yyyy')}"></span></p>
-            <p><strong>Предполагаемая дата возврата:</strong> <span th:text="${#dates.format(rental.expectedReturnDate, 'dd-MM-yyyy')}"></span></p>
+            <p><strong>Дата выдачи:</strong> <span th:text="${#temporals.format(rental.issueDate, 'dd-MM-yyyy')}"></span></p>
+            <p><strong>Предполагаемая дата возврата:</strong> <span th:text="${#temporals.format(rental.expectedReturnDate, 'dd-MM-yyyy')}"></span></p>
             <p><strong>Статус возврата:</strong> 
                 <span th:text="${rental.returned} ? 'возвращена' : 'не возвращена'"></span>
             </p>
