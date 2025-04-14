@@ -63,11 +63,8 @@ public class RentalViewController {
             rentalService.save(rental);
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("readers", readerService.findAll("id"));
-            model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
-            model.addAttribute("rental", new Rental());
             model.addAttribute("error", e.getMessage());
-            return "rental_add-edit";
+            return showCreateRentalForm(model);
         }
 
         return "redirect:/admin/rentals";
