@@ -1,6 +1,7 @@
 package com.glb.practice.my_practice.service.order;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +24,8 @@ public class OrderService {
             StringBuilder errorBooks) {
         for (CartElement cartElement : cartElements) {
             Book book = cartElement.getBook();
-            Rental rental = new Rental(0, reader, book, orderDate, expectedReturnDate, false);
+            double rentalCost=book.getDepositAmount()+book.getRentalCost()*ChronoUnit.DAYS.between(orderDate, expectedReturnDate);
+            Rental rental = new Rental(0, reader, book, orderDate, expectedReturnDate, false,rentalCost,false);
             try {
                 rentalService.save(rental);
             } catch (Exception e) {

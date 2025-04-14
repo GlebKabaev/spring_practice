@@ -1,6 +1,7 @@
 package com.glb.practice.my_practice.service.rental;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
@@ -19,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
 import lombok.AllArgsConstructor;
-
+//TODO: доделать отображение кнопок в зависимости от статуса заказа
 @Service
 @AllArgsConstructor
 @Primary
@@ -41,6 +42,9 @@ public class RentalService {
     @Transactional
     public Rental save(Rental rental) {
         Book book = bookService.findById(rental.getBook().getId());
+        if(rental.getReceived()==false&&rental.getReturned()==true){
+            throw new IllegalArgumentException("книга не может быть возвращена без получения");
+        }
         if (rental.getBook().isDeleted()) {
             throw new IllegalArgumentException("данная книга удалена");
         }
@@ -50,6 +54,8 @@ public class RentalService {
         if (book.getQuantity() > 0) {
             book.setQuantity(book.getQuantity() - 1);
             bookService.save(book);
+            double rentalCost=countRental(book,rental);
+            rental.setFullRentalCost(rentalCost);
             rental.setReturned(false);
             return rentalRepository.save(rental);
         } else {
@@ -68,6 +74,11 @@ public class RentalService {
         if (rental.getIssueDate().isAfter(rental.getExpectedReturnDate())) {
             throw new IllegalArgumentException("дата выдачи не может быть позже даты возврата");
         }
+        if(rental.getReceived()==false&&rental.getReturned()==true){
+            throw new IllegalArgumentException("книга не может быть возвращена без получения");
+        }
+        double rentalCost=countRental(bookService.findById( rental.getBook().getId()), rental);
+        rental.setFullRentalCost(rentalCost);
         return rentalRepository.save(rental);
     }
 
@@ -107,5 +118,8 @@ public class RentalService {
         }
         rental.setReturned(!rental.getReturned());
         return update(rental);
+    }
+    public double countRental(Book book, Rental rental){
+        return book.getDepositAmount()+book.getRentalCost()*ChronoUnit.DAYS.between(rental.getIssueDate(), rental.getExpectedReturnDate());
     }
 }

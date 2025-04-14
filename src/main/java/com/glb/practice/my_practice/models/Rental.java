@@ -39,4 +39,10 @@ public class Rental {
 
     @Column(name = "returned", nullable = false, columnDefinition = "boolean default false")
     private Boolean returned; // true - книга возвращена, false - арендована
+
+    @Column(name = "rental_cost",nullable = false)
+    private Double fullRentalCost;
+
+    @Column(name = "received",nullable = false)
+    private Boolean received;
 }

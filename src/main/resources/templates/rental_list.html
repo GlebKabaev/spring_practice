@@ -24,6 +24,7 @@
                 <th>Книга</th>
                 <th>Дата выдачи</th>
                 <th>Дата возврата</th>
+                <th>Стоимость аренды</th>
                 <th>Статус</th>
                 <th>Действия</th>
             </tr>
@@ -35,11 +36,20 @@
                 <td th:text="${rental.book.title}">Книга</td>
                 <td th:text="${#temporals.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
                 <td th:text="${#temporals.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Дата возврата</td>
+                <td th:text="${rental.fullRentalCost}">Стоимость аренды</td>
 
                 <!-- Статус аренды -->
                 <td>
-                    <span th:if="${rental.returned}" class="badge bg-secondary">Возвращена</span>
-                    <span th:unless="${rental.returned}" class="badge bg-success">Активна</span>
+                    <!-- Отладка: вывод значений received и returned -->
+                    <span style="display: none;" th:text="'DEBUG: received=' + ${rental.received} + ', returned=' + ${rental.returned}"></span>
+                    
+                    <!-- Логика статуса -->
+                    <span th:switch="${rental.received} + '-' + ${rental.returned}">
+                        <span th:case="'true-true'" class="badge bg-secondary">Возвращена</span>
+                        <span th:case="'true-false'" class="badge bg-success">Получена</span>
+                        <span th:case="'false-false'" class="badge bg-warning">Не получена</span>
+                        <span th:case="*" class="badge bg-danger" th:text="'Ошибка данных (received: ' + ${rental.received} + ', returned: ' + ${rental.returned} + ')'"></span>
+                    </span>
                 </td>
 
                 <!-- Действия -->
@@ -62,7 +72,7 @@
 
             <!-- Кнопка "Добавить аренду" -->
             <tr>
-                <td colspan="7" style="text-align: right;">
+                <td colspan="8" style="text-align: right;">
                     <a th:href="@{/admin/rentals/new}" class="action-add">Добавить аренду</a>
                 </td>
             </tr>

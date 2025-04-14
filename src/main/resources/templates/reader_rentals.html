@@ -17,6 +17,7 @@
                     <th>Название книги</th>
                     <th>Дата аренды</th>
                     <th>Ожидаемая дата возврата</th>
+                    <th>Цена</th>
                     <th>Статус</th>
                 </tr>
             </thead>
@@ -25,6 +26,7 @@
                     <td th:text="${rental.book.title}">Название книги</td>
                     <td th:text="${rental.issueDate}">2025-01-01</td>
                     <td th:text="${rental.expectedReturnDate}">2025-02-01</td>
+                    <td th:text="${rental.fullRentalCost}">Цена</td>
                     <td th:text="${rental.returned} ? 'возвращена' : 'не возвращена'"></td>
                 </tr>
             </tbody>

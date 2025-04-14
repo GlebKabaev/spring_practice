@@ -17,6 +17,7 @@
             <p><strong>Статус возврата:</strong> 
                 <span th:text="${rental.returned} ? 'возвращена' : 'не возвращена'"></span>
             </p>
+            <p><strong>Стоимость аренды:</strong> <span th:text="${rental.fullRentalCost}"></span></p>
         </div>
         <div>
             <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |

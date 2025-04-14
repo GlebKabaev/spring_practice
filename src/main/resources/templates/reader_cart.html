@@ -4,6 +4,18 @@
     <title>Корзина</title>
     <link rel="stylesheet" th:href="@{/css/readerCart.css}" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .rental-cost {
+            font-size: 16px;
+            color: #333;
+            margin-top: 10px;
+        }
+        #total-cost {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,6 +43,12 @@
                     <div class="item-details">
                         <div class="item-header">
                             <h3 th:text="${cartElement.book.title}">Название книги</h3>
+                            <!-- Отображение стоимости аренды с залогом -->
+                            <p class="rental-cost" 
+                               th:data-rental-cost="${cartElement.book.rentalCost}" 
+                               th:data-deposit-amount="${cartElement.book.depositAmount}">
+                                Стоимость аренды: <span>0</span> руб. (включая залог)
+                            </p>
                         </div>
                         <div class="item-actions">
                             <form th:action="@{/cart/delete_element/{id}(id=${cartElement.id})}" method="post" class="delete-form">
@@ -47,6 +65,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Общая стоимость -->
+            <div th:if="${not #lists.isEmpty(cart_elements)}" id="total-cost">Общая стоимость: <span>0</span> руб.</div>
 
             <!-- Форма заказа -->
             <div th:if="${not #lists.isEmpty(cart_elements)}" class="order-form">
@@ -86,5 +107,54 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderDateInput = document.getElementById('orderDate');
+        const returnDateInput = document.getElementById('returnDate');
+        const cartItems = document.querySelectorAll('.cart-item');
+
+        function calculateRentalCost() {
+            const orderDate = new Date(orderDateInput.value);
+            const returnDate = new Date(returnDateInput.value);
+
+            if (isNaN(orderDate) || isNaN(returnDate)) {
+                return;
+            }
+
+            const timeDiff = returnDate - orderDate;
+            const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            if (days <= 0) {
+                alert('Дата возврата должна быть позже даты аренды');
+                cartItems.forEach(item => {
+                    item.querySelector('.rental-cost span').textContent = '0';
+                });
+                if (document.getElementById('total-cost')) {
+                    document.getElementById('total-cost').querySelector('span').textContent = '0';
+                }
+                return;
+            }
+
+            let total = 0;
+            cartItems.forEach(item => {
+                const rentalCostElement = item.querySelector('.rental-cost');
+                const rentalCostPerDay = parseFloat(rentalCostElement.getAttribute('data-rental-cost'));
+                const depositAmount = parseFloat(rentalCostElement.getAttribute('data-deposit-amount'));
+                const rentalCostForDays = days * rentalCostPerDay;
+                const totalCost = rentalCostForDays + depositAmount; // Учитываем залог
+                rentalCostElement.querySelector('span').textContent = totalCost.toFixed(2);
+                total += totalCost;
+            });
+
+            if (document.getElementById('total-cost')) {
+                document.getElementById('total-cost').querySelector('span').textContent = total.toFixed(2);
+            }
+        }
+
+        orderDateInput.addEventListener('change', calculateRentalCost);
+        returnDateInput.addEventListener('change', calculateRentalCost);
+    });
+    </script>
 </body>
 </html>

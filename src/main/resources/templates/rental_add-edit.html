@@ -43,6 +43,8 @@
 
             <label for="returned">Возвращена:</label>
             <input type="checkbox" id="returned" th:field="*{returned}" />
+            <label for="received">Получена:</label>
+            <input type="checkbox" id="received" th:field="*{received}" />
 
             <button type="submit" th:text="${rental.id == null} ? 'Создать аренду' : 'Сохранить изменения'"></button>
         </form>
