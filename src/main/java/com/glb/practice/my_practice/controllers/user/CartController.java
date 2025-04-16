@@ -2,6 +2,7 @@ package com.glb.practice.my_practice.controllers.user;
 
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -66,11 +67,15 @@ public class CartController {
             model.addAttribute("error", "Неправильный формат даты");
             return cart(model);
         }
+        if(ChronoUnit.DAYS.between(today, orderLocalDate)>14){
+            model.addAttribute("error", "Выбранная дата аренды недоступна. Допустимый период бронирования — не более 14 дней от текущей даты.");
+            return cart(model);
+        }
         if (orderLocalDate.isAfter(expectedReturnLocalDate)) {
             model.addAttribute("error", "Дата аренды не может быть позже даты возврата.");
             return cart(model);
         }
-        if (today.isAfter(today)) {
+        if (today.isAfter(orderLocalDate)) {
             model.addAttribute("error", "Дата аренды не может быть позже сегодняшней даты.");
             return cart(model);
         }
