@@ -100,13 +100,13 @@ public class RentalService {
     @Transactional(readOnly = true)
     public Page<Rental> findExpiredByReaderPaginaited(int page, int size, String field, Reader reader) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(field)));
-        return rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalseAndReader(LocalDate.now(), reader, pageable);
+        return rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalseAndReceivedTrueAndReader(LocalDate.now(), reader, pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Rental> findAllExpiredRentals(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Rental> expiredRentals = rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalse(LocalDate.now(),
+        Page<Rental> expiredRentals = rentalRepository.findByExpectedReturnDateBeforeAndReturnedFalseAndReceivedTrue(LocalDate.now(),
                 pageable);
         return expiredRentals;
     }
@@ -117,6 +117,14 @@ public class RentalService {
             throw new RentalNotFoundException("Rental with id " + id + " not found");
         }
         rental.setReturned(!rental.getReturned());
+        return update(rental);
+    }
+    public Rental toggleReceivedStatus(int id) {
+        Rental rental = findById(id);
+        if (rental == null) {
+            throw new RentalNotFoundException("Rental with id " + id + " not found");
+        }
+        rental.setReceived(!rental.getReceived());
         return update(rental);
     }
     public double countRental(Book book, Rental rental){
