@@ -69,19 +69,22 @@ public class UserReaderRentalViewController {
             rentalService.save(rental);
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("reader", reader);
-            model.addAttribute("books", bookService.findByQuantityNotZeroAndDeletedFalse());
-            model.addAttribute("rental", new Rental());
             model.addAttribute("error", e.getMessage());
-            return "user_reader_new_rental";
+            return showCreateRentalForm(userReaderID,model);
         }
 
         return "redirect:/admin/users-readers/%d/rentals".formatted(userReader.getId());
     }
 
-    @PatchMapping("/toggleStatus/{rentalID}")
-    public String toggleStatus(@PathVariable int userReaderID, @PathVariable int rentalID) {
+    @PatchMapping("/toggleRentalStatus/{rentalID}")
+    public String toggleRentalStatus(@PathVariable int userReaderID, @PathVariable int rentalID) {
         rentalService.toggleRentalStatus(rentalID);
+
+        return "redirect:/admin/users-readers/%d/rentals".formatted(userReaderID);
+    }
+    @PatchMapping("/toggleReceivedStatus/{rentalID}")
+    public String toggleReceivedStatus(@PathVariable int userReaderID, @PathVariable int rentalID) {
+        rentalService.toggleReceivedStatus(rentalID);
 
         return "redirect:/admin/users-readers/%d/rentals".formatted(userReaderID);
     }
