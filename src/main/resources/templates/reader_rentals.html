@@ -27,7 +27,16 @@
                     <td th:text="${rental.issueDate}">2025-01-01</td>
                     <td th:text="${rental.expectedReturnDate}">2025-02-01</td>
                     <td th:text="${rental.fullRentalCost}">Цена</td>
-                    <td th:text="${rental.returned} ? 'возвращена' : 'не возвращена'"></td>
+                    <td>
+                        <!-- Логика статуса -->
+                        <span th:switch="${rental.received} + '-' + ${rental.returned}">
+                            <span th:case="'true-true'" class="badge bg-secondary">Возвращена</span>
+                            <span th:case="'true-false'" class="badge bg-success">Получена</span>
+                            <span th:case="'false-false'" class="badge bg-warning">Не получена</span>
+                            <span th:case="*" class="badge bg-danger"
+                                th:text="'Ошибка данных (received: ' + ${rental.received} + ', returned: ' + ${rental.returned} + ')'"></span>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>

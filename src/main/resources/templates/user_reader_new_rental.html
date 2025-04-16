@@ -35,6 +35,10 @@
             <label for="expectedReturnDate">Предполагаемая дата возврата:</label>
             <input type="date" id="expectedReturnDate" th:field="*{expectedReturnDate}" required />
             <br><br>
+            <label for="returned">Возвращена:</label>
+            <input type="checkbox" id="returned" th:field="*{returned}" />
+            <label for="received">Получена:</label>
+            <input type="checkbox" id="received" th:field="*{received}" />
 
            
             <button type="submit">Создать аренду</button>

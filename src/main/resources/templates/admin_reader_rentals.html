@@ -50,23 +50,62 @@
             </thead>
             <tbody>
                 <tr th:each="rental : ${rentals}">
-                    <td th:text="${rental.id}"></td>
-                    <td th:text="${rental.book.title}"></td>
-                    <td th:text="${rental.issueDate}"></td>
-                    <td th:text="${rental.expectedReturnDate}"></td>
-                    <td th:text="${rental.returned}"></td>
+                    <td th:text="${rental.id}">ID</td>
+                    <td th:text="${rental.book.title}">Книга</td>
+                    <td th:text="${#temporals.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
+                    <td th:text="${#temporals.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Дата возврата</td>
+                    <td th:text="${rental.fullRentalCost}">Стоимость аренды</td>
+
+                    <!-- Статус аренды -->
                     <td>
-                        <form
-                            th:action="@{/admin/users-readers/{userReaderID}/rentals/toggleStatus/{rentalID}(userReaderID=${userReader.id},rentalID=${rental.id})}"
-                            method="post">
-                            <input type="hidden" name="_method" value="patch" />
-                            <button type="submit" class="action-buttons">Изменить статус</button>
+                        <!-- Логика статуса -->
+                        <span th:switch="${rental.received} + '-' + ${rental.returned}">
+                            <span th:case="'true-true'" class="badge bg-secondary">Возвращена</span>
+                            <span th:case="'true-false'" class="badge bg-success">Получена</span>
+                            <span th:case="'false-false'" class="badge bg-warning">Не получена</span>
+                            <span th:case="*" class="badge bg-danger"
+                                th:text="'Ошибка данных (received: ' + ${rental.received} + ', returned: ' + ${rental.returned} + ')'"></span>
+                        </span>
+                    </td>
+
+                    <!-- Действия -->
+                    <td>
+                        <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a> |
+                        <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |
+                        <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post"
+                            style="display:inline;">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" onclick="return confirm('Удалить аренду?')">Удалить</button>
                         </form>
+
+                        <!-- Кнопка "Выдать заказ" если не получена -->
+                        <span th:if="${not rental.received and not rental.returned}">
+                            <form
+                                th:action="@{/admin/users-readers/{userReaderID}/rentals/toggleReceivedStatus/{rentalID}(userReaderID=${userReader.id}, rentalID=${rental.id})}"
+                                method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="patch">
+                                <button type="submit">Выдать заказ</button>
+                            </form>
+                        </span>
+
+                        <!-- Кнопка "Принять возврат" если получена, но не возвращена -->
+                        <span th:if="${rental.received and not rental.returned}">
+                            <form
+                                th:action="@{/admin/users-readers/{userReaderID}/rentals/toggleRentalStatus/{rentalID}(userReaderID=${userReader.id}, rentalID=${rental.id})}"
+                                method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="patch">
+                                <button type="submit">Принять возврат</button>
+                            </form>
+                        </span>
                     </td>
                 </tr>
             </tbody>
         </table>
-
+        <a
+            th:href="@{/admin/users-readers/{userReaderID}/rentals/new(userReaderID=${userReader.id})}"
+            class="btn">
+            Создать аренду
+        </a>
 
         <div class="pagination" style="margin-top: 20px;"
             th:with="baseUrl=(${expired} != null and ${expired}) ? '/admin/users-readers/' + ${userReader.id} + '/rentals/expired' : '/admin/users-readers/' + ${userReader.id} + '/rentals'">

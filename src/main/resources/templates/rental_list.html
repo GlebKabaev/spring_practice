@@ -32,7 +32,12 @@
         <tbody>
             <tr th:each="rental : ${rentals}">
                 <td th:text="${rental.id}">ID</td>
-                <td th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}">Пользователь</td>
+                <td>
+                    <a th:href="@{/admin/readers/{id}(id=${rental.reader.id})}"
+                       th:text="${rental.reader.lastName + ' ' + rental.reader.firstName}">
+                        Пользователь
+                    </a>
+                </td>
                 <td th:text="${rental.book.title}">Книга</td>
                 <td th:text="${#temporals.format(rental.issueDate, 'dd-MM-yyyy')}">Дата выдачи</td>
                 <td th:text="${#temporals.format(rental.expectedReturnDate, 'dd-MM-yyyy')}">Дата возврата</td>
@@ -40,15 +45,13 @@
 
                 <!-- Статус аренды -->
                 <td>
-                    <!-- Отладка: вывод значений received и returned -->
-                    <span style="display: none;" th:text="'DEBUG: received=' + ${rental.received} + ', returned=' + ${rental.returned}"></span>
-                    
                     <!-- Логика статуса -->
                     <span th:switch="${rental.received} + '-' + ${rental.returned}">
                         <span th:case="'true-true'" class="badge bg-secondary">Возвращена</span>
                         <span th:case="'true-false'" class="badge bg-success">Получена</span>
                         <span th:case="'false-false'" class="badge bg-warning">Не получена</span>
-                        <span th:case="*" class="badge bg-danger" th:text="'Ошибка данных (received: ' + ${rental.received} + ', returned: ' + ${rental.returned} + ')'"></span>
+                        <span th:case="*" class="badge bg-danger"
+                            th:text="'Ошибка данных (received: ' + ${rental.received} + ', returned: ' + ${rental.returned} + ')'"></span>
                     </span>
                 </td>
 
@@ -56,17 +59,29 @@
                 <td>
                     <a th:href="@{/admin/rentals/{id}(id=${rental.id})}">Просмотр</a> |
                     <a th:href="@{/admin/rentals/edit/{id}(id=${rental.id})}">Редактировать</a> |
-
                     <form th:action="@{/admin/rentals/delete/{id}(id=${rental.id})}" method="post"
                         style="display:inline;">
                         <input type="hidden" name="_method" value="delete">
                         <button type="submit" onclick="return confirm('Удалить аренду?')">Удалить</button>
                     </form>
 
-                    <form th:action="@{/admin/rentals/return/{id}(id=${rental.id})}" method="post" style="display:inline;">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <button type="submit" th:text="${rental.returned} ? 'Отменить возврат' : 'Принять возврат'"></button>
-                    </form>
+                    <!-- Кнопка "Выдать заказ" если не получена -->
+                    <span th:if="${not rental.received and not rental.returned}">
+                        <form th:action="@{/admin/rentals/give/{id}(id=${rental.id})}" method="post"
+                            style="display:inline;">
+                            <input type="hidden" name="_method" value="patch">
+                            <button type="submit">Выдать заказ</button>
+                        </form>
+                    </span>
+
+                    <!-- Кнопка "Принять возврат" если получена, но не возвращена -->
+                    <span th:if="${rental.received and not rental.returned}">
+                        <form th:action="@{/admin/rentals/return/{id}(id=${rental.id})}" method="post"
+                            style="display:inline;">
+                            <input type="hidden" name="_method" value="patch">
+                            <button type="submit">Принять возврат</button>
+                        </form>
+                    </span>
                 </td>
             </tr>
 
@@ -85,7 +100,8 @@
         <span style="margin: 0 10px;">
             Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>
         </span>
-        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/admin/rentals(page=${currentPage + 1}, size=${size})}">Вперед →</a>
+        <a th:if="${currentPage + 1 < totalPages}"
+            th:href="@{/admin/rentals(page=${currentPage + 1}, size=${size})}">Вперед →</a>
     </div>
 </body>
 

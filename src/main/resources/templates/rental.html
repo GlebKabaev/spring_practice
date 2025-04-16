@@ -15,7 +15,13 @@
             <p><strong>Дата выдачи:</strong> <span th:text="${#temporals.format(rental.issueDate, 'dd-MM-yyyy')}"></span></p>
             <p><strong>Предполагаемая дата возврата:</strong> <span th:text="${#temporals.format(rental.expectedReturnDate, 'dd-MM-yyyy')}"></span></p>
             <p><strong>Статус возврата:</strong> 
-                <span th:text="${rental.returned} ? 'возвращена' : 'не возвращена'"></span>
+                <span th:switch="${rental.received} + '-' + ${rental.returned}">
+                    <span th:case="'true-true'" class="badge bg-secondary">Возвращена</span>
+                    <span th:case="'true-false'" class="badge bg-success">Получена</span>
+                    <span th:case="'false-false'" class="badge bg-warning">Не получена</span>
+                    <span th:case="*" class="badge bg-danger"
+                        th:text="'Ошибка данных (received: ' + ${rental.received} + ', returned: ' + ${rental.returned} + ')'"></span>
+                </span>
             </p>
             <p><strong>Стоимость аренды:</strong> <span th:text="${rental.fullRentalCost}"></span></p>
         </div>
