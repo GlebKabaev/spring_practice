@@ -113,14 +113,29 @@ public class RentalViewController {
     }
 
     @PatchMapping("/return/{id}")
-    public String toggleRentalStatus(@PathVariable int id) {
+    public String toggleRentalStatus(@PathVariable int id,Model model) {
         try {
             rentalService.toggleRentalStatus(id);
             return "redirect:/admin/rentals/%d".formatted(id);
         } catch (RentalNotFoundException e) {
-            return "redirect:/admin/rentals?error=notfound";
+            model.addAttribute("error", e);
+            return showRentals(0,10,"id",model);
         } catch (Exception e) {
-            return "redirect:/admin/rentals?error=server";
+            model.addAttribute("error", e);
+            return showRentals(0,10,"id",model);
+        }
+    }
+    @PatchMapping("/give/{id}")
+    public String toggleReceivedStatus(@PathVariable int id,Model model) {
+        try {
+            rentalService.toggleReceivedStatus(id);
+            return "redirect:/admin/rentals/%d".formatted(id);
+        } catch (RentalNotFoundException e) {
+            model.addAttribute("error", e);
+            return showRentals(0,10,"id",model);
+        } catch (Exception e) {
+            model.addAttribute("error", e);
+            return showRentals(0,10,"id",model);
         }
     }
 }
